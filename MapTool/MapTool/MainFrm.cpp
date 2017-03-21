@@ -84,8 +84,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 	CRect rect;
 	GetClientRect(&rect);
 
-	CSize size1(MulDiv(rect.Width(), 30, 100), GetSystemMetrics(SM_CYSCREEN)); // Æø(30%)
-	CSize size2(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // Æø(70%)
+	CSize size1(MulDiv(rect.Width(), 30, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%)
+	CSize size2(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%)
 
 	// Create a splitter with 1 row, 2 colums
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
