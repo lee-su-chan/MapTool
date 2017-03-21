@@ -13,47 +13,107 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\DirectX">
+      <UniqueIdentifier>{524714c4-0a70-4171-be13-52baf33ed25a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DirectX">
+      <UniqueIdentifier>{36e50732-5150-4e2b-a2f9-e5e2024356dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MFC">
+      <UniqueIdentifier>{924f8f1b-29e5-45c1-a23c-4b4161348cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MFC">
+      <UniqueIdentifier>{250b04e0-5535-4800-9b6a-a5cc6be95185}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MapTool.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Directx\CameraClass.h">
+      <Filter>Header Files\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Directx\D3DClass.h">
+      <Filter>Header Files\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Directx\GraphicsClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Directx\ModelClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Directx\TextureClass.h">
+      <Filter>Header Files\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="MainFrm.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="MapToolDoc.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="MapToolView.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="Directx\TextureShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="FormView1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FormView2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MapTool.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Directx\CameraClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Directx\D3DClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Directx\GraphicsClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Directx\ModelClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Directx\TextureClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="MapToolDoc.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="MapToolView.cpp">
+      <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="Directx\TextureShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="FormView1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormView2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

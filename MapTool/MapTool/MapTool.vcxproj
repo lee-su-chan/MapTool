@@ -110,7 +110,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -161,7 +161,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -189,6 +189,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Directx\CameraClass.h" />
+    <ClInclude Include="Directx\D3DClass.h" />
+    <ClInclude Include="Directx\GraphicsClass.h" />
+    <ClInclude Include="Directx\ModelClass.h" />
+    <ClInclude Include="Directx\TextureClass.h" />
+    <ClInclude Include="Directx\TextureShaderClass.h" />
+    <ClInclude Include="FormView1.h" />
+    <ClInclude Include="FormView2.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
@@ -198,6 +206,14 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Directx\CameraClass.cpp" />
+    <ClCompile Include="Directx\D3DClass.cpp" />
+    <ClCompile Include="Directx\GraphicsClass.cpp" />
+    <ClCompile Include="Directx\ModelClass.cpp" />
+    <ClCompile Include="Directx\TextureClass.cpp" />
+    <ClCompile Include="Directx\TextureShaderClass.cpp" />
+    <ClCompile Include="FormView1.cpp" />
+    <ClCompile Include="FormView2.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolDoc.cpp" />
@@ -223,4 +239,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="MapTool.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
