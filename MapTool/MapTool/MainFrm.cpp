@@ -79,6 +79,36 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	return TRUE;
 }
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
+{
+	CRect rect;
+	GetClientRect(&rect);
+
+	CSize size1(MulDiv(rect.Width(), 30, 100), GetSystemMetrics(SM_CYSCREEN)); // Æø(30%)
+	CSize size2(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // Æø(70%)
+
+	// Create a splitter with 1 row, 2 colums
+	if (!m_wndSplitter.CreateStatic(this, 1, 2))
+	{
+		TRACE0("Failed to create static splitter \n");
+		return FALSE;
+	}
+
+	// CFormView1 is left 
+	if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CFormView1), size1, pContext))
+	{
+		TRACE0("Failed to create CFormView1 pane \n");
+		return FALSE;
+	}
+	// CFormView2 is right
+	if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CFormView2), size2, pContext))
+	{
+		TRACE0("Failed to create CFormView1 pane \n");
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 // CMainFrame diagnostics
 

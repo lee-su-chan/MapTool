@@ -4,9 +4,12 @@
 
 #pragma once
 
+#include "Directx\GraphicsClass.h"
+#include "FormView1.h"
+#include "FormView2.h"
+
 class CMainFrame : public CFrameWnd
 {
-	
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -20,6 +23,7 @@ public:
 // Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext);
 
 // Implementation
 public:
@@ -30,14 +34,16 @@ public:
 #endif
 
 protected:  // control bar embedded members
-	CToolBar          m_wndToolBar;
-	CStatusBar        m_wndStatusBar;
+	CToolBar		m_wndToolBar;
+	CStatusBar		m_wndStatusBar;
+	CSplitterWnd	m_wndSplitter;
+	CView			*m_pFormView1;
+	CView			*m_pFormView2;
 
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
-
 };
 
 
