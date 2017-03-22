@@ -24,23 +24,17 @@ bool ModelClass::Initialize(ID3D11Device *device, ID3D11DeviceContext *deviceCon
 
 	if (!result)
 		return false;
-
-#ifdef _TEXTURE_SHADER_MODE_
 	result = LoadTexture(device, deviceContext, textureFilename);
 
 	if (!result)
 		return false;
-#endif
 
 	return true;
 }
 
 void ModelClass::Shutdown()
 {
-#ifdef _TEXTURE_SHADER_MODE_
 	ReleaseTexture();
-#endif
-
 	ShutdownBuffers();
 
 	return;
@@ -183,7 +177,6 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext *deviceContext)
 	return;
 }
 
-#ifdef _TEXTURE_SHADER_MODE_
 bool ModelClass::LoadTexture(ID3D11Device *device, ID3D11DeviceContext *deviceContext, char *filename)
 {
 	bool result;
@@ -212,4 +205,3 @@ void ModelClass::ReleaseTexture()
 
 	return;
 }
-#endif
