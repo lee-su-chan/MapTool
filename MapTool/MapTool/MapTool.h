@@ -28,6 +28,7 @@ public:
 // Implementation
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL OnIdle(LONG lCount);
 };
 
 extern CMapToolApp theApp;
