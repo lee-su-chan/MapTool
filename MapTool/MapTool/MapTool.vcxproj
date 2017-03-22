@@ -230,6 +230,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\MapTool.rc2" />
+    <None Include="Shader\Texture.ps" />
+    <None Include="Shader\Texture.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MapTool.ico" />
