@@ -40,6 +40,8 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+	m_graphics->Shutdown();
+	delete m_graphics;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -66,7 +68,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
-
 	return 0;
 }
 
@@ -84,8 +85,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 	CRect rect;
 	GetClientRect(&rect);
 
-	CSize size1(MulDiv(rect.Width(), 30, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%)
-	CSize size2(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%)
+	CSize size1(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%)
+	CSize size2(MulDiv(rect.Width(), 50, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%)
 
 	// Create a splitter with 1 row, 2 colums
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
@@ -106,6 +107,9 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 		TRACE0("Failed to create CFormView1 pane \n");
 		return FALSE;
 	}
+
+	m_graphics = new GraphicsClass();
+	m_graphics->Initialize(size1.cx, size1.cy, m_wndSplitter.GetPane(0, 0)->GetSafeHwnd());
 
 	return TRUE;
 }

@@ -19,6 +19,7 @@ public:
 
 // Operations
 public:
+	GraphicsClass	*m_graphics;
 
 // Overrides
 public:
