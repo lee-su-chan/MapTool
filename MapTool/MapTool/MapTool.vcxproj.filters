@@ -72,10 +72,10 @@
     <ClInclude Include="Directx\TextureShaderClass.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="FormView1.h">
+    <ClInclude Include="FormView2.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="FormView2.h">
+    <ClInclude Include="MainFormView.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,10 +113,10 @@
     <ClCompile Include="Directx\TextureShaderClass.cpp">
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="FormView1.cpp">
+    <ClCompile Include="FormView2.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
-    <ClCompile Include="FormView2.cpp">
+    <ClCompile Include="MainFormView.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
   </ItemGroup>
