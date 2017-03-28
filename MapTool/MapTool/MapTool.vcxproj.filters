@@ -78,6 +78,9 @@
     <ClInclude Include="MainFormView.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
+    <ClInclude Include="FixedSplitterWnd.h">
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Directx\CameraClass.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="MainFormView.cpp">
+      <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedSplitterWnd.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
   </ItemGroup>

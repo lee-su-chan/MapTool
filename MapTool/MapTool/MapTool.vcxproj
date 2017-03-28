@@ -195,6 +195,7 @@
     <ClInclude Include="Directx\ModelClass.h" />
     <ClInclude Include="Directx\TextureClass.h" />
     <ClInclude Include="Directx\TextureShaderClass.h" />
+    <ClInclude Include="FixedSplitterWnd.h" />
     <ClInclude Include="MainFormView.h" />
     <ClInclude Include="FormView2.h" />
     <ClInclude Include="MainFrm.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="Directx\ModelClass.cpp" />
     <ClCompile Include="Directx\TextureClass.cpp" />
     <ClCompile Include="Directx\TextureShaderClass.cpp" />
+    <ClCompile Include="FixedSplitterWnd.cpp" />
     <ClCompile Include="MainFormView.cpp" />
     <ClCompile Include="FormView2.cpp" />
     <ClCompile Include="MainFrm.cpp" />
