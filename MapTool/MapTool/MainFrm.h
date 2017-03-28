@@ -7,6 +7,7 @@
 #include "Directx\GraphicsClass.h"
 #include "MainFormView.h"
 #include "FormView2.h"
+#include "FixedSplitterWnd.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -35,11 +36,11 @@ public:
 #endif
 
 protected:  // control bar embedded members
-	CToolBar		m_wndToolBar;
-	CStatusBar		m_wndStatusBar;
-	CSplitterWnd	m_wndSplitter;
-	CView			*m_pFormView1;
-	CView			*m_pFormView2;
+	CToolBar			m_wndToolBar;
+	CStatusBar			m_wndStatusBar;
+	CFixedSplitterWnd	m_wndSplitter;
+	CView				*m_pFormView1;
+	CView				*m_pFormView2;
 
 // Generated message map functions
 protected:
