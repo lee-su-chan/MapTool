@@ -4,6 +4,7 @@
 
 // CFormView1 form view
 
+// MainFormView
 class CFormView1 : public CFormView
 {
 	DECLARE_DYNCREATE(CFormView1)
@@ -27,6 +28,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 

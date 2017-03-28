@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "MapTool.h"
-#include "FormView1.h"
+#include "MainFormView.h"
 
 
 // CFormView1
@@ -26,6 +26,8 @@ void CFormView1::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CFormView1, CFormView)
+//	ON_WM_CREATE()
+ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 
