@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Directx\GraphicsClass.h"
-#include "FormView1.h"
+#include "MainFormView.h"
 #include "FormView2.h"
 
 class CMainFrame : public CFrameWnd

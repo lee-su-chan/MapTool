@@ -42,6 +42,7 @@ CMainFrame::~CMainFrame()
 {
 	m_graphics->Shutdown();
 	delete m_graphics;
+	m_graphics = NULL;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -68,6 +69,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
+	
+
 	return 0;
 }
 
@@ -77,6 +80,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
+	cs.cx = 1680;
+	cs.cy = 1050;
+	cs.style &= ~(WS_MAXIMIZEBOX);	// Dialog size don't change.
 
 	return TRUE;
 }
@@ -85,8 +91,10 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 	CRect rect;
 	GetClientRect(&rect);
 
-	CSize size1(MulDiv(rect.Width(), 70, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%)
-	CSize size2(MulDiv(rect.Width(), 50, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%)
+	//CSize size1(MulDiv(rect.Width(), 72, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%), 1280
+	//CSize size2(MulDiv(rect.Width(), 28, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%),  320
+	CSize size1(1280, 1024);
+	CSize size2(320, 1024);
 
 	// Create a splitter with 1 row, 2 colums
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
@@ -107,7 +115,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 		TRACE0("Failed to create CFormView1 pane \n");
 		return FALSE;
 	}
-
+	
 	m_graphics = new GraphicsClass();
 	m_graphics->Initialize(size1.cx, size1.cy, m_wndSplitter.GetPane(0, 0)->GetSafeHwnd());
 
