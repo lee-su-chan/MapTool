@@ -40,9 +40,9 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
-	m_graphics->Shutdown();
-	delete m_graphics;
-	m_graphics = NULL;
+	m_application->Shutdown();
+	delete m_application;
+	m_application = NULL;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -68,8 +68,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
-
-	
 
 	return 0;
 }
@@ -115,9 +113,14 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 		TRACE0("Failed to create CFormView2 pane \n");
 		return FALSE;
 	}
-	
-	m_graphics = new GraphicsClass();
-	m_graphics->Initialize(size1.cx, size1.cy, m_wndSplitter.GetPane(0, 0)->GetSafeHwnd());
+
+	HINSTANCE hInst = GetModuleHandle(NULL);
+
+	m_application = new ApplicationClass();
+	m_application->Initialize(hInst,
+		m_wndSplitter.GetPane(0, 0)->GetSafeHwnd(),
+		size1.cx,
+		size1.cy);
 
 	return TRUE;
 }

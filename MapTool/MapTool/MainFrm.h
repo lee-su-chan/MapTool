@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Directx\GraphicsClass.h"
+#include "DirectX\ApplicationClass.h"
 #include "MainFormView.h"
 #include "FormView2.h"
 #include "FixedSplitterWnd.h"
@@ -20,7 +20,7 @@ public:
 
 // Operations
 public:
-	GraphicsClass	*m_graphics;
+	ApplicationClass *m_application;
 
 // Overrides
 public:
