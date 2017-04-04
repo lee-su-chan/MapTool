@@ -2,7 +2,6 @@
 
 GraphicsClass::GraphicsClass()
 {
-	m_Direct3D = 0;
 	m_Camera = 0;
 	m_Model = 0;
 	m_TextureShader = 0;
@@ -16,28 +15,13 @@ GraphicsClass::~GraphicsClass()
 {
 }
 
-bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+bool GraphicsClass::Initialize(D3DClass *direct3D,
+	HWND hwnd,
+	int screenWidth,
+	int screenHeight,
+	float screenDepth)
 {
 	bool result;
-
-	m_Direct3D = new D3DClass;
-
-	if (!m_Direct3D)
-		return false;
-
-	result = m_Direct3D->Initialize(screenWidth,
-		screenHeight,
-		VSYNC_ENABLED,
-		hwnd,
-		FULL_SCREEN,
-		SCREEN_DEPTH,
-		SCREEN_NEAR);
-
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize Direct3D", L"Error", MB_OK);
-		return false;
-	}
 
 	m_Camera = new CameraClass;
 
@@ -51,7 +35,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!m_Model)
 		return false;
 
-	result = m_Model->Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Data/stone01.tga");
+	result = m_Model->Initialize(direct3D->GetDevice(), direct3D->GetDeviceContext(), "Data/Texture/stone01.tga");
 
 	if (!result)
 	{
@@ -64,7 +48,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!m_TextureShader)
 		return false;
 
-	result = m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd);
+	result = m_TextureShader->Initialize(direct3D->GetDevice(), hwnd);
 
 	if (!result)
 	{
@@ -97,21 +81,14 @@ void GraphicsClass::Shutdown()
 		m_Camera = NULL;
 	}
 
-	if (m_Direct3D)
-	{
-		m_Direct3D->Shutdown();
-		delete m_Direct3D;
-		m_Direct3D = NULL;
-	}
-
 	return;
 }
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(D3DClass *direct3D)
 {
 	bool result;
 
-	result = Render();
+	result = Render(direct3D);
 
 	if (!result)
 		return false;
@@ -119,27 +96,27 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
-bool GraphicsClass::Render()
+bool GraphicsClass::Render(D3DClass *direct3D)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
 
 	// Clear the buffers to begin the scene.
-	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
 
 	// Get the world, view and projection matrices from the camera and 3d3 object.
-	m_Direct3D->GetWorldMatrix(worldMatrix);
+	direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
-	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+	direct3D->GetProjectionMatrix(projectionMatrix);
 
 	// Put the model vertex and index buffer son the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_Direct3D->GetDeviceContext());
+	m_Model->Render(direct3D->GetDeviceContext());
 
 	// Render the model using the texture shader.
-	result = m_TextureShader->Render(m_Direct3D->GetDeviceContext(),
+	result = m_TextureShader->Render(direct3D->GetDeviceContext(),
 		m_Model->GetIndexCount(), 
 		worldMatrix, 
 		viewMatrix, 
@@ -150,7 +127,7 @@ bool GraphicsClass::Render()
 		return false;
 
 	// Present the renderd scene to the screen.
-	m_Direct3D->EndScene();
+	direct3D->EndScene();
 
 	return true;
 }
