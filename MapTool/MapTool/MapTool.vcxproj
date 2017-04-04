@@ -189,6 +189,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Directx\ApplicationClass.h" />
     <ClInclude Include="Directx\CameraClass.h" />
     <ClInclude Include="Directx\D3DClass.h" />
     <ClInclude Include="Directx\GraphicsClass.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Directx\ApplicationClass.cpp" />
     <ClCompile Include="Directx\CameraClass.cpp" />
     <ClCompile Include="Directx\D3DClass.cpp" />
     <ClCompile Include="Directx\GraphicsClass.cpp" />

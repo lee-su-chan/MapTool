@@ -81,6 +81,9 @@
     <ClInclude Include="FixedSplitterWnd.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
+    <ClInclude Include="Directx\ApplicationClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Directx\CameraClass.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="FixedSplitterWnd.cpp">
       <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="Directx\ApplicationClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
