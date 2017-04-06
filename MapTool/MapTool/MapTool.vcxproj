@@ -219,7 +219,6 @@
     <ClInclude Include="DirectX\UserInterfaceClass.h" />
     <ClInclude Include="DirectX\ZoneClass.h" />
     <ClInclude Include="FixedSplitterWnd.h" />
-    <ClInclude Include="MainFormView.h" />
     <ClInclude Include="FormView2.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapTool.h" />
@@ -260,7 +259,6 @@
     <ClCompile Include="DirectX\UserInterfaceClass.cpp" />
     <ClCompile Include="DirectX\ZoneClass.cpp" />
     <ClCompile Include="FixedSplitterWnd.cpp" />
-    <ClCompile Include="MainFormView.cpp" />
     <ClCompile Include="FormView2.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />

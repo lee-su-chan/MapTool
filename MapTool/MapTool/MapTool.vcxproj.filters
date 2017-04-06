@@ -62,9 +62,6 @@
     <ClInclude Include="FormView2.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="MainFormView.h">
-      <Filter>Header Files\MFC</Filter>
-    </ClInclude>
     <ClInclude Include="FixedSplitterWnd.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
@@ -176,9 +173,6 @@
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="FormView2.cpp">
-      <Filter>Source Files\MFC</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFormView.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="FixedSplitterWnd.cpp">
