@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\DirectX">
-      <UniqueIdentifier>{524714c4-0a70-4171-be13-52baf33ed25a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DirectX">
-      <UniqueIdentifier>{36e50732-5150-4e2b-a2f9-e5e2024356dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\MFC">
       <UniqueIdentifier>{924f8f1b-29e5-45c1-a23c-4b4161348cf3}</UniqueIdentifier>
     </Filter>
@@ -28,26 +22,25 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{25345e1a-23d8-4c8a-8c3a-3c20f562d434}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DirectX">
+      <UniqueIdentifier>{ec7eeb6d-5074-442d-9967-eaab9246e4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DirectX">
+      <UniqueIdentifier>{a7818b6e-7973-4af5-a6f6-01d8b42dcce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text Files">
+      <UniqueIdentifier>{7d26a87b-799e-421c-9a5d-78f8bd3569b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <Text Include="Data\Setup.txt">
+      <Filter>Text Files</Filter>
+    </Text>
+    <Text Include="ReadMe.txt">
+      <Filter>Text Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Directx\CameraClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Directx\D3DClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Directx\GraphicsClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Directx\ModelClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Directx\TextureClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="MainFrm.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
@@ -69,9 +62,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="Directx\TextureShaderClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="FormView2.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
@@ -81,26 +71,95 @@
     <ClInclude Include="FixedSplitterWnd.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="Directx\ApplicationClass.h">
+    <ClInclude Include="DirectX\ApplicationClass.h">
       <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\BitmapClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\CameraClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\ColorShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\D3DClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\FontClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\FontShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\FrustumClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\InputClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\LightClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\LightShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\MinimapClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\PositionClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\ShaderManagerClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\SkyDomeClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\SkyDomeShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TerrainCellClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TerrainClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TerrainShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TextClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TextureClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TextureManagerClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TextureShaderClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\TimerClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\UserInterfaceClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\ZoneClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\FpsClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXView.h">
+      <Filter>Header Files\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="MyResource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Directx\CameraClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Directx\D3DClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Directx\GraphicsClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Directx\ModelClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Directx\TextureClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
@@ -116,9 +175,6 @@
     <ClCompile Include="MapToolView.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
-    <ClCompile Include="Directx\TextureShaderClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="FormView2.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
@@ -128,8 +184,89 @@
     <ClCompile Include="FixedSplitterWnd.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
-    <ClCompile Include="Directx\ApplicationClass.cpp">
+    <ClCompile Include="DirectX\ApplicationClass.cpp">
       <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\BitmapClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\CameraClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\ColorShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\D3DClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\FontClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\FontShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\FrustumClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\InputClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\LightClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\LightShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\MinimapClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\PositionClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\ShaderManagerClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\SkyDomeClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\SkyDomeShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TerrainCellClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TerrainClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TerrainShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TextClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TextureClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TextureManagerClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TextureShaderClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\TimerClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\UserInterfaceClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\ZoneClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\FpsClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXView.cpp">
+      <Filter>Source Files\MFC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,10 +278,40 @@
     <None Include="res\MapTool.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shader\Texture.ps">
+    <None Include="Shader\font.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\font.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Light.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Light.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\SkyDome.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\SkyDome.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Terrain.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Terrain.vs">
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Shader\Texture.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Color.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Color.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shader\Texture.ps">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

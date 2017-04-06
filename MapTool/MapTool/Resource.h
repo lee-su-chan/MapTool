@@ -6,7 +6,6 @@
 #define IDP_OLE_INIT_FAILED             100
 #define IDR_MAINFRAME                   128
 #define IDR_MapToolTYPE                 130
-#define IDD_FORMVIEW1                   310
 #define IDD_FORMVIEW2                   311
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON2                     1001

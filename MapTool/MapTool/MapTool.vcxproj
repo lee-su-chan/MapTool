@@ -186,16 +186,38 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="Data\Setup.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Directx\ApplicationClass.h" />
-    <ClInclude Include="Directx\CameraClass.h" />
-    <ClInclude Include="Directx\D3DClass.h" />
-    <ClInclude Include="Directx\GraphicsClass.h" />
-    <ClInclude Include="Directx\ModelClass.h" />
-    <ClInclude Include="Directx\TextureClass.h" />
-    <ClInclude Include="Directx\TextureShaderClass.h" />
+    <ClInclude Include="DirectXView.h" />
+    <ClInclude Include="DirectX\ApplicationClass.h" />
+    <ClInclude Include="DirectX\BitmapClass.h" />
+    <ClInclude Include="DirectX\CameraClass.h" />
+    <ClInclude Include="DirectX\ColorShaderClass.h" />
+    <ClInclude Include="DirectX\D3DClass.h" />
+    <ClInclude Include="DirectX\FontClass.h" />
+    <ClInclude Include="DirectX\FontShaderClass.h" />
+    <ClInclude Include="DirectX\FpsClass.h" />
+    <ClInclude Include="DirectX\FrustumClass.h" />
+    <ClInclude Include="DirectX\InputClass.h" />
+    <ClInclude Include="DirectX\LightClass.h" />
+    <ClInclude Include="DirectX\LightShaderClass.h" />
+    <ClInclude Include="DirectX\MinimapClass.h" />
+    <ClInclude Include="DirectX\PositionClass.h" />
+    <ClInclude Include="DirectX\ShaderManagerClass.h" />
+    <ClInclude Include="DirectX\SkyDomeClass.h" />
+    <ClInclude Include="DirectX\SkyDomeShaderClass.h" />
+    <ClInclude Include="DirectX\TerrainCellClass.h" />
+    <ClInclude Include="DirectX\TerrainClass.h" />
+    <ClInclude Include="DirectX\TerrainShaderClass.h" />
+    <ClInclude Include="DirectX\TextClass.h" />
+    <ClInclude Include="DirectX\TextureClass.h" />
+    <ClInclude Include="DirectX\TextureManagerClass.h" />
+    <ClInclude Include="DirectX\TextureShaderClass.h" />
+    <ClInclude Include="DirectX\TimerClass.h" />
+    <ClInclude Include="DirectX\UserInterfaceClass.h" />
+    <ClInclude Include="DirectX\ZoneClass.h" />
     <ClInclude Include="FixedSplitterWnd.h" />
     <ClInclude Include="MainFormView.h" />
     <ClInclude Include="FormView2.h" />
@@ -203,18 +225,40 @@
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
     <ClInclude Include="MapToolView.h" />
+    <ClInclude Include="MyResource.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Directx\ApplicationClass.cpp" />
-    <ClCompile Include="Directx\CameraClass.cpp" />
-    <ClCompile Include="Directx\D3DClass.cpp" />
-    <ClCompile Include="Directx\GraphicsClass.cpp" />
-    <ClCompile Include="Directx\ModelClass.cpp" />
-    <ClCompile Include="Directx\TextureClass.cpp" />
-    <ClCompile Include="Directx\TextureShaderClass.cpp" />
+    <ClCompile Include="DirectXView.cpp" />
+    <ClCompile Include="DirectX\ApplicationClass.cpp" />
+    <ClCompile Include="DirectX\BitmapClass.cpp" />
+    <ClCompile Include="DirectX\CameraClass.cpp" />
+    <ClCompile Include="DirectX\ColorShaderClass.cpp" />
+    <ClCompile Include="DirectX\D3DClass.cpp" />
+    <ClCompile Include="DirectX\FontClass.cpp" />
+    <ClCompile Include="DirectX\FontShaderClass.cpp" />
+    <ClCompile Include="DirectX\FpsClass.cpp" />
+    <ClCompile Include="DirectX\FrustumClass.cpp" />
+    <ClCompile Include="DirectX\InputClass.cpp" />
+    <ClCompile Include="DirectX\LightClass.cpp" />
+    <ClCompile Include="DirectX\LightShaderClass.cpp" />
+    <ClCompile Include="DirectX\MinimapClass.cpp" />
+    <ClCompile Include="DirectX\PositionClass.cpp" />
+    <ClCompile Include="DirectX\ShaderManagerClass.cpp" />
+    <ClCompile Include="DirectX\SkyDomeClass.cpp" />
+    <ClCompile Include="DirectX\SkyDomeShaderClass.cpp" />
+    <ClCompile Include="DirectX\TerrainCellClass.cpp" />
+    <ClCompile Include="DirectX\TerrainClass.cpp" />
+    <ClCompile Include="DirectX\TerrainShaderClass.cpp" />
+    <ClCompile Include="DirectX\TextClass.cpp" />
+    <ClCompile Include="DirectX\TextureClass.cpp" />
+    <ClCompile Include="DirectX\TextureManagerClass.cpp" />
+    <ClCompile Include="DirectX\TextureShaderClass.cpp" />
+    <ClCompile Include="DirectX\TimerClass.cpp" />
+    <ClCompile Include="DirectX\UserInterfaceClass.cpp" />
+    <ClCompile Include="DirectX\ZoneClass.cpp" />
     <ClCompile Include="FixedSplitterWnd.cpp" />
     <ClCompile Include="MainFormView.cpp" />
     <ClCompile Include="FormView2.cpp" />
@@ -234,6 +278,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\MapTool.rc2" />
+    <None Include="Shader\Color.ps" />
+    <None Include="Shader\Color.vs" />
+    <None Include="Shader\font.ps" />
+    <None Include="Shader\font.vs" />
+    <None Include="Shader\Light.ps" />
+    <None Include="Shader\Light.vs" />
+    <None Include="Shader\SkyDome.ps" />
+    <None Include="Shader\SkyDome.vs" />
+    <None Include="Shader\Terrain.ps" />
+    <None Include="Shader\Terrain.vs" />
     <None Include="Shader\Texture.ps" />
     <None Include="Shader\Texture.vs" />
   </ItemGroup>

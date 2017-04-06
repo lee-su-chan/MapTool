@@ -40,9 +40,6 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
-	m_application->Shutdown();
-	delete m_application;
-	m_application = NULL;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -69,6 +66,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
+	//auto* pApp = AfxGetApp()->GetMainWnd();
+	m_DXview.CreateDirectXWnd(lpCreateStruct, this->GetSafeHwnd(), m_wndSplitter.GetPane(0, 0)->GetSafeHwnd());
+
 	return 0;
 }
 
@@ -76,10 +76,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
+
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
-	cs.cx = 1680;
-	cs.cy = 1050;
+	cs.cx = MAIN_WND_WIDTH;
+	cs.cy = MAIN_WND_HEIGHT;
 	cs.style &= ~(WS_MAXIMIZEBOX);	// Dialog size don't change.
 
 	return TRUE;
@@ -91,37 +92,32 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 
 	//CSize size1(MulDiv(rect.Width(), 72, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%), 1280
 	//CSize size2(MulDiv(rect.Width(), 28, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%),  320
-	CSize size1(1280, 1024);
-	CSize size2(320, 1024);
+	CSize size1(DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT);
+	CSize size2(MAIN_WND_WIDTH - DIRECT_WND_WIDTH, MAIN_WND_HEIGHT);
 
 	// Create a splitter with 1 row, 2 colums
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
 	{
 		TRACE0("Failed to create static splitter \n");
+
 		return FALSE;
 	}
 
 	// CFormView1 is left 
-	if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CFormView1), size1, pContext))
+	if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CDirectXView), size1, pContext))
 	{
-		TRACE0("Failed to create CFormView1 pane \n");
+		TRACE0("Failed to create CDirectXView pane \n");
+
 		return FALSE;
 	}
 	// CFormView2 is right
 	if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CFormView2), size2, pContext))
 	{
 		TRACE0("Failed to create CFormView2 pane \n");
+
 		return FALSE;
 	}
-
-	HINSTANCE hInst = GetModuleHandle(NULL);
-
-	m_application = new ApplicationClass();
-	m_application->Initialize(hInst,
-		m_wndSplitter.GetPane(0, 0)->GetSafeHwnd(),
-		size1.cx,
-		size1.cy);
-
+	
 	return TRUE;
 }
 

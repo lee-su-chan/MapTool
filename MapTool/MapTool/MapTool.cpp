@@ -186,7 +186,7 @@ BOOL CMapToolApp::OnIdle(LONG lCount)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	CMainFrame *pMain = (CMainFrame *)m_pMainWnd;
-	pMain->m_application->Frame();
+	pMain->m_DXview.Frame();
 
 	return CWinAppEx::OnIdle(lCount);
 }
