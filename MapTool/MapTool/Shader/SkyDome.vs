@@ -8,16 +8,16 @@ cbuffer MatrixBuffer
 struct VertexInputType
 {
 	float4 position : POSITION;
-	float2 tex : TEXCOORD0;
 };
 
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float2 tex : TEXCOORD0;
+	float4 domePosition : TEXCOORD0;
 };
 
-PixelInputType TextureVertexShader(VertexInputType input)
+
+PixelInputType SkyDomeVertexShader(VertexInputType input)
 {
 	PixelInputType output;
 
@@ -27,7 +27,7 @@ PixelInputType TextureVertexShader(VertexInputType input)
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
 
-	output.tex = input.tex;
+	output.domePosition = input.position;
 
 	return output;
 }

@@ -1,0 +1,78 @@
+Texture2D diffuseTexture1 : register(t0);
+Texture2D normalTexture1 : register(t1);
+Texture2D normalTexture2 : register(t2);
+Texture2D normalTexture3 : register(t3);
+
+SamplerState SampleType : register(s0);
+
+cbuffer LightBuffer
+{
+	float4 diffuseColor;
+	float3 lightDirection;
+	float padding;
+};
+
+struct PixelInputType
+{
+	float4 position : SV_POSITION;
+	float2 tex : TEXCOORD0;
+	float3 normal : NORMAL;
+	float3 tangent : TANGENT;
+	float3 binormal : BINORMAL;
+	float4 color : COLOR;
+	float2 tex2 : TEXCOORD1;
+	float4 depthPosition : TEXCOORD2;
+};
+
+float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
+{
+	float slope;
+	float3 lightDir;
+	float4 textureColor1;
+	float4 textureColor2;
+	float3 bumpMap;
+	float3 bumpNormal;
+	float lightIntensity;
+	float4 material1;
+	float4 material2;
+	float blendAmount;
+	float4 color;
+	float depthValue;
+
+	slope = 1.0f - input.normal.y;
+	depthValue = input.depthPosition.z / input.depthPosition.w;
+	lightDir = -lightDirection;
+
+	textureColor1 = diffuseTexture1.Sample(SampleType, input.tex);
+
+	if(depthValue > 0.998f)
+		bumpMap = normalTexture3.Sample(SampleType, input.tex2);
+	else
+		bumpMap = normalTexture1.Sample(SampleType, input.tex);
+
+	bumpMap = (bumpMap * 2.0f) - 1.0f;
+	bumpNormal = bumpMap.x * input.tangent + bumpMap.y * input.binormal + bumpMap.z * input.normal;
+	bumpNormal = normalize(bumpNormal);
+	lightIntensity = saturate(dot(bumpNormal, lightDir));
+	material1 = saturate(textureColor1 * lightIntensity);
+
+	textureColor2 = float4(1.0f, 1.0f, 1.0f, 1.0f); // Snow color.
+	bumpMap = normalTexture2.Sample(SampleType, input.tex);
+	bumpMap = (bumpMap * 2.0f) - 1.0f;
+	bumpNormal = bumpMap.x * input.tangent + bumpMap.y * input.binormal + bumpMap.z * input.normal;
+	bumpNormal = normalize(bumpNormal);
+	lightIntensity = saturate(dot(bumpNormal, lightDir));
+	material2 = saturate(textureColor2 * lightIntensity);
+
+	if(slope < 0.2f)
+	{
+		blendAmount = slope / 0.2f;
+		color = lerp(material2, material1, blendAmount);
+	}
+	else if(slope >= 0.2f)
+	{
+		color = material1;
+	}
+
+	return color;
+}
