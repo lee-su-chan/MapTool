@@ -53,9 +53,6 @@
     <ClInclude Include="MapToolView.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files\MFC</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="MyResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
