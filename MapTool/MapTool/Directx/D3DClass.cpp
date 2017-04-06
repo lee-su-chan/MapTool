@@ -10,11 +10,21 @@ D3DClass::D3DClass()
 	m_depthStencilState = 0;
 	m_depthStencilView = 0;
 	m_rasterState = 0;
+	m_rasterStateNoCulling = 0;
+	m_rasterStateWireframe = 0;
+	m_depthDisabledStencilState = 0;
+	m_alphaEnableBlendingState = 0;
+	m_alphaDisalbeBlendingState = 0;
+	m_alphaEnableBlendingState2 = 0;
 }
 
-D3DClass::D3DClass(const D3DClass &other) {}
+D3DClass::D3DClass(const D3DClass &other)
+{
+}
 
-D3DClass::~D3DClass() {}
+D3DClass::~D3DClass()
+{
+}
 
 bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
@@ -36,6 +46,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewport;
 	float fieldOfView, screenAspect;
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+	D3D11_BLEND_DESC blendStateDescription;
 
 	// Store the vsync setting.
 	m_vsync_enabled = vsync;
@@ -76,8 +88,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	if (FAILED(result))
 		return false;
 
-	//Now go through all the display modes and find the one that matches the screen width and height.
-	//When a match is found store is numerator and denominator of the refresh rate for that monitor.
+	// Now go through all the display modes and find the one that matches the screen width and height.
+	// When a match is found store is numerator and denominator of the refresh rate for that monitor.
 	for (i = 0; i < numModes; ++i)
 	{
 		if (displayModeList[i].Width == (unsigned int)screenWidth)
@@ -92,7 +104,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 
 	// Get the adapter(video card) description.
 	result = adapter->GetDesc(&adapterDesc);
-
+	
 	if (FAILED(result))
 		return false;
 
@@ -100,9 +112,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
 	// Convert the name of the video card to a character array and store it.
-	// size_t, char *, size_t, const wchar_t, size_t
 	error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
-
+	
 	if (error != 0)
 		return false;
 
@@ -171,7 +182,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 
 	// Set the feature level to DirectX 11.
 	featureLevel = D3D_FEATURE_LEVEL_11_0;
-
+	
 	// Create the swap chain, Direct3D device, and Direct3D device context.
 	result = D3D11CreateDeviceAndSwapChain(NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -184,8 +195,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		&m_swapChain,
 		&m_device,
 		NULL,
-		&m_deviceContext
-		);
+		&m_deviceContext);
 
 	if (FAILED(result))
 		return false;
@@ -199,7 +209,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	// Create the render target view with the back buffer pointer.
 	result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
 
-	if (FAILED(result))
+	if(FAILED(result))
 		return false;
 
 	// Release pointer to the back buffer as we no longer need it.
@@ -278,7 +288,6 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	// Bind the render target view and epth stencil buffer to the output render pipeline.
 	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-	// Setup the raster decription which will determine how and what polygons will be drawn.
 	rasterDesc.AntialiasedLineEnable = false;
 	rasterDesc.CullMode = D3D11_CULL_BACK;
 	rasterDesc.DepthBias = 0;
@@ -289,14 +298,37 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
-	// Create the rasterizer state from the description we just filled out.
 	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
+	if (FAILED(result))
+		return false;
+
+	m_deviceContext->RSSetState(m_rasterState);
+
+	rasterDesc.CullMode = D3D11_CULL_NONE;
+
+	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterStateNoCulling);
+	if (FAILED(result))
+		return false;
+
+	// Setup the raster decription which will determine how and what polygons will be drawn.
+	rasterDesc.AntialiasedLineEnable = false;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0.0f;
+	rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.MultisampleEnable = false;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+	// Create the rasterizer state from the description we just filled out.
+	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterStateWireframe);
 
 	if (FAILED(result))
 		return false;
 
 	// Now set the rasterizer state.
-	m_deviceContext->RSSetState(m_rasterState);
+	 m_deviceContext->RSSetState(m_rasterState);
 
 	// Setup the viewport for rendering.
 	viewport.Width = (float)screenWidth;
@@ -315,12 +347,70 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 
 	// Create the projection matirx for 3D rendering.
 	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-
+	
 	// Initialize the world matrix to the identify matrix.
 	m_worldMatrix = XMMatrixIdentity();
-
+	
 	// Create an orthographic projection matrix for 2D rendering.
 	m_orthoMatrix = XMMatrixOrthographicLH((float)screenWidth, (float)screenHeight, screenNear, screenDepth);
+
+	depthDisabledStencilDesc.DepthEnable = false;
+	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthDisabledStencilDesc.StencilEnable = true;
+	depthDisabledStencilDesc.StencilReadMask = 0xFF;
+	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	result = m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState);
+	if (FAILED(result))
+		return false;
+
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+
+	blendStateDescription.AlphaToCoverageEnable = FALSE;
+	blendStateDescription.IndependentBlendEnable = false;
+	blendStateDescription.RenderTarget[0].BlendEnable = true;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	result = m_device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState);
+	if (FAILED(result))
+		return false;
+
+	blendStateDescription.RenderTarget[0].BlendEnable = false;
+	blendStateDescription.AlphaToCoverageEnable = false;
+
+	result = m_device->CreateBlendState(&blendStateDescription, &m_alphaDisalbeBlendingState);
+	if (FAILED(result))
+		return false;
+
+	blendStateDescription.AlphaToCoverageEnable = true;
+	blendStateDescription.IndependentBlendEnable = false;
+	blendStateDescription.RenderTarget[0].BlendEnable = true;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	result = m_device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState2);
+	if (FAILED(result))
+		return false;
 
 	return true;
 }
@@ -330,6 +420,42 @@ void D3DClass::Shutdown()
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw and exception.
 	if (m_swapChain)
 		m_swapChain->SetFullscreenState(false, NULL);
+
+	if (m_alphaEnableBlendingState2)
+	{
+		m_alphaEnableBlendingState2->Release();
+		m_alphaEnableBlendingState2 = NULL;
+	}
+
+	if (m_alphaDisalbeBlendingState)
+	{
+		m_alphaDisalbeBlendingState->Release();
+		m_alphaDisalbeBlendingState = NULL;
+	}
+
+	if (m_alphaEnableBlendingState)
+	{
+		m_alphaEnableBlendingState->Release();
+		m_alphaEnableBlendingState = NULL;
+	}
+
+	if (m_depthDisabledStencilState)
+	{
+		m_depthDisabledStencilState->Release();
+		m_depthDisabledStencilState = NULL;
+	}
+
+	if (m_rasterStateWireframe)
+	{
+		m_rasterStateWireframe->Release();
+		m_rasterStateWireframe = NULL;
+	}
+
+	if (m_rasterStateNoCulling)
+	{
+		m_rasterStateNoCulling->Release();;
+		m_rasterStateNoCulling = NULL;
+	}
 
 	if (m_rasterState)
 	{
@@ -445,5 +571,89 @@ void D3DClass::GetVideoCardInfo(char *cardName, int &memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
+	return;
+}
+
+void D3DClass::TurnZBufferOn()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+	
+	return;
+}
+
+void D3DClass::TurnZBufferOff()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+
+	return;
+}
+
+void D3DClass::TurnOnCulling()
+{
+	m_deviceContext->RSSetState(m_rasterState);
+
+	return;
+}
+
+void D3DClass::TurnOffCulling()
+{
+	m_deviceContext->RSSetState(m_rasterStateNoCulling);
+
+	return;
+}
+
+void D3DClass::EnableAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+
+	return;
+}
+
+void D3DClass::EnableAlphaToCoverageBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState2, blendFactor, 0xffffffff);
+
+	return;
+}
+
+void D3DClass::DisableAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	m_deviceContext->OMSetBlendState(m_alphaDisalbeBlendingState, blendFactor, 0xffffffff);
+
+	return;
+}
+
+void D3DClass::EnableWireframe()
+{
+	m_deviceContext->RSSetState(m_rasterStateWireframe);
+	
+	return;
+}
+
+void D3DClass::DisableWireframe()
+{
+	m_deviceContext->RSSetState(m_rasterState);
+
 	return;
 }

@@ -93,3 +93,48 @@ void CameraClass::GetViewMatrix(XMMATRIX &viewMatrix)
 
 	return;
 }
+
+void CameraClass::RenderBaseViewMatrix()
+{
+	XMFLOAT3 up, position, lookAt;
+	XMVECTOR upVector, positionVector, lookAtVector;
+	float yaw, pitch, roll;
+	XMMATRIX rotationMatrix;
+
+	up.x = 0.0f;
+	up.y = 1.0f;
+	up.z = 0.0f;
+	upVector = XMLoadFloat3(&up);
+
+	position.x = m_posX;
+	position.y = m_posY;
+	position.z = m_posZ;
+	positionVector = XMLoadFloat3(&position);
+
+	lookAt.x = 0.0f;
+	lookAt.y = 0.0f;
+	lookAt.z = 1.0f;
+	lookAtVector = XMLoadFloat3(&lookAt);
+
+	pitch = m_rotX * 0.0174532925f;
+	yaw = m_rotY * 0.0174532925f;
+	roll = m_rotZ * 0.0174532925f;
+
+	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+
+	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
+	upVector = XMVector3TransformCoord(upVector, rotationMatrix);
+
+	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
+
+	m_baseViewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
+
+	return;
+}
+
+void CameraClass::GetBaseViewMatrix(XMMATRIX &viewMatrix)
+{
+	viewMatrix = m_baseViewMatrix;
+
+	return;
+}

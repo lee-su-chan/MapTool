@@ -1,54 +1,53 @@
-#include "TextureShaderClass.h"
+#include "FontShaderClass.h"
 
-TextureShaderClass::TextureShaderClass()
+FontShaderClass::FontShaderClass()
 {
 	m_vertexShader = 0;
 	m_pixelShader = 0;
 	m_layout = 0;
 	m_matrixBuffer = 0;
-	m_sampleState = 0;
+	m_samplerState = 0;
+	m_pixelBuffer = 0;
 }
 
-TextureShaderClass::TextureShaderClass(const TextureShaderClass &other)
+FontShaderClass::FontShaderClass(const FontShaderClass &)
 {
 }
 
-TextureShaderClass::~TextureShaderClass()
+FontShaderClass::~FontShaderClass()
 {
 }
 
-bool TextureShaderClass::Initialize(ID3D11Device *device, HWND hwnd)
+bool FontShaderClass::Initialize(ID3D11Device *device, HWND hwnd)
 {
 	bool result;
 
-	result = InitializeShader(device, hwnd, L"Shader/texture.vs", L"Shader/texture.ps");
+	result = InitializeShader(device, hwnd, L"Shader/font.vs", L"Shader/font.ps");
+
 	if (!result)
 		return false;
-
+	
 	return true;
 }
 
-void TextureShaderClass::Shutdown()
+void FontShaderClass::Shutdown()
 {
 	ShutdownShader();
 
 	return;
 }
 
-bool TextureShaderClass::Render(ID3D11DeviceContext *deviceContext,
+bool FontShaderClass::Render(ID3D11DeviceContext *deviceContext, 
 	int indexCount,
-	XMMATRIX worldMatrix,
+	XMMATRIX worldMatrix, 
 	XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, 
-	ID3D11ShaderResourceView *texture)
+	ID3D11ShaderResourceView *texture, 
+	XMFLOAT4 pixelColor)
 {
 	bool result;
 
-	result = SetShaderParameters(deviceContext,
-		worldMatrix,
-		viewMatrix,
-		projectionMatrix,
-		texture);
+	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, pixelColor);
 
 	if (!result)
 		return false;
@@ -58,8 +57,8 @@ bool TextureShaderClass::Render(ID3D11DeviceContext *deviceContext,
 	return true;
 }
 
-bool TextureShaderClass::InitializeShader(ID3D11Device *device,
-	HWND hwnd,
+bool FontShaderClass::InitializeShader(ID3D11Device *device,
+	HWND hwnd, 
 	WCHAR *vsFilename, 
 	WCHAR *psFilename)
 {
@@ -71,6 +70,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
+	D3D11_BUFFER_DESC pixelBufferDesc;
 
 	errorMessage = 0;
 	vertexShaderBuffer = 0;
@@ -79,7 +79,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 	result = D3DCompileFromFile(vsFilename,
 		NULL,
 		NULL,
-		"TextureVertexShader",
+		"FontVertexShader",
 		"vs_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS,
 		0,
@@ -92,14 +92,12 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 			OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
 		else
 			MessageBox(hwnd, vsFilename, L"Missing Shader File", MB_OK);
-
-		return false;
 	}
 
 	result = D3DCompileFromFile(psFilename,
 		NULL,
 		NULL,
-		"TexturePixelShader",
+		"FontPixelShader",
 		"ps_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS,
 		0,
@@ -112,8 +110,6 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 			OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
 		else
 			MessageBox(hwnd, psFilename, L"Missing Shader File", MB_OK);
-
-		return false;
 	}
 
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(),
@@ -123,7 +119,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 
 	if (FAILED(result))
 		return false;
-	
+
 	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(),
 		pixelShaderBuffer->GetBufferSize(),
 		NULL,
@@ -173,6 +169,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 	matrixBufferDesc.StructureByteStride = 0;
 
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+
 	if (FAILED(result))
 		return false;
 
@@ -190,55 +187,74 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
+	result = device->CreateSamplerState(&samplerDesc, &m_samplerState);
+
+	if (FAILED(result))
+		return false;
+
+	pixelBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	pixelBufferDesc.ByteWidth = sizeof(PixelBufferType);
+	pixelBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	pixelBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	pixelBufferDesc.MiscFlags = 0;
+	pixelBufferDesc.StructureByteStride = 0;
+
+	result = device->CreateBuffer(&pixelBufferDesc, NULL, &m_pixelBuffer);
+
 	if (FAILED(result))
 		return false;
 
 	return true;
 }
 
-void TextureShaderClass::ShutdownShader()
+void FontShaderClass::ShutdownShader()
 {
-	if (m_sampleState)
+	if (m_pixelBuffer)
 	{
-		m_sampleState->Release();
-		m_sampleState = NULL;
+		m_pixelBuffer->Release();
+		m_pixelBuffer = NULL;
+	}
+
+	if (m_samplerState)
+	{
+		m_samplerState->Release();
+		m_samplerState = NULL;
 	}
 
 	if (m_matrixBuffer)
-	{	  
+	{
 		m_matrixBuffer->Release();
 		m_matrixBuffer = NULL;
 	}
 
 	if (m_layout)
-	{	  
+	{
 		m_layout->Release();
 		m_layout = NULL;
 	}
 
 	if (m_pixelShader)
-	{	  		 
+	{
 		m_pixelShader->Release();
 		m_pixelShader = NULL;
 	}
 
 	if (m_vertexShader)
-	{	  
+	{
 		m_vertexShader->Release();
 		m_vertexShader = NULL;
 	}
-
-	return;
 }
 
-void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND hwnd, WCHAR *shaderFilename)
+void FontShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage,
+	HWND hwnd, 
+	WCHAR *shaderFilename)
 {
 	char *compileErrors;
-	unsigned long long bufferSize, i;
+	unsigned __int64 bufferSize, i;
 	ofstream fout;
 
-	compileErrors = (char *)errorMessage->GetBufferPointer();
+	compileErrors = (char *)(errorMessage->GetBufferPointer());
 	bufferSize = errorMessage->GetBufferSize();
 
 	fout.open("shader-error.txt");
@@ -252,23 +268,25 @@ void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND
 	errorMessage = NULL;
 
 	MessageBox(hwnd,
-		L"Error compiling shader. Check shader-error.txt for message",
+		L"Error compiling shader. Check shader-error.txt for message.",
 		shaderFilename,
 		MB_OK);
 
 	return;
 }
 
-bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
-	XMMATRIX worldMatrix,
-	XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix,
-	ID3D11ShaderResourceView *texture)
+bool FontShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
+	XMMATRIX worldMatrix, 
+	XMMATRIX viewMatrix, 
+	XMMATRIX projectionMatrix, 
+	ID3D11ShaderResourceView *texture, 
+	XMFLOAT4 pixelColor)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType *dataPtr;
 	unsigned int bufferNumber;
+	PixelBufferType *dataPtr2;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -296,17 +314,37 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
+	result = deviceContext->Map(m_pixelBuffer,
+		0,
+		D3D11_MAP_WRITE_DISCARD,
+		0,
+		&mappedResource);
+
+	if (FAILED(result))
+		return false;
+
+	dataPtr2 = (PixelBufferType *)mappedResource.pData;
+	dataPtr2->pixelColor = pixelColor;
+
+	deviceContext->Unmap(m_pixelBuffer, 0);
+
+	bufferNumber = 0;
+
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pixelBuffer);
+
 	return true;
 }
 
-void TextureShaderClass::RenderShader(ID3D11DeviceContext *deviceContext, int indexCount)
+void FontShaderClass::RenderShader(ID3D11DeviceContext *deviceContext, int indexCount)
 {
 	deviceContext->IASetInputLayout(m_layout);
 
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+	deviceContext->PSSetSamplers(0, 1, &m_samplerState);
 
 	deviceContext->DrawIndexed(indexCount, 0, 0);
+
+	return;
 }
