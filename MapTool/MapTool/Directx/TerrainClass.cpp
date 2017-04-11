@@ -26,6 +26,7 @@ bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename)
 		return false;
 
 	result = LoadRawHeightMap();
+	//result = LoadBitmapHeightMap();
 	if (!result)
 		return false;
 
@@ -222,9 +223,9 @@ bool TerrainClass::LoadSetupFile(char *filename)
 	if (!m_terrainFilename)
 		return false;
 
-	//m_colorMapFilename = new char[stringLength];
-	//if (!m_colorMapFilename)
-	//	return false;
+	m_colorMapFilename = new char[stringLength];
+	if (!m_colorMapFilename)
+		return false;
 
 	fin.open(filename);
 	if (fin.fail())
@@ -253,8 +254,7 @@ bool TerrainClass::LoadSetupFile(char *filename)
 	fin.get(input);
 	while (input != ':')
 		fin.get(input);
-	
-	//fin >> m_colorMapFilename;
+	fin >> m_colorMapFilename;
 
 	fin.close();
 
