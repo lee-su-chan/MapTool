@@ -12,6 +12,7 @@ PositionClass::PositionClass()
 	m_leftwardSpeed = m_rightwardSpeed = 0.0f;
 	m_leftTurnSpeed = m_rightTurnSpeed = 0.0f;
 	m_lookUpSpeed = m_lookDownSpeed = 0.0f;
+	m_mouseSpeed = 0.0f;
 }
 
 PositionClass::PositionClass(const PositionClass &other)
@@ -93,6 +94,9 @@ void PositionClass::MoveForward(bool keydown)
 	m_posX += sinf(radians) * m_forwardSpeed;
 	m_posZ += cosf(radians) * m_forwardSpeed;
 
+	radians = m_rotX * 0.0174532925f;
+	m_posY -= sinf(radians) * m_forwardSpeed;
+
 	return;
 }
 
@@ -123,6 +127,9 @@ void PositionClass::MoveBackward(bool keydown)
 	// Update the position.
 	m_posX -= sinf(radians) * m_backwardSpeed;
 	m_posZ -= cosf(radians) * m_backwardSpeed;
+
+	radians = m_rotX * 0.0174532925f;
+	m_posY += sinf(radians) * m_backwardSpeed;
 
 	return;
 
@@ -344,6 +351,31 @@ void PositionClass::LookDownward(bool keydown)
 	// Keep the rotation maximun 90 degrees.
 	if (m_rotX < -90.0f)
 		m_rotX = -90.0f;
+
+	return;
+}
+
+void PositionClass::TurnByMouse(int mouseAddX, int mouseAddY)
+{
+	const float SPEED = 4.0f;
+
+	if (mouseAddX > 0)
+	{
+		m_rotY += mouseAddX * 0.016 * SPEED;
+	}
+	else if (mouseAddX < 0)
+	{
+		m_rotY += mouseAddX * 0.016 * SPEED;
+	}
+
+	if (mouseAddY > 0)
+	{
+		m_rotX += mouseAddY * 0.016 * SPEED;
+	}
+	else if (mouseAddY < 0)
+	{
+		m_rotX += mouseAddY * 0.016 * SPEED;
+	}
 
 	return;
 }

@@ -28,6 +28,7 @@ public:
 	void TurnRight(bool);
 	void LookUpward(bool);
 	void LookDownward(bool);
+	void TurnByMouse(int, int);
 
 private:
 	float m_posX, m_posY, m_posZ;
@@ -40,6 +41,7 @@ private:
 	float m_leftwardSpeed, m_rightwardSpeed;
 	float m_leftTurnSpeed, m_rightTurnSpeed;
 	float m_lookUpSpeed, m_lookDownSpeed;
+	float m_mouseSpeed;
 };
 
 #endif
