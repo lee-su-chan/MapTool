@@ -21,7 +21,7 @@ bool InputClass::initialze(HINSTANCE hinstance,
 	int screenHeight)
 {
 	HRESULT result;
-
+	
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 
@@ -136,6 +136,30 @@ void InputClass::GetMouseLocation(int &mouseX, int &mouseY)
 	return;
 }
 
+bool InputClass::IsMouseRightClick()
+{
+	if (m_mouseState.rgbButtons[1] & 0x80)
+		return true;
+
+	return false;
+}
+
+bool InputClass::IsMouseMoved()
+{
+	if (m_mouseState.lX != 0 && m_mouseState.lY != 0)
+		return true;
+
+	return false;
+}
+
+void InputClass::GetMouseAddPos(int &mouseAddX, int &mouseAddY)
+{
+	mouseAddX = m_mouseState.lX;
+	mouseAddY = m_mouseState.lY;
+
+	return;
+}
+
 bool InputClass::IsLeftPressed()
 {
 	if (m_keyboardState[DIK_LEFT] & 0x80)
@@ -192,9 +216,33 @@ bool InputClass::IsAPressed()
 	return false;
 }
 
+bool InputClass::IsSPressed()
+{
+	if (m_keyboardState[DIK_S] & 0x80)
+		return true;
+
+	return false;
+}
+
 bool InputClass::IsDPressed()
 {
 	if (m_keyboardState[DIK_D] & 0x80)
+		return true;
+
+	return false;
+}
+
+bool InputClass::IsQPressed()
+{
+	if (m_keyboardState[DIK_Q] & 0x80)
+		return true;
+
+	return false;
+}
+
+bool InputClass::IsEPressed()
+{
+	if (m_keyboardState[DIK_E] & 0x80)
 		return true;
 
 	return false;

@@ -20,16 +20,23 @@ public:
 	bool Frame();
 
 	bool IsEscapePressed();
+
 	void GetMouseLocation(int &, int &);
+	bool IsMouseRightClick();
+	bool IsMouseMoved();
+	void GetMouseAddPos(int &, int &);
 
 	bool IsLeftPressed();
 	bool IsRightPressed();
 	bool IsUpPressed();
 	bool IsDownPressed();
 	bool IsWPressed();
-	bool IsXPressed();
 	bool IsAPressed();
+	bool IsSPressed();
 	bool IsDPressed();
+	bool IsQPressed();
+	bool IsEPressed();
+	bool IsXPressed();
 	bool IsPgUpPressed();
 	bool IsPgDownPressed();
 
