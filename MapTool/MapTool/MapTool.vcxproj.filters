@@ -146,13 +146,10 @@
     <ClInclude Include="DirectX\FpsClass.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXView.h">
-      <Filter>Header Files\MFC</Filter>
-    </ClInclude>
-    <ClInclude Include="MyResource.h">
+    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="MyResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -258,9 +255,6 @@
     </ClCompile>
     <ClCompile Include="DirectX\FpsClass.cpp">
       <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXView.cpp">
-      <Filter>Source Files\MFC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
