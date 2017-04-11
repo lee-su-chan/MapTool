@@ -82,35 +82,44 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		return false;
 	}
 
+	//result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
+	//	m_Direct3D->GetDeviceContext(),
+	//	"Data/textures/dirt01d.tga",
+	//	0);
+
+	//if (!result)
+	//	return false;
+
+	// For TerrainShader
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
 		"Data/textures/rock01d.tga",
 		0);
-
+	
 	if (!result)
 		return false;
-
+	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
 		"Data/textures/rock01n.tga",
 		1);
-
+	
 	if (!result)
 		return false;
-
+	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
 		"Data/textures/snow01n.tga",
 		2);
-
+	
 	if (!result)
 		return false;
-
+	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
 		"Data/textures/distance01n.tga",
 		3);
-
+	
 	if (!result)
 		return false;
 
