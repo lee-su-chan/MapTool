@@ -100,7 +100,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	m_wireFrame = false;
 	m_play = false;
 	m_cellLines = true;
-	m_heightLocked = true;
+	m_heightLocked = false;
 
 	return true;
 }
@@ -164,11 +164,14 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
+	int mousePosX, mousePosY;
 
 	HandleMovementInput(input, frameTime);
 
 	m_Position->GetPosition(posX, posY, posZ);
 	m_Position->GetRotation(rotX, rotY, rotZ);
+
+	input->GetMouseLocation(mousePosX, mousePosY);
 
 	if(m_play)
 		PushedF3Button(frameTime);
@@ -182,7 +185,9 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 		rotY,
 		rotZ,
 		m_SkyDome->GetApexColor(),
-		m_SkyDome->GetCenterColor());
+		m_SkyDome->GetCenterColor(),
+		mousePosX,
+		mousePosY);
 	
 	if (!result)
 		return false;
@@ -210,26 +215,22 @@ void ZoneClass::HandleMovementInput(InputClass *input, float frameTime)
 {
 	bool keyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
+	int mouseAddX, mouseAddY;
 
 	m_Position->SetFrameTime(frameTime);
 
-	keyDown = input->IsLeftPressed();
-	m_Position->TurnLeft(keyDown);
-
-	keyDown = input->IsRightPressed();
-	m_Position->TurnRight(keyDown);
-
-	keyDown = input->IsUpPressed();
-	m_Position->MoveForward(keyDown);
-
-	keyDown = input->IsDownPressed();
-	m_Position->MoveBackward(keyDown);
+	if (input->IsMouseRightClick())
+	{
+		keyDown = input->IsMouseMoved();
+		input->GetMouseAddPos(mouseAddX, mouseAddY);
+		m_Position->TurnByMouse(mouseAddX, mouseAddY);
+	}
 
 	keyDown = input->IsWPressed();
-	m_Position->MoveUpward(keyDown);
+	m_Position->MoveForward(keyDown);
 
-	keyDown = input->IsXPressed();
-	m_Position->MoveDownward(keyDown);
+	keyDown = input->IsSPressed();
+	m_Position->MoveBackward(keyDown);
 
 	keyDown = input->IsAPressed();
 	m_Position->MoveLeftward(keyDown);
@@ -237,11 +238,23 @@ void ZoneClass::HandleMovementInput(InputClass *input, float frameTime)
 	keyDown = input->IsDPressed();
 	m_Position->MoveRightward(keyDown);
 
-	keyDown = input->IsPgUpPressed();
+	keyDown = input->IsQPressed();
+	m_Position->MoveUpward(keyDown);
+
+	keyDown = input->IsEPressed();
+	m_Position->MoveDownward(keyDown);
+
+	keyDown = input->IsUpPressed();
 	m_Position->LookUpward(keyDown);
 
-	keyDown = input->IsPgDownPressed();
+	keyDown = input->IsLeftPressed();
+	m_Position->TurnLeft(keyDown);
+
+	keyDown = input->IsDownPressed();
 	m_Position->LookDownward(keyDown);
+
+	keyDown = input->IsRightPressed();
+	m_Position->TurnRight(keyDown);
 
 	m_Position->GetPosition(posX, posY, posZ);
 	m_Position->GetRotation(rotX, rotY, rotZ);
