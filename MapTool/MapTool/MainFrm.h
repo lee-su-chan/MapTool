@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "DirectXView.h"
 #include "FormView2.h"
 #include "FixedSplitterWnd.h"
+#include "DirectX\ApplicationClass.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -19,7 +19,7 @@ public:
 
 // Operations
 public:
-	CDirectXView m_DXview;
+	ApplicationClass *m_application;
 
 // Overrides
 public:
@@ -38,8 +38,6 @@ protected:  // control bar embedded members
 	CToolBar			m_wndToolBar;
 	CStatusBar			m_wndStatusBar;
 	CFixedSplitterWnd	m_wndSplitter;
-	// CView				*m_pFormView1;
-	// CView				*m_pFormView2;
 
 // Generated message map functions
 protected:

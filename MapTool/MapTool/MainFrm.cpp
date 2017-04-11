@@ -5,7 +5,11 @@
 #include "stdafx.h"
 #include "MapTool.h"
 
+#include "MyResource.h"
 #include "MainFrm.h"
+#include "MapToolDoc.h"
+#include "MapToolView.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,6 +44,12 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+	if (m_application)
+	{
+		m_application->Shutdown();
+		delete m_application;
+		m_application = NULL;
+	}
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -66,9 +76,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
-	//auto* pApp = AfxGetApp()->GetMainWnd();
-	m_DXview.CreateDirectXWnd(lpCreateStruct, this->GetSafeHwnd(), m_wndSplitter.GetPane(0, 0)->GetSafeHwnd());
-
 	return 0;
 }
 
@@ -81,17 +88,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 	cs.cx = MAIN_WND_WIDTH;
 	cs.cy = MAIN_WND_HEIGHT;
-	cs.style &= ~(WS_MAXIMIZEBOX);	// Dialog size don't change.
+	cs.style &= ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);	// Dialog size don't change.
 
 	return TRUE;
 }
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 {
-	CRect rect;
-	GetClientRect(&rect);
-
-	//CSize size1(MulDiv(rect.Width(), 72, 100), GetSystemMetrics(SM_CYSCREEN)); // width(70%), 1280
-	//CSize size2(MulDiv(rect.Width(), 28, 100), GetSystemMetrics(SM_CYSCREEN)); // width(30%),  320
 	CSize size1(DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT);
 	CSize size2(MAIN_WND_WIDTH - DIRECT_WND_WIDTH, MAIN_WND_HEIGHT);
 
@@ -104,7 +106,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 	}
 
 	// CFormView1 is left 
-	if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CDirectXView), size1, pContext))
+	if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolView), size1, pContext))
 	{
 		TRACE0("Failed to create CDirectXView pane \n");
 
@@ -117,7 +119,15 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 
 		return FALSE;
 	}
-	
+
+	HWND tempHwnd[2];
+
+	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
+	tempHwnd[1] = this->GetSafeHwnd();
+
+	m_application = new ApplicationClass;
+	m_application->Initialize(AfxGetInstanceHandle(), tempHwnd, DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT);
+
 	return TRUE;
 }
 
