@@ -9,6 +9,7 @@ UserInterfaceClass::UserInterfaceClass()
 	m_skyColorStrings = 0;
 	m_renderCountStrings = 0;
 	m_MiniMap = 0;
+	m_mousePositionStrings = 0;
 }
 
 UserInterfaceClass::UserInterfaceClass(const UserInterfaceClass &other)
@@ -462,6 +463,47 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
+	m_mousePositionStrings = new TextClass[2];
+	if (!m_mousePositionStrings)
+		return false;
+
+	result = m_mousePositionStrings[0].Initialize(Direct3D->GetDevice(),
+		Direct3D->GetDeviceContext(),
+		screenWidth,
+		screenHeight,
+		16,
+		false,
+		m_font1,
+		"X: 0",
+		5,
+		-560,
+		1.0f,
+		1.0f,
+		1.0f);
+	
+	if (!result)
+		return false;
+
+	result = m_mousePositionStrings[1].Initialize(Direct3D->GetDevice(),
+		Direct3D->GetDeviceContext(),
+		screenWidth,
+		screenHeight,
+		16,
+		false,
+		m_font1,
+		"Y: 0",
+		5,
+		-580,
+		1.0f,
+		1.0f,
+		1.0f);
+
+	if (!result)
+		return false;
+
+	for (i = 0; i < 2; ++i)
+		m_previousMousePosition[i] = -1;
+
 	m_MiniMap = new MiniMapClass;
 	if (!m_MiniMap)
 		return false;
@@ -486,6 +528,15 @@ void UserInterfaceClass::Shutdown()
 		m_MiniMap->Shutdown();
 		delete m_MiniMap;
 		m_MiniMap = NULL;
+	}
+
+	if (m_mousePositionStrings)
+	{
+		m_mousePositionStrings[0].Shutdown();
+		m_mousePositionStrings[1].Shutdown();
+
+		delete[] m_mousePositionStrings;
+		m_mousePositionStrings = NULL;
 	}
 
 	if (m_renderCountStrings)
@@ -570,7 +621,9 @@ bool UserInterfaceClass::Frame(ID3D11DeviceContext *deviceContext,
 	float rotY,
 	float rotZ,
 	XMFLOAT4 apexColor,
-	XMFLOAT4 centerColor)
+	XMFLOAT4 centerColor,
+	int mousePosX,
+	int mousePosY)
 {
 	bool result;
 
@@ -592,6 +645,13 @@ bool UserInterfaceClass::Frame(ID3D11DeviceContext *deviceContext,
 	result = UpdateSkyColorStrings(deviceContext,
 		apexColor,
 		centerColor);
+
+	if (!result)
+		return false;
+
+	result = UpdateMousePositionStrings(deviceContext,
+		mousePosX,
+		mousePosY);
 
 	if (!result)
 		return false;
@@ -664,6 +724,14 @@ bool UserInterfaceClass::Render(D3DClass *Direct3D,
 
 	for (i = 0; i < 3; ++i)
 		m_renderCountStrings[i].Render(Direct3D->GetDeviceContext(),
+			shaderManager,
+			worldMatrix,
+			viewMatrix,
+			orthoMatrix,
+			m_font1->GetTexture());
+
+	for (i = 0; i < 2; ++i)
+		m_mousePositionStrings[i].Render(Direct3D->GetDeviceContext(),
 			shaderManager,
 			worldMatrix,
 			viewMatrix,
@@ -1100,6 +1168,48 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 
 		if (!result)
 			return false;
+	}
+
+	return true;
+}
+
+bool UserInterfaceClass::UpdateMousePositionStrings(ID3D11DeviceContext *deviceContext, 
+	int posX, 
+	int posY)
+{
+	char tempString[16];
+	char finalString[16];
+	bool result;
+
+	if (posX != m_previousMousePosition[0])
+	{
+		m_previousMousePosition[0] = posX;
+		_itoa_s(posX, tempString, 10);
+		strcpy_s(finalString, "X: ");
+		strcat_s(finalString, tempString);
+		result = m_mousePositionStrings[0].UpdateSentence(deviceContext,
+			m_font1,
+			finalString,
+			5,
+			-560,
+			1.0f,
+			1.0f,
+			1.0f);
+	}
+	if (posY != m_previousMousePosition[1])
+	{
+		m_previousMousePosition[1] = posY;
+		_itoa_s(posY, tempString, 10);
+		strcpy_s(finalString, "Y: ");
+		strcat_s(finalString, tempString);
+		result = m_mousePositionStrings[1].UpdateSentence(deviceContext,
+			m_font1,
+			finalString,
+			5,
+			-580,
+			1.0f,
+			1.0f,
+			1.0f);
 	}
 
 	return true;
