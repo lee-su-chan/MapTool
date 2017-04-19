@@ -712,7 +712,7 @@ bool TerrainClass::BuildTerrainModel()
 			m_terrainModel[index].b = m_heightMap[index2].b;
 			++index;
 
-			// Triangle 2 - Upper left.
+			// Triangle 2 - Bottom right.
 			m_terrainModel[index].x = m_heightMap[index4].x;
 			m_terrainModel[index].y = m_heightMap[index4].y;
 			m_terrainModel[index].z = m_heightMap[index4].z;

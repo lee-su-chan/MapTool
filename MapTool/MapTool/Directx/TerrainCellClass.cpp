@@ -140,8 +140,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	if (!indices)
 		return false;
 
-	modelIndex = (nodeIndexX * (cellWidth - 1) + 
-		nodeIndexY * (cellHeight - 1) * (terrainWidth - 1)) * 6;
+	modelIndex = (nodeIndexX * (cellWidth - 1) + nodeIndexY * (cellHeight - 1) * (terrainWidth - 1)) * 6;
 
 	index = 0;
 
@@ -152,19 +151,25 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 			vertices[index].position = XMFLOAT3(terrainModel[modelIndex].x,
 				terrainModel[modelIndex].y,
 				terrainModel[modelIndex].z);
+
 			vertices[index].texture = XMFLOAT2(terrainModel[modelIndex].tu,
 				terrainModel[modelIndex].tv);
+
 			vertices[index].texture2 = XMFLOAT2(terrainModel[modelIndex].tu2,
 				terrainModel[modelIndex].tv2);
+
 			vertices[index].normal = XMFLOAT3(terrainModel[modelIndex].nx,
 				terrainModel[modelIndex].ny,
 				terrainModel[modelIndex].nz);
+
 			vertices[index].tangent = XMFLOAT3(terrainModel[modelIndex].tx,
 				terrainModel[modelIndex].ty,
 				terrainModel[modelIndex].tz);
+
 			vertices[index].binormal = XMFLOAT3(terrainModel[modelIndex].bx,
 				terrainModel[modelIndex].by,
 				terrainModel[modelIndex].bz);
+
 			vertices[index].color = XMFLOAT3(terrainModel[modelIndex].r,
 				terrainModel[modelIndex].g,
 				terrainModel[modelIndex].b);

@@ -93,7 +93,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	// For TerrainShader
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
-		"Data/textures/rock01d.tga",
+		"Data/Textures/Rock.tga",
 		0);
 	
 	if (!result)
@@ -101,7 +101,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
-		"Data/textures/rock01n.tga",
+		"Data/Textures/NormalMap/nRock.tga",
 		1);
 	
 	if (!result)
@@ -109,7 +109,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
-		"Data/textures/snow01n.tga",
+		"Data/Textures/NormalMap/nSnow.tga",
 		2);
 	
 	if (!result)
@@ -117,7 +117,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	
 	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 		m_Direct3D->GetDeviceContext(),
-		"Data/textures/distance01n.tga",
+		"Data/Textures/NormalMap/nDistance.tga",
 		3);
 	
 	if (!result)
