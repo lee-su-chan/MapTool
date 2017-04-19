@@ -220,6 +220,7 @@
     <ClInclude Include="FixedSplitterWnd.h" />
     <ClInclude Include="FormView2.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MakeNewFileDlg.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
     <ClInclude Include="MapToolView.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="FixedSplitterWnd.cpp" />
     <ClCompile Include="FormView2.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MakeNewFileDlg.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolDoc.cpp" />
     <ClCompile Include="MapToolView.cpp" />
