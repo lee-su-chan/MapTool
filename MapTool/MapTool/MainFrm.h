@@ -7,6 +7,7 @@
 #include "FormView2.h"
 #include "FixedSplitterWnd.h"
 #include "DirectX\ApplicationClass.h"
+#include "MakeNewFileDlg.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -43,6 +44,8 @@ protected:  // control bar embedded members
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnFileNew();
 };
 
 

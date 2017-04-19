@@ -25,6 +25,7 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_FILE_NEW, &CMainFrame::OnFileNew)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -148,3 +149,12 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame message handlers
 
+
+
+void CMainFrame::OnFileNew()
+{
+	// TODO: Add your command handler code here
+	//CMakeNewFileDlg makeNewFileDlg(this->GetWindow(GW_OWNER));
+	CMakeNewFileDlg makeNewFileDlg;
+	makeNewFileDlg.DoModal();
+}
