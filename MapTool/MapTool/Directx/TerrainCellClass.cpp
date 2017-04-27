@@ -1,4 +1,7 @@
 #include "TerrainCellClass.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
 TerrainCellClass::TerrainCellClass()
 {
@@ -21,8 +24,8 @@ bool TerrainCellClass::Initialize(ID3D11Device *device,
 	void *terrainModelPtr,
 	int nodeIndexX,
 	int nodeIndexY,
-	int cellHeight,
-	int cellWidth,
+	int tileHeight,
+	int tileWidth,
 	int terrainWidth)
 {
 	ModelType *terrainModel;
@@ -33,8 +36,8 @@ bool TerrainCellClass::Initialize(ID3D11Device *device,
 	result = InitializeBuffers(device,
 		nodeIndexX,
 		nodeIndexY,
-		cellHeight,
-		cellWidth,
+		tileHeight,
+		tileWidth,
 		terrainWidth,
 		terrainModel);
 
@@ -114,11 +117,19 @@ void TerrainCellClass::GetCellDimensions(float &maxWidth,
 	return;
 }
 
+void TerrainCellClass::GetEdgePosition(float &x, float &y, float &z)
+{
+	x = m_minWidth;
+	y = m_maxHeight;
+	z = m_maxDepth;
+
+	return;
+}
 bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	int nodeIndexX,
 	int nodeIndexY,
-	int cellHeight,
-	int cellWidth,
+	int tileHeight,
+	int tileWidth,
 	int terrainWidth,
 	ModelType *terrainModel)
 {
@@ -128,8 +139,11 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
+	static int checkVariable;
 
-	m_vertexCount = (cellHeight - 1) * (cellWidth - 1) * 6;
+	++checkVariable;
+
+	m_vertexCount = (tileHeight - 1) * (tileWidth - 1) * 6;
 	m_indexCount = m_vertexCount;
 
 	vertices = new VertexType[m_vertexCount];
@@ -140,13 +154,13 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	if (!indices)
 		return false;
 
-	modelIndex = (nodeIndexX * (cellWidth - 1) + nodeIndexY * (cellHeight - 1) * (terrainWidth - 1)) * 6;
+	modelIndex = (nodeIndexX * (tileWidth - 1) + (nodeIndexY * (tileHeight - 1) * (terrainWidth - 1))) * 6;
 
 	index = 0;
 
-	for (j = 0; j < cellHeight - 1; ++j)
+	for (j = 0; j < tileHeight - 1; ++j)
 	{
-		for (i = 0; i < (cellWidth - 1) * 6; ++i)
+		for (i = 0; i < (tileWidth - 1) * 6; ++i)
 		{
 			vertices[index].position = XMFLOAT3(terrainModel[modelIndex].x,
 				terrainModel[modelIndex].y,
@@ -176,13 +190,29 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 
 			indices[index] = index;
 
+			//if (checkVariable == checkVariable)
+			//{
+			//	char *temp = new char[254];
+			//	_itoa_s(checkVariable, temp, sizeof(temp), 10);
+			//	strcat_s(temp, 254, "_Cell VertexPosition.txt");
+			//
+			//	std::ofstream oin(temp, std::ios::app);
+			//
+			//	oin << i << "¹øÂ°" << std::endl
+			//		<< "X: " << "\t" << terrainModel[modelIndex].x << std::endl
+			//		<< "Y: " << "\t" << terrainModel[modelIndex].y << std::endl
+			//		<< "Z: " << "\t" << terrainModel[modelIndex].z << std::endl << std::endl;
+			//
+			//	oin.close();
+			//}
+
 			++modelIndex;
 			++index;
+
 		}
-
-		modelIndex += terrainWidth * 6 - cellWidth * 6;
+		modelIndex += terrainWidth * 6 - tileWidth * 6;
 	}
-
+	
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;

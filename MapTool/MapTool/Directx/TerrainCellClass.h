@@ -19,7 +19,7 @@ private:
 		float bx, by, bz;
 		float r, g, b;
 	};
-
+	
 	struct VertexType
 	{
 		XMFLOAT3 position;
@@ -56,6 +56,7 @@ public:
 	int GetIndexCount();
 	int GetLineBuffersIndexCount();
 	void GetCellDimensions(float &, float &, float &, float &, float &, float &);
+	void GetEdgePosition(float &, float &, float &);
 
 private:
 	bool InitializeBuffers(ID3D11Device *, int, int, int, int, int, ModelType *);
