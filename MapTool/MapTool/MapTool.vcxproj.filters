@@ -149,10 +149,10 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyResource.h">
+    <ClInclude Include="MakeNewFileDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MakeNewFileDlg.h">
+    <ClInclude Include="DirectX\Resources\MyResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
