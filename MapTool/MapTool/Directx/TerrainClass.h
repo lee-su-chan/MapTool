@@ -4,6 +4,8 @@
 #include <fstream>
 #include <stdio.h>
 
+#include "Resources\MyResource.h"
+
 #include "TerrainCellClass.h"
 #include "FrustumClass.h"
 
@@ -47,7 +49,7 @@ public:
 	TerrainClass(const TerrainClass &);
 	~TerrainClass();
 
-	bool Initialize(ID3D11Device *, char *);
+	bool Initialize(ID3D11Device *, char *, TERRAIN_DESC *);
 	void Shutdown();
 	
 	void Frame();
@@ -62,9 +64,11 @@ public:
 	int GetCellsDrawn();
 	int GetCellsCulled();
 	bool GetHeightAtPosition(float, float, float &);
+	TerrainCellClass *GetTerrainCellObj();
 
 private:
 	bool LoadSetupFile(char *);
+	bool LoadTerrainDesc(TERRAIN_DESC *);
 	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
 	void ShutdownHeightMap();
@@ -75,7 +79,7 @@ private:
 	void ShutdownTerrainModel();
 	void CalculateTerrainVectors();
 	void CalculateTangentBinormal(TempVertexType, TempVertexType, TempVertexType, VectorType &, VectorType &);
-	bool LoadTerrainCells(ID3D11Device *);
+	bool LoadTerrainCells(ID3D11Device *, TERRAIN_DESC *);
 	void ShutdownTerrainCells();
 	bool CheckHeightOfTriangle(float, float, float &, float[3], float[3], float[3]);
 

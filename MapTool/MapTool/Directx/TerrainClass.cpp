@@ -17,18 +17,22 @@ TerrainClass::~TerrainClass()
 {
 }
 
-bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename)
+bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, TERRAIN_DESC *terrainDesc)
 {
 	bool result;
 
-	result = LoadSetupFile(setupFilename);
+	//result = LoadSetupFile(setupFilename);
+	//if (!result)
+	//	return false;
+
+	result = LoadTerrainDesc(terrainDesc);
 	if (!result)
 		return false;
 
-	result = LoadRawHeightMap();
+	//result = LoadRawHeightMap();
 	//result = LoadBitmapHeightMap();
-	if (!result)
-		return false;
+	//if (!result)
+	//	return false;
 
 	SetTerrainCoordinates();
 
@@ -48,7 +52,7 @@ bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename)
 
 	CalculateTerrainVectors();
 	
-	result = LoadTerrainCells(device);
+	result = LoadTerrainCells(device, terrainDesc);
 	if (!result)
 		return false;
 
@@ -210,6 +214,10 @@ bool TerrainClass::GetHeightAtPosition(float inputX, float inputZ, float &height
 
 	return false;
 }
+TerrainCellClass *TerrainClass::GetTerrainCellObj()
+{
+	return m_TerrainCells;
+}
 
 bool TerrainClass::LoadSetupFile(char *filename)
 {
@@ -260,6 +268,44 @@ bool TerrainClass::LoadSetupFile(char *filename)
 
 	return true;
 }
+
+bool TerrainClass::LoadTerrainDesc(TERRAIN_DESC *terrainDesc)
+{
+	int i, j, index;
+	const int stringLength	= 256;
+	m_terrainWidth			= terrainDesc->nCell * terrainDesc->nTile + 1;
+	m_terrainHeight			= m_terrainWidth;
+	m_heightScale			= 12.0f;
+
+	m_terrainFilename = new char[stringLength];
+	if (!m_terrainFilename)
+		return false;
+
+	strcpy_s(m_terrainFilename, sizeof(char[stringLength]), "Data/Textures/HeightMap/heightmap.bmp");
+
+	m_colorMapFilename = new char[stringLength];
+	if (!m_colorMapFilename)
+		return false;
+
+	strcpy_s(m_colorMapFilename, sizeof(char[stringLength]), "Data/Textures/ColorMap/colormap1.bmp");
+
+	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
+	if (!m_heightMap)
+		return false;
+
+	for (i = 0; i < m_terrainHeight; ++i)
+	{
+		for (j = 0; j < m_terrainWidth; ++j)
+		{
+			index = m_terrainWidth * j + i;
+
+			m_heightMap[index].y = 1.0f;
+		}
+	}
+
+	return true;
+}
+
 
 bool TerrainClass::LoadBitmapHeightMap()
 {
@@ -337,6 +383,9 @@ bool TerrainClass::LoadBitmapHeightMap()
 
 bool TerrainClass::LoadRawHeightMap()
 {
+	if (!m_terrainFilename)
+		return true;
+
 	int error, i, j, index;
 	FILE *filePtr;
 	unsigned long long imageSize, count;
@@ -396,6 +445,9 @@ void TerrainClass::ShutdownHeightMap()
 
 void TerrainClass::SetTerrainCoordinates()
 {
+	if (!m_heightMap)
+		return;
+
 	int i, j, index;
 
 	for (j = 0; j < m_terrainHeight; ++j)
@@ -534,6 +586,9 @@ bool TerrainClass::CalculateNormals()
 
 bool TerrainClass::LoadColorMap()
 {
+	if (!m_colorMapFilename)
+		return true;
+
 	int error, imageSize, i, j, k, index;
 	FILE *filePtr;
 	unsigned long long count;
@@ -808,23 +863,23 @@ void TerrainClass::CalculateTerrainVectors()
 		m_terrainModel[index - 1].tx = tangent.x;
 		m_terrainModel[index - 1].ty = tangent.y;
 		m_terrainModel[index - 1].tz = tangent.z;
-		m_terrainModel[index - 1].bx = tangent.x;
-		m_terrainModel[index - 1].by = tangent.y;
-		m_terrainModel[index - 1].bz = tangent.z;
+		m_terrainModel[index - 1].bx = binormal.x;
+		m_terrainModel[index - 1].by = binormal.y;
+		m_terrainModel[index - 1].bz = binormal.z;
 
 		m_terrainModel[index - 2].tx = tangent.x;
 		m_terrainModel[index - 2].ty = tangent.y;
 		m_terrainModel[index - 2].tz = tangent.z;
-		m_terrainModel[index - 2].bx = tangent.x;
-		m_terrainModel[index - 2].by = tangent.y;
-		m_terrainModel[index - 2].bz = tangent.z;
+		m_terrainModel[index - 2].bx = binormal.x;
+		m_terrainModel[index - 2].by = binormal.y;
+		m_terrainModel[index - 2].bz = binormal.z;
 
 		m_terrainModel[index - 3].tx = tangent.x;
 		m_terrainModel[index - 3].ty = tangent.y;
 		m_terrainModel[index - 3].tz = tangent.z;
-		m_terrainModel[index - 3].bx = tangent.x;
-		m_terrainModel[index - 3].by = tangent.y;
-		m_terrainModel[index - 3].bz = tangent.z;
+		m_terrainModel[index - 3].bx = binormal.x;
+		m_terrainModel[index - 3].by = binormal.y;
+		m_terrainModel[index - 3].bz = binormal.z;
 	}
 
 	return;
@@ -884,15 +939,15 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1,
 	return;
 }
 
-bool TerrainClass::LoadTerrainCells(ID3D11Device *device)
+bool TerrainClass::LoadTerrainCells(ID3D11Device *device, TERRAIN_DESC *terrainDesc)
 {
-	int cellHeight, cellWidth, cellRowCount, i, j, index;
+	int tileHeight, tileWidth, cellRowCount, i, j, index;
 	bool result;
 
-	cellHeight = 33;
-	cellWidth = 33;
+	tileHeight = terrainDesc->nTile + 1;
+	tileWidth = terrainDesc->nTile + 1;
 
-	cellRowCount = (m_terrainWidth - 1) / (cellWidth - 1);
+	cellRowCount = terrainDesc->nCell;
 	m_cellCount = cellRowCount * cellRowCount;
 
 	m_TerrainCells = new TerrainCellClass[m_cellCount];
@@ -909,8 +964,8 @@ bool TerrainClass::LoadTerrainCells(ID3D11Device *device)
 				m_terrainModel,
 				i,
 				j,
-				cellHeight,
-				cellWidth,
+				tileHeight,
+				tileWidth,
 				m_terrainWidth);
 
 			if (!result)
