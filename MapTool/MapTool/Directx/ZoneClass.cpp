@@ -9,6 +9,9 @@ ZoneClass::ZoneClass()
 	m_Frustum = 0;
 	m_SkyDome = 0;
 	m_Terrain = 0;
+	m_posX = 0;
+	m_posY = 0;
+	m_posZ = 0;
 }
 
 ZoneClass::ZoneClass(const ZoneClass &other)
@@ -23,7 +26,8 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	HWND hwnd, 
 	int screenWidth, 
 	int screenHeight, 
-	float screenDepth)
+	float screenDepth,
+	TERRAIN_DESC *terrainDesc)
 {
 	bool result;
 
@@ -54,18 +58,6 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(-0.5f, -1.0f, -0.5f);
 
-	m_Position = new PositionClass;
-	if (!m_Position)
-		return false;
-
-	// Terrain.vs: input.position.w = 1.0f
-	 m_Position->SetPosition(16.0f, 78.0f, 565.0f);
-	 m_Position->SetRotation(13.0f, 89.0f, 0.0f);
-
-	// Terrain.vs: input.position.w = 10.0f
-	//m_Position->SetPosition(-55.0f, 51.0f, 53.0f);
-	//m_Position->SetRotation(23.0f, 91.0f, 0.0f);
-
 	m_Frustum = new FrustumClass;
 	if (!m_Frustum)
 		return false;
@@ -88,19 +80,28 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!m_Terrain)
 		return false;
 
-	result = m_Terrain->Initialize(direct3D->GetDevice(), "Data/Setup.txt");
+	result = m_Terrain->Initialize(direct3D->GetDevice(), "Data/Setup.txt", terrainDesc);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
 
 		return false;
 	}
+	
+	m_Position = new PositionClass;
+	if (!m_Position)
+		return false;
+	
+	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_posX, m_posY, m_posZ);
 
-	m_displayUI = true;
-	m_wireFrame = false;
-	m_play = false;
-	m_cellLines = true;
-	m_heightLocked = false;
+	m_Position->SetPosition(m_posX, m_posY + 5.0f, m_posZ);
+	m_Position->SetRotation(0.0f, 0.0f, 0.0f);
+	
+	m_displayUI		= true;
+	m_wireFrame		= false;
+	m_play			= false;
+	m_cellLines		= true;
+	m_heightLocked	= false;
 
 	return true;
 }
@@ -333,16 +334,13 @@ bool ZoneClass::Render(D3DClass *direct3D,
 	{
 		result = m_Terrain->RenderCell(direct3D->GetDeviceContext(), i, m_Frustum);
 		if (result)
-		{
-			result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(),
+		{			
+			result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(),
 				m_Terrain->GetCellIndexCount(i),
 				worldMatrix,
 				viewMatrix,
 				projectionMatrix,
 				textureManager->GetTexture(0),
-				textureManager->GetTexture(1),
-				textureManager->GetTexture(2),
-				textureManager->GetTexture(3),
 				m_Light->GetDirection(),
 				m_Light->GetDiffuseColor());
 

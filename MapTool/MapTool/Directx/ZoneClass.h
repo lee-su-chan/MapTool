@@ -1,6 +1,8 @@
 #ifndef _ZONECLASS_H_
 #define _ZONECLASS_H_
 
+#include "Resources\MyResource.h"
+
 #include "D3DClass.h"
 #include "InputClass.h"
 #include "ShaderManagerClass.h"
@@ -21,7 +23,7 @@ public:
 	ZoneClass(const ZoneClass &);
 	~ZoneClass();
 
-	bool Initialize(D3DClass *, HWND, int, int, float);
+	bool Initialize(D3DClass *, HWND, int, int, float, TERRAIN_DESC *);
 	void Shutdown();
 	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int);
 
@@ -40,6 +42,7 @@ private:
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
 	bool m_displayUI, m_wireFrame, m_play, m_cellLines, m_heightLocked;
+	float m_posX, m_posY, m_posZ;
 };
 
 #endif
