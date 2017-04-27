@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "MapTool.h"
 
-#include "MyResource.h"
+#include "DirectX\Resources\MyResource.h"
 #include "MainFrm.h"
 #include "MapToolDoc.h"
 #include "MapToolView.h"
@@ -41,6 +41,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
+	m_application = NULL;
 }
 
 CMainFrame::~CMainFrame()
@@ -121,14 +122,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 		return FALSE;
 	}
 
-	HWND tempHwnd[2];
-
-	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
-	tempHwnd[1] = this->GetSafeHwnd();
-
-	m_application = new ApplicationClass;
-	m_application->Initialize(AfxGetInstanceHandle(), tempHwnd, DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT);
-
 	return TRUE;
 }
 
@@ -154,7 +147,26 @@ void CMainFrame::Dump(CDumpContext& dc) const
 void CMainFrame::OnFileNew()
 {
 	// TODO: Add your command handler code here
-	//CMakeNewFileDlg makeNewFileDlg(this->GetWindow(GW_OWNER));
 	CMakeNewFileDlg makeNewFileDlg;
+	HWND tempHwnd[2];
+	TERRAIN_DESC *terrainDesc = new TERRAIN_DESC;
+
 	makeNewFileDlg.DoModal();
+
+	terrainDesc->nCell = makeNewFileDlg.GetCellSize();
+	terrainDesc->nTile = makeNewFileDlg.GetTileSize();
+	terrainDesc->baseTextureName = LPSTR(LPCTSTR(makeNewFileDlg.m_IconName));
+
+	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
+	tempHwnd[1] = this->GetSafeHwnd();
+
+	if (m_application)
+	{
+		m_application->Shutdown();
+		delete m_application;
+		m_application = nullptr;
+	}
+
+	m_application = new ApplicationClass;
+	m_application->Initialize(AfxGetInstanceHandle(), tempHwnd, DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT, terrainDesc);
 }
