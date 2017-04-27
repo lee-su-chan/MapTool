@@ -13,8 +13,8 @@ IMPLEMENT_DYNAMIC(CMakeNewFileDlg, CDialog)
 
 CMakeNewFileDlg::CMakeNewFileDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_MAKENEWFILEDLG, pParent)
-	, m_width(0)
-	, m_height(0)
+	, m_CellSize(0)
+	, m_TileSize(0)
 {
 
 }
@@ -26,16 +26,13 @@ CMakeNewFileDlg::~CMakeNewFileDlg()
 void CMakeNewFileDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT2, m_width);
-	DDX_Text(pDX, IDC_EDIT1, m_height);
-	DDX_Control(pDX, IDC_STATIC1, m_TextureIcon);
 	DDX_Control(pDX, IDC_COMBO2, m_TextureComboBox);
+	DDX_Radio(pDX, IDC_RADIO3, m_CellSize);
+	DDX_Radio(pDX, IDC_RADIO8, m_TileSize);
 }
 
 
 BEGIN_MESSAGE_MAP(CMakeNewFileDlg, CDialog)
-	ON_EN_CHANGE(IDC_EDIT2, &CMakeNewFileDlg::OnEnChangeEditWidth)
-	ON_EN_CHANGE(IDC_EDIT1, &CMakeNewFileDlg::OnEnChangeEditHeight)
 	ON_BN_CLICKED(IDOK, &CMakeNewFileDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &CMakeNewFileDlg::OnCbnSelchangeCombo2)
 END_MESSAGE_MAP()
@@ -43,47 +40,9 @@ END_MESSAGE_MAP()
 
 // CMakeNewFileDlg message handlers
 
-
-void CMakeNewFileDlg::OnEnChangeEditWidth()
-{
-	UpdateData(TRUE);
-
-	if (!m_width)
-		return;
-
-	if (m_width <= 0)
-	{
-		AfxMessageBox(TEXT("1 이상 값을 입력해주십시오."));
-		
-		return;
-	}
-}
-
-
-void CMakeNewFileDlg::OnEnChangeEditHeight()
-{	
-	UpdateData(TRUE);
-
-	if (!m_height)
-		return;
-
-	if (m_height <= 0)
-	{
-		AfxMessageBox(TEXT("1 이상 값을 입력해주십시오."));
-
-		return;
-	}
-}
-
 void CMakeNewFileDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	if (m_width <= 0 || m_height <= 0)
-	{
-		AfxMessageBox(TEXT("1 이상 값을 입력해주십시오."));
-
-		return;
-	}
 	if (m_TextureComboBox.GetCurSel() == -1)
 	{
 		AfxMessageBox(TEXT("텍스쳐를 선택해주십시오."));
@@ -149,19 +108,18 @@ void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 
 	CImage image;
 	CDC *dc;
-	CString iconName;
-	CString pathAndNewIconName;
+	CString pathAndNewm_IconName;
 	CString strPath = _T("Data/Textures/");
 	int x = 70;
 	int y = 165;
 	int width = 90;
 	int height = 90;
 
-	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), iconName);
+	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), m_IconName);
 
 	dc = this->GetDC();
 
-	image.Load(strPath + iconName);
+	image.Load(strPath + m_IconName);
 	//image.Draw(dc->m_hDC, x, y, image.GetWidth(), image.GetHeight());
 	image.StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
 }
@@ -170,7 +128,7 @@ void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 BOOL CMakeNewFileDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
+	
 	//폴더나 파일의 목록을 가져올 디렉터리의 풀 패스
 	CString path = _T("Data\\Textures\\*.*");
 	CFileFind finder;
@@ -200,4 +158,33 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+int CMakeNewFileDlg::GetCellSize()
+{
+	switch (m_CellSize)
+	{
+	case 0: return 4;
+	case 1: return 8;
+	case 2: return 16;
+	case 3: return 32;
+	case 4: return 64;
+	default: 
+		AfxMessageBox(_T("GetCellSize() Error!"));
+		return 0;
+	}
+}
+int CMakeNewFileDlg::GetTileSize()
+{
+	switch (m_TileSize)
+	{
+	case 0: return 4;
+	case 1: return 8;
+	case 2: return 16;
+	case 3: return 32;
+	case 4: return 64;
+	default:
+		AfxMessageBox(_T("GetTileSize() Error!"));
+		return 0;
+	}
 }

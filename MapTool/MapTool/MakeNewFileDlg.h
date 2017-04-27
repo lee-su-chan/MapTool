@@ -26,17 +26,21 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-public:
+private:
 	CStringList fileNameList;
+	int m_CellSize;
+	int m_TileSize;
 
 public:
-	afx_msg void OnEnChangeEditWidth();
-	afx_msg void OnEnChangeEditHeight();
-	int m_width;
-	int m_height;
-	afx_msg void OnBnClickedOk();
-	CStatic m_TextureIcon;
-	virtual BOOL OnInitDialog();
-	afx_msg void OnCbnSelchangeCombo2();
 	CComboBox m_TextureComboBox;
+	CString m_IconName;
+	
+public:
+	virtual BOOL OnInitDialog();
+
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnCbnSelchangeCombo2();
+
+	int GetCellSize();
+	int GetTileSize();
 };
