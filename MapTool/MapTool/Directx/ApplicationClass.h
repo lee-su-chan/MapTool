@@ -6,6 +6,8 @@ const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
 
+#include "Resources\MyResource.h"
+
 #include "InputClass.h"
 #include "D3DClass.h"
 #include "ShaderManagerClass.h"
@@ -21,7 +23,7 @@ public:
 	ApplicationClass(const ApplicationClass &);
 	~ApplicationClass();
 
-	bool Initialize(HINSTANCE, HWND[], int, int);
+	bool Initialize(HINSTANCE, HWND[], int, int, TERRAIN_DESC *);
 	void Shutdown();
 	bool Frame();
 

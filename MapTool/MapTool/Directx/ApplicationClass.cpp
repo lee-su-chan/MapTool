@@ -23,7 +23,8 @@ ApplicationClass::~ApplicationClass()
 bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	HWND hwnd[],
 	int screenWidth, 
-	int screenHeight)
+	int screenHeight,
+	TERRAIN_DESC *terrainDesc)
 {
 	bool result;
 
@@ -149,7 +150,8 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		hwnd[0],
 		screenWidth,
 		screenHeight,
-		SCREEN_DEPTH);
+		SCREEN_DEPTH,
+		terrainDesc);
 	
 	if (!result)
 	{
