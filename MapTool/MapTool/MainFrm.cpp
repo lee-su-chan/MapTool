@@ -98,7 +98,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 {
 	CSize size1(DIRECT_WND_WIDTH, DIRECT_WND_HEIGHT);
 	CSize size2(MAIN_WND_WIDTH - DIRECT_WND_WIDTH, MAIN_WND_HEIGHT);
-
+	
 	// Create a splitter with 1 row, 2 colums
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
 	{
@@ -146,16 +146,18 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 void CMainFrame::OnFileNew()
 {
-	// TODO: Add your command handler code here
 	CMakeNewFileDlg makeNewFileDlg;
 	HWND tempHwnd[2];
-	TERRAIN_DESC *terrainDesc = new TERRAIN_DESC;
+	MyStruct::TERRAIN_DESC *terrainDesc = new MyStruct::TERRAIN_DESC;
 
 	makeNewFileDlg.DoModal();
 
 	terrainDesc->nCell = makeNewFileDlg.GetCellSize();
 	terrainDesc->nTile = makeNewFileDlg.GetTileSize();
-	terrainDesc->baseTextureName = LPSTR(LPCTSTR(makeNewFileDlg.m_IconName));
+	terrainDesc->textureNames = makeNewFileDlg.GetTextureNameVector();
+	terrainDesc->textureCurSel = makeNewFileDlg.GetCurSel();
+	terrainDesc->nTexture = makeNewFileDlg.GetTextureSize();
+	terrainDesc->baseTextureName = (char *)terrainDesc->textureNames->at(terrainDesc->textureCurSel).c_str();
 
 	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
 	tempHwnd[1] = this->GetSafeHwnd();
