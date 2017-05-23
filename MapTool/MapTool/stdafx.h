@@ -51,4 +51,5 @@
 #endif
 #endif
 
-
+// Console On
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")

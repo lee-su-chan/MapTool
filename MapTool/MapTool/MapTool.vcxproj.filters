@@ -31,6 +31,12 @@
     <Filter Include="Text Files">
       <UniqueIdentifier>{7d26a87b-799e-421c-9a5d-78f8bd3569b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DirectX\Resources">
+      <UniqueIdentifier>{ff0bed43-79d8-4137-8ad0-60912839808a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DirectX\Resources">
+      <UniqueIdentifier>{3feea951-d766-439b-b376-168150d20f01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\Setup.txt">
@@ -150,10 +156,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MakeNewFileDlg.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="DirectX\Resources\MyResource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\DirectX\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -260,7 +266,10 @@
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="MakeNewFileDlg.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Resources\MyResource.cpp">
+      <Filter>Source Files\DirectX\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
