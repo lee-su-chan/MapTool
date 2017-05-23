@@ -2,6 +2,7 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 
+#include <vector>
 
 // CMakeNewFileDlg dialog
 
@@ -19,6 +20,7 @@ public:
 #endif
 private:
 	void SetTextureComboBox();
+	std::string CStringToString(CString cStr);
 	BOOL CastImageType(LPCTSTR InSourceImageFileName, LPCTSTR InDestImageFileName, const CRect& InTagetRect, REFGUID InImageFormatToMake);
 
 protected:
@@ -27,11 +29,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CStringList fileNameList;
 	int m_CellSize;
 	int m_TileSize;
-
-public:
+	int m_TextureSize;
+	int m_CurSel;
+	CStringList fileNameList;
+	std::vector<std::string> *textureNames;
 	CComboBox m_TextureComboBox;
 	CString m_IconName;
 	
@@ -43,4 +46,8 @@ public:
 
 	int GetCellSize();
 	int GetTileSize();
+	int GetTextureSize();
+	int GetCurSel();
+
+	std::vector<std::string> *GetTextureNameVector();
 };

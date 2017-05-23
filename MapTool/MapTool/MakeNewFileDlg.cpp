@@ -5,7 +5,9 @@
 #include "MapTool.h"
 #include "MakeNewFileDlg.h"
 #include "afxdialogex.h"
+#include "DirectX\Resources\MyResource.h"
 
+#pragma warning(disable:4996)
 
 // CMakeNewFileDlg dialog
 
@@ -15,6 +17,7 @@ CMakeNewFileDlg::CMakeNewFileDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_MAKENEWFILEDLG, pParent)
 	, m_CellSize(0)
 	, m_TileSize(0)
+	, m_TextureSize(0)
 {
 
 }
@@ -52,16 +55,26 @@ void CMakeNewFileDlg::OnBnClickedOk()
 
 	CDialog::OnOK();
 }
+
 void CMakeNewFileDlg::SetTextureComboBox()
 {
 	POSITION pos;
-	int i;
-
-	for (i = 0, pos = fileNameList.GetHeadPosition(); pos != NULL; fileNameList.GetNext(pos), ++i)
+	
+	for (pos = fileNameList.GetHeadPosition(); pos != NULL; fileNameList.GetNext(pos))
 	{
 		m_TextureComboBox.AddString(fileNameList.GetAt(pos));
+		++m_TextureSize;
 	}
 }
+
+std::string CMakeNewFileDlg::CStringToString(CString cStr)
+{
+	CT2CA pszConvertedAnsiString(cStr);
+	std::string str(pszConvertedAnsiString);
+
+	return str;
+}
+
 
 BOOL CMakeNewFileDlg::CastImageType(LPCTSTR InSourceImageFileName, 
 	LPCTSTR InDestImageFileName, 
@@ -106,6 +119,8 @@ void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 {
 	UpdateData(TRUE);
 
+	m_CurSel = m_TextureComboBox.GetCurSel();
+
 	CImage image;
 	CDC *dc;
 	CString pathAndNewm_IconName;
@@ -116,18 +131,27 @@ void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 	int height = 90;
 
 	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), m_IconName);
+	
+	strPath += m_IconName;
+	m_IconName = strPath;
 
 	dc = this->GetDC();
 
-	image.Load(strPath + m_IconName);
+	//image.Load(m_IconName);
 	//image.Draw(dc->m_hDC, x, y, image.GetWidth(), image.GetHeight());
-	image.StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
+	//image.StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
 }
 
 
 BOOL CMakeNewFileDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+
+	int textureNameIndex = 0;
+	CString fileName;
+	CString DirName;
+
+	textureNames = new std::vector<std::string>();
 	
 	//폴더나 파일의 목록을 가져올 디렉터리의 풀 패스
 	CString path = _T("Data\\Textures\\*.*");
@@ -135,9 +159,6 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 
 	//CFileFind는 파일, 디렉터리가 존재하면 TRUE 를 반환함 
 	BOOL bWorking = finder.FindFile(path);
-
-	CString fileName;
-	CString DirName;
 
 	while (bWorking)
 	{
@@ -147,10 +168,9 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 		//파일 일때
 		if (finder.IsArchived())
 		{
-			//작업
-			//파일의 이름
 			fileName = finder.GetFileName();
 			fileNameList.AddTail(fileName);
+			textureNames->push_back(CStringToString(fileName));
 		}
 	}
 
@@ -169,9 +189,7 @@ int CMakeNewFileDlg::GetCellSize()
 	case 2: return 16;
 	case 3: return 32;
 	case 4: return 64;
-	default: 
-		AfxMessageBox(_T("GetCellSize() Error!"));
-		return 0;
+	default: AfxMessageBox(_T("GetCellSize() Error!")); return 0;
 	}
 }
 int CMakeNewFileDlg::GetTileSize()
@@ -183,8 +201,19 @@ int CMakeNewFileDlg::GetTileSize()
 	case 2: return 16;
 	case 3: return 32;
 	case 4: return 64;
-	default:
-		AfxMessageBox(_T("GetTileSize() Error!"));
-		return 0;
+	default: AfxMessageBox(_T("GetTileSize() Error!")); return 0;
 	}
+}
+int CMakeNewFileDlg::GetTextureSize()
+{
+	return this->m_TextureSize;
+}
+int CMakeNewFileDlg::GetCurSel()
+{
+	return this->m_CurSel;
+}
+
+std::vector<std::string> *CMakeNewFileDlg::GetTextureNameVector()
+{
+	return this->textureNames;
 }
