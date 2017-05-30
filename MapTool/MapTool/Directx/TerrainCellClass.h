@@ -41,7 +41,7 @@ private:
 		XMFLOAT3 position;
 		XMFLOAT4 color;
 	};
-
+	
 public:
 	TerrainCellClass();
 	TerrainCellClass(const TerrainCellClass &);
