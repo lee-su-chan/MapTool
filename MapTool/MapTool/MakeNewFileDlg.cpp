@@ -212,7 +212,6 @@ int CMakeNewFileDlg::GetCurSel()
 {
 	return this->m_CurSel;
 }
-
 std::vector<std::string> *CMakeNewFileDlg::GetTextureNameVector()
 {
 	return this->textureNames;
