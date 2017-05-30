@@ -17,32 +17,19 @@ TerrainClass::~TerrainClass()
 {
 }
 
-bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, TERRAIN_DESC *terrainDesc)
+bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	bool result;
-
-	//result = LoadSetupFile(setupFilename);
-	//if (!result)
-	//	return false;
 
 	result = LoadTerrainDesc(terrainDesc);
 	if (!result)
 		return false;
-
-	//result = LoadRawHeightMap();
-	//result = LoadBitmapHeightMap();
-	//if (!result)
-	//	return false;
 
 	SetTerrainCoordinates();
 
 	result = CalculateNormals();
 	if (!result)
 		return false;
-
-	//result = LoadColorMap();
-	//if (!result)
-	//	return false;
 
 	result = BuildTerrainModel();
 	if (!result)
@@ -269,25 +256,13 @@ bool TerrainClass::LoadSetupFile(char *filename)
 	return true;
 }
 
-bool TerrainClass::LoadTerrainDesc(TERRAIN_DESC *terrainDesc)
+bool TerrainClass::LoadTerrainDesc(MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	int i, j, index;
 	const int stringLength	= 256;
 	m_terrainWidth			= terrainDesc->nCell * terrainDesc->nTile + 1;
 	m_terrainHeight			= m_terrainWidth;
 	m_heightScale			= 12.0f;
-
-	m_terrainFilename = new char[stringLength];
-	if (!m_terrainFilename)
-		return false;
-
-	strcpy_s(m_terrainFilename, sizeof(char[stringLength]), "Data/Textures/HeightMap/heightmap.bmp");
-
-	m_colorMapFilename = new char[stringLength];
-	if (!m_colorMapFilename)
-		return false;
-
-	strcpy_s(m_colorMapFilename, sizeof(char[stringLength]), "Data/Textures/ColorMap/colormap1.bmp");
 
 	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
 	if (!m_heightMap)
@@ -939,7 +914,7 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1,
 	return;
 }
 
-bool TerrainClass::LoadTerrainCells(ID3D11Device *device, TERRAIN_DESC *terrainDesc)
+bool TerrainClass::LoadTerrainCells(ID3D11Device *device, MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	int tileHeight, tileWidth, cellRowCount, i, j, index;
 	bool result;
