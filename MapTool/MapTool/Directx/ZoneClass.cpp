@@ -27,7 +27,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	int screenWidth, 
 	int screenHeight, 
 	float screenDepth,
-	TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	bool result;
 
@@ -95,7 +95,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_posX, m_posY, m_posZ);
 
 	m_Position->SetPosition(m_posX, m_posY + 5.0f, m_posZ);
-	m_Position->SetRotation(0.0f, 0.0f, 0.0f);
+	m_Position->SetRotation(36.0f, 136.0f, 0.0f);
 	
 	m_displayUI		= true;
 	m_wireFrame		= false;
@@ -161,7 +161,8 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	ShaderManagerClass *shaderManager, 
 	TextureManagerClass *textureManager,
 	float frameTime,
-	int fps)
+	int fps,
+	MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
@@ -194,7 +195,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 		return false;
 
 	m_Terrain->Frame();
-
+	
 	if (m_heightLocked)
 	{
 		foundHeight = m_Terrain->GetHeightAtPosition(posX, posZ, height);
@@ -205,7 +206,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 		}
 	}
 
-	result = Render(direct3D, shaderManager, textureManager);
+	result = Render(direct3D, shaderManager, textureManager, terrainDesc);
 	if (!result)
 		return false;
 
@@ -283,7 +284,8 @@ void ZoneClass::HandleMovementInput(InputClass *input, float frameTime)
 
 bool ZoneClass::Render(D3DClass *direct3D, 
 	ShaderManagerClass *shaderManager,
-	TextureManagerClass *textureManager)
+	TextureManagerClass *textureManager,
+	MyStruct::TERRAIN_DESC *terrainDesc)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -340,7 +342,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 				worldMatrix,
 				viewMatrix,
 				projectionMatrix,
-				textureManager->GetTexture(0),
+				textureManager->GetTexture(terrainDesc->textureCurSel),
 				m_Light->GetDirection(),
 				m_Light->GetDiffuseColor());
 
