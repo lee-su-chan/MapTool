@@ -1,9 +1,9 @@
 #ifndef _D3DCLASS_H_
 #define _D3DCLASS_H_
 
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+//#pragma comment(lib, "d3d11.lib")
+//#pragma comment(lib, "dxgi.lib")
+//#pragma comment(lib, "d3dcompiler.lib")
 
 #include <D3D11.h>
 #include <DirectXMath.h>

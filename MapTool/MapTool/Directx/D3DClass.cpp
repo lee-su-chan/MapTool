@@ -26,7 +26,13 @@ D3DClass::~D3DClass()
 {
 }
 
-bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+bool D3DClass::Initialize(int screenWidth, 
+	int screenHeight, 
+	bool vsync, 
+	HWND hwnd, 
+	bool fullscreen, 
+	float screenDepth, 
+	float screenNear)
 {
 	HRESULT result;
 	IDXGIFactory *factory;
