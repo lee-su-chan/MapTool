@@ -1,8 +1,6 @@
 #ifndef _FPSCLASS_H_
 #define _FPSCLASS_H_
 
-#pragma comment(lib, "winmm.lib")
-
 #include <Windows.h>
 #include <mmsystem.h>
 
