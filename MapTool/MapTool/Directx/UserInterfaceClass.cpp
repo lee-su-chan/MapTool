@@ -38,8 +38,9 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 
 	result = m_font1->Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
-		"Data/font/font01.txt",
-		"Data/font/font01.tga",
+		"Data/font/",
+		"font01.txt",
+		"font01.tga",
 		32.0f,
 		3);
 
