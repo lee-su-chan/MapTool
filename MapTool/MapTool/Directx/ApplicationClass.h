@@ -1,11 +1,6 @@
 #ifndef _APPLICATIONCLASS_H_
 #define _APPLICATIONCLASS_H_
 
-const bool FULL_SCREEN = false;
-const bool VSYNC_ENABLED = true;
-const float SCREEN_DEPTH = 1000.0f;
-const float SCREEN_NEAR = 0.1f;
-
 #include "Resources\MyResource.h"
 
 #include "InputClass.h"
@@ -16,6 +11,11 @@ const float SCREEN_NEAR = 0.1f;
 #include "FpsClass.h"
 #include "ZoneClass.h"
 
+const bool FULL_SCREEN = false;
+const bool VSYNC_ENABLED = true;
+const float SCREEN_DEPTH = 1000.0f;
+const float SCREEN_NEAR = 0.1f;
+
 class ApplicationClass
 {
 public:
@@ -23,7 +23,7 @@ public:
 	ApplicationClass(const ApplicationClass &);
 	~ApplicationClass();
 
-	bool Initialize(HINSTANCE, HWND[], int, int, TERRAIN_DESC *);
+	bool Initialize(HINSTANCE, HWND[], int, int, MyStruct::TERRAIN_DESC *);
 	void Shutdown();
 	bool Frame();
 
@@ -35,6 +35,8 @@ private:
 	TimerClass *m_Timer;
 	FpsClass *m_Fps;
 	ZoneClass *m_Zone;
+
+	MyStruct::TERRAIN_DESC *terrainDesc;
 };
 
 #endif
