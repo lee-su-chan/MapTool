@@ -1,5 +1,7 @@
 #include "ApplicationClass.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
 ApplicationClass::ApplicationClass()
 {
 	m_Input = NULL;
@@ -24,8 +26,9 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	HWND hwnd[],
 	int screenWidth, 
 	int screenHeight,
-	TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC *terrainDesc)
 {
+	int i;
 	bool result;
 
 	m_Input = new InputClass;
@@ -51,7 +54,6 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		FULL_SCREEN,
 		SCREEN_DEPTH,
 		SCREEN_NEAR);
-
 	if (!result)
 	{
 		MessageBox(hwnd[0], L"Could not initialize Direct3D.", L"Error", MB_OK);
@@ -75,7 +77,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	if (!m_TextureManager)
 		return false;
 
-	result = m_TextureManager->Initialize(10);
+	result = m_TextureManager->Initialize(terrainDesc->nTexture);
 	if (!result)
 	{
 		MessageBox(hwnd[0], L"Could not initialize manager object.", L"Error", MB_OK);
@@ -83,46 +85,16 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		return false;
 	}
 
-	//result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
-	//	m_Direct3D->GetDeviceContext(),
-	//	"Data/textures/dirt01d.tga",
-	//	0);
-
-	//if (!result)
-	//	return false;
-
-	// For TerrainShader
-	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
-		m_Direct3D->GetDeviceContext(),
-		"Data/Textures/Rock.tga",
-		0);
-	
-	if (!result)
-		return false;
-	
-	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
-		m_Direct3D->GetDeviceContext(),
-		"Data/Textures/NormalMap/nRock.tga",
-		1);
-	
-	if (!result)
-		return false;
-	
-	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
-		m_Direct3D->GetDeviceContext(),
-		"Data/Textures/NormalMap/nSnow.tga",
-		2);
-	
-	if (!result)
-		return false;
-	
-	result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
-		m_Direct3D->GetDeviceContext(),
-		"Data/Textures/NormalMap/nDistance.tga",
-		3);
-	
-	if (!result)
-		return false;
+	for (i = 0; i < terrainDesc->nTexture; ++i)
+	{
+		result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
+			m_Direct3D->GetDeviceContext(),
+			"Data/Textures/",
+			(char *)terrainDesc->textureNames->at(i).c_str(),
+			i);
+		if (!result)
+			return false;
+	}
 
 	m_Timer = new TimerClass;
 	if (!m_Timer)
@@ -152,10 +124,17 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		screenHeight,
 		SCREEN_DEPTH,
 		terrainDesc);
-	
 	if (!result)
 	{
 		MessageBox(hwnd[0], L"Could not initialize the zone object.", L"Error", MB_OK);
+
+		return false;
+	}
+
+	this->terrainDesc = terrainDesc;
+	if (!this->terrainDesc)
+	{
+		MessageBox(hwnd[0], L"Could not get the terrainDesc.", L"Error", MB_OK);
 
 		return false;
 	}
@@ -211,7 +190,7 @@ void ApplicationClass::Shutdown()
 		delete m_Input;
 		m_Input = NULL;
 	}
-
+	
 	return;
 }
 
@@ -234,8 +213,8 @@ bool ApplicationClass::Frame()
 		m_ShaderManager,
 		m_TextureManager,
 		m_Timer->GetTime(),
-		m_Fps->GetFps());
-	
+		m_Fps->GetFps(),
+		terrainDesc);
 	if (!result)
 		return false;
 
