@@ -42,12 +42,13 @@ void TextureManagerClass::Shutdown()
 
 bool TextureManagerClass::LoadTexture(ID3D11Device *device,
 	ID3D11DeviceContext *deviceContext,
+	char *path,
 	char *filename,
 	int location)
 {
 	bool result;
 
-	result = m_TextureArray[location].Initialize(device, deviceContext, filename);
+	result = m_TextureArray[location].Initialize(device, deviceContext, path, filename);
 	if (!result)
 		return false;
 
