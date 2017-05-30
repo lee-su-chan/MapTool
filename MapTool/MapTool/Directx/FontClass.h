@@ -29,7 +29,7 @@ public:
 	FontClass(const FontClass &);
 	~FontClass();
 
-	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *, char *, float, int);
+	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *, char *, char *, float, int);
 	void Shutdown();
 
 	ID3D11ShaderResourceView *GetTexture();
@@ -40,7 +40,7 @@ public:
 private:
 	bool LoadFontData(char *);
 	void ReleaseFontData();
-	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, char *);
+	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, char *, char *);
 	void ReleaseTexture();
 
 private:

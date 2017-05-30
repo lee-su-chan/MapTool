@@ -16,23 +16,25 @@ FontClass::~FontClass()
 
 bool FontClass::Initialize(ID3D11Device *device, 
 	ID3D11DeviceContext *deviceContext,
+	char *path,
 	char *fontFilename,
 	char *textureFilename, 
 	float fontHeight, 
 	int spaceSize)
 {
 	bool result;
+	std::string pathFileName;
 
 	m_fontHeight = fontHeight;
 	m_spaceSize = spaceSize;
+	pathFileName = path;
+	pathFileName += fontFilename;
 
-	result = LoadFontData(fontFilename);
-
+	result = LoadFontData((char *)pathFileName.c_str());
 	if (!result)
 		return false;
 
-	result = LoadTexture(device, deviceContext, textureFilename);
-
+	result = LoadTexture(device, deviceContext, path, textureFilename);
 	if (!result)
 		return false;
 
@@ -181,6 +183,7 @@ void FontClass::ReleaseFontData()
 
 bool FontClass::LoadTexture(ID3D11Device *device, 
 	ID3D11DeviceContext *deviceContext, 
+	char *path,
 	char *filename)
 {
 	bool result;
@@ -190,7 +193,7 @@ bool FontClass::LoadTexture(ID3D11Device *device,
 	if (!m_Texture)
 		return false;
 
-	result = m_Texture->Initialize(device, deviceContext, filename);
+	result = m_Texture->Initialize(device, deviceContext, path, filename);
 
 	if (!result)
 		return false;
