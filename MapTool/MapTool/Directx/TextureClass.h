@@ -3,33 +3,29 @@
 
 #include <d3d11.h>
 #include <stdio.h>
+#include <string>
+#include <atlconv.h>
+#include <DirectXTex.h>
+
+using namespace DirectX;
 
 class TextureClass
 {
-	struct TargaHeader
-	{
-		unsigned char data1[12];
-		unsigned short width;
-		unsigned short height;
-		unsigned char bpp;
-		unsigned char data2;
-	};
-
 public:
 	TextureClass();
 	TextureClass(const TextureClass &);
 	~TextureClass();
 
-	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *);
+	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *, char *);
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture();
 
 private:
-	bool LoadTarga(char *, int &, int &);
+	bool LoadTextureFromFile(ScratchImage &, LPCSTR filename);
+	std::wstring strconvert(const std::string& _src);
 
 private:
-	unsigned char *m_targaData;
 	ID3D11Texture2D *m_texture;
 	ID3D11ShaderResourceView *m_textureView;
 };
