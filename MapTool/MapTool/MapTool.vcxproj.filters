@@ -39,9 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Data\Setup.txt">
-      <Filter>Text Files</Filter>
-    </Text>
     <Text Include="ReadMe.txt">
       <Filter>Text Files</Filter>
     </Text>
