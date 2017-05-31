@@ -148,16 +148,16 @@ void CMainFrame::OnFileNew()
 {
 	CMakeNewFileDlg makeNewFileDlg;
 	HWND tempHwnd[2];
-	MyStruct::TERRAIN_DESC *terrainDesc = new MyStruct::TERRAIN_DESC;
+	MyStruct::TERRAIN_DESC terrainDesc;
 
 	makeNewFileDlg.DoModal();
 
-	terrainDesc->nCell = makeNewFileDlg.GetCellSize();
-	terrainDesc->nTile = makeNewFileDlg.GetTileSize();
-	terrainDesc->textureNames = makeNewFileDlg.GetTextureNameVector();
-	terrainDesc->textureCurSel = makeNewFileDlg.GetCurSel();
-	terrainDesc->nTexture = makeNewFileDlg.GetTextureSize();
-	terrainDesc->baseTextureName = (char *)terrainDesc->textureNames->at(terrainDesc->textureCurSel).c_str();
+	terrainDesc.nCell = makeNewFileDlg.GetCellSize();
+	terrainDesc.nTile = makeNewFileDlg.GetTileSize();
+	terrainDesc.textureNames = makeNewFileDlg.GetTextureNameVector();
+	terrainDesc.textureCurSel = makeNewFileDlg.GetCurSel();
+	terrainDesc.nTexture = makeNewFileDlg.GetTextureSize();
+	terrainDesc.baseTextureName = (char *)terrainDesc.textureNames->at(terrainDesc.textureCurSel).c_str();
 
 	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
 	tempHwnd[1] = this->GetSafeHwnd();

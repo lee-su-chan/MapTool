@@ -22,6 +22,9 @@ public:
 public:
 	ApplicationClass *m_application;
 
+private:
+
+
 // Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
