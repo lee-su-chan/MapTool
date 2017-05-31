@@ -17,7 +17,7 @@ TerrainClass::~TerrainClass()
 {
 }
 
-bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, MyStruct::TERRAIN_DESC *terrainDesc)
+bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result;
 
@@ -256,11 +256,11 @@ bool TerrainClass::LoadSetupFile(char *filename)
 	return true;
 }
 
-bool TerrainClass::LoadTerrainDesc(MyStruct::TERRAIN_DESC *terrainDesc)
+bool TerrainClass::LoadTerrainDesc(MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	int i, j, index;
 	const int stringLength	= 256;
-	m_terrainWidth			= terrainDesc->nCell * terrainDesc->nTile + 1;
+	m_terrainWidth			= terrainDesc.nCell * terrainDesc.nTile + 1;
 	m_terrainHeight			= m_terrainWidth;
 	m_heightScale			= 12.0f;
 
@@ -914,15 +914,15 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1,
 	return;
 }
 
-bool TerrainClass::LoadTerrainCells(ID3D11Device *device, MyStruct::TERRAIN_DESC *terrainDesc)
+bool TerrainClass::LoadTerrainCells(ID3D11Device *device, MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	int tileHeight, tileWidth, cellRowCount, i, j, index;
 	bool result;
 
-	tileHeight = terrainDesc->nTile + 1;
-	tileWidth = terrainDesc->nTile + 1;
+	tileHeight = terrainDesc.nTile + 1;
+	tileWidth = terrainDesc.nTile + 1;
 
-	cellRowCount = terrainDesc->nCell;
+	cellRowCount = terrainDesc.nCell;
 	m_cellCount = cellRowCount * cellRowCount;
 
 	m_TerrainCells = new TerrainCellClass[m_cellCount];
