@@ -26,7 +26,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	HWND hwnd[],
 	int screenWidth, 
 	int screenHeight,
-	MyStruct::TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	int i;
 	bool result;
@@ -77,7 +77,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	if (!m_TextureManager)
 		return false;
 
-	result = m_TextureManager->Initialize(terrainDesc->nTexture);
+	result = m_TextureManager->Initialize(terrainDesc.nTexture);
 	if (!result)
 	{
 		MessageBox(hwnd[0], L"Could not initialize manager object.", L"Error", MB_OK);
@@ -85,12 +85,12 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		return false;
 	}
 
-	for (i = 0; i < terrainDesc->nTexture; ++i)
+	for (i = 0; i < terrainDesc.nTexture; ++i)
 	{
 		result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 			m_Direct3D->GetDeviceContext(),
 			"Data/Textures/",
-			(char *)terrainDesc->textureNames->at(i).c_str(),
+			(char *)terrainDesc.textureNames->at(i).c_str(),
 			i);
 		if (!result)
 			return false;
@@ -132,7 +132,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	}
 
 	this->terrainDesc = terrainDesc;
-	if (!this->terrainDesc)
+	if (!&this->terrainDesc)
 	{
 		MessageBox(hwnd[0], L"Could not get the terrainDesc.", L"Error", MB_OK);
 

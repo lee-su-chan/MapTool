@@ -23,7 +23,7 @@ public:
 	ApplicationClass(const ApplicationClass &);
 	~ApplicationClass();
 
-	bool Initialize(HINSTANCE, HWND[], int, int, MyStruct::TERRAIN_DESC *);
+	bool Initialize(HINSTANCE, HWND[], int, int, MyStruct::TERRAIN_DESC &);
 	void Shutdown();
 	bool Frame();
 
@@ -36,7 +36,7 @@ private:
 	FpsClass *m_Fps;
 	ZoneClass *m_Zone;
 
-	MyStruct::TERRAIN_DESC *terrainDesc;
+	MyStruct::TERRAIN_DESC terrainDesc;
 };
 
 #endif
