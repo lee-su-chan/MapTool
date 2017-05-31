@@ -139,9 +139,6 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
-	static int checkVariable;
-
-	++checkVariable;
 
 	m_vertexCount = (tileHeight - 1) * (tileWidth - 1) * 6;
 	m_indexCount = m_vertexCount;
@@ -189,22 +186,6 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 				terrainModel[modelIndex].b);
 
 			indices[index] = index;
-
-			//if (checkVariable == checkVariable)
-			//{
-			//	char *temp = new char[254];
-			//	_itoa_s(checkVariable, temp, sizeof(temp), 10);
-			//	strcat_s(temp, 254, "_Cell VertexPosition.txt");
-			//
-			//	std::ofstream oin(temp, std::ios::app);
-			//
-			//	oin << i << "¹øÂ°" << std::endl
-			//		<< "X: " << "\t" << terrainModel[modelIndex].x << std::endl
-			//		<< "Y: " << "\t" << terrainModel[modelIndex].y << std::endl
-			//		<< "Z: " << "\t" << terrainModel[modelIndex].z << std::endl << std::endl;
-			//
-			//	oin.close();
-			//}
 
 			++modelIndex;
 			++index;
