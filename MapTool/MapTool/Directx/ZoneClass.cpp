@@ -27,7 +27,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	int screenWidth, 
 	int screenHeight, 
 	float screenDepth,
-	MyStruct::TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result;
 
@@ -162,7 +162,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	TextureManagerClass *textureManager,
 	float frameTime,
 	int fps,
-	MyStruct::TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
@@ -285,7 +285,7 @@ void ZoneClass::HandleMovementInput(InputClass *input, float frameTime)
 bool ZoneClass::Render(D3DClass *direct3D, 
 	ShaderManagerClass *shaderManager,
 	TextureManagerClass *textureManager,
-	MyStruct::TERRAIN_DESC *terrainDesc)
+	MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -342,7 +342,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 				worldMatrix,
 				viewMatrix,
 				projectionMatrix,
-				textureManager->GetTexture(terrainDesc->textureCurSel),
+				textureManager->GetTexture(terrainDesc.textureCurSel),
 				m_Light->GetDirection(),
 				m_Light->GetDiffuseColor());
 

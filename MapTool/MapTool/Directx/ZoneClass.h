@@ -23,13 +23,13 @@ public:
 	ZoneClass(const ZoneClass &);
 	~ZoneClass();
 
-	bool Initialize(D3DClass *, HWND, int, int, float, MyStruct::TERRAIN_DESC *);
+	bool Initialize(D3DClass *, HWND, int, int, float, MyStruct::TERRAIN_DESC &);
 	void Shutdown();
-	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int, MyStruct::TERRAIN_DESC *);
+	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int, MyStruct::TERRAIN_DESC &);
 
 private:
 	void HandleMovementInput(InputClass *, float);
-	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, MyStruct::TERRAIN_DESC *);
+	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, MyStruct::TERRAIN_DESC &);
 
 	void PushedF3Button(float);
 
