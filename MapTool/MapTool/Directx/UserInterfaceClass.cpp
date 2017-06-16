@@ -43,7 +43,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		"font01.tga",
 		32.0f,
 		3);
-
 	if (!result)
 		return false;
 
@@ -64,7 +63,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		0.0f,
 		1.0f,
 		0.0f);
-
 	if (!result)
 		return false;
 
@@ -97,7 +95,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -114,7 +111,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -135,7 +131,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -152,7 +147,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -169,7 +163,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -186,7 +179,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -203,7 +195,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -220,7 +211,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -244,7 +234,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -261,7 +250,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -282,7 +270,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -299,7 +286,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -317,7 +303,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -334,7 +319,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -351,7 +335,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -368,7 +351,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -385,7 +367,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -402,7 +383,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -426,7 +406,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
@@ -446,7 +425,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 
 	if (!result)
 		return false;
-
 	result = m_renderCountStrings[2].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
@@ -460,14 +438,12 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
 	m_mousePositionStrings = new TextClass[2];
 	if (!m_mousePositionStrings)
 		return false;
-
 	result = m_mousePositionStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
@@ -481,7 +457,6 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-	
 	if (!result)
 		return false;
 
@@ -498,38 +473,35 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		1.0f,
 		1.0f,
 		1.0f);
-
 	if (!result)
 		return false;
 
 	for (i = 0; i < 2; ++i)
 		m_previousMousePosition[i] = -1;
 
-	m_MiniMap = new MiniMapClass;
-	if (!m_MiniMap)
-		return false;
-
-	result = m_MiniMap->Initialize(Direct3D->GetDevice(),
-		Direct3D->GetDeviceContext(),
-		screenWidth,
-		screenHeight,
-		1025,
-		1025);
-
-	if (!result)
-		return false;
+	//m_MiniMap = new MiniMapClass;
+	//if (!m_MiniMap)
+	//	return false;
+	//result = m_MiniMap->Initialize(Direct3D->GetDevice(),
+	//	Direct3D->GetDeviceContext(),
+	//	screenWidth,
+	//	screenHeight,
+	//	1025,
+	//	1025);
+	//if (!result)
+	//	return false;
 
 	return true;
 }
 
 void UserInterfaceClass::Shutdown()
 {
-	if (m_MiniMap)
-	{
-		m_MiniMap->Shutdown();
-		delete m_MiniMap;
-		m_MiniMap = NULL;
-	}
+	//if (m_MiniMap)
+	//{
+	//	m_MiniMap->Shutdown();
+	//	delete m_MiniMap;
+	//	m_MiniMap = NULL;
+	//}
 
 	if (m_mousePositionStrings)
 	{
@@ -657,7 +629,7 @@ bool UserInterfaceClass::Frame(ID3D11DeviceContext *deviceContext,
 	if (!result)
 		return false;
 
-	m_MiniMap->PositionUpdate(posX, posZ);
+	//m_MiniMap->PositionUpdate(posX, posZ);
 
 	return true;
 }
@@ -741,14 +713,13 @@ bool UserInterfaceClass::Render(D3DClass *Direct3D,
 
 	Direct3D->DisableAlphaBlending();
 
-	result = m_MiniMap->Render(Direct3D->GetDeviceContext(),
-		shaderManager,
-		worldMatrix,
-		viewMatrix,
-		orthoMatrix);
-
-	if (!result)
-		return false;
+	//result = m_MiniMap->Render(Direct3D->GetDeviceContext(),
+	//	shaderManager,
+	//	worldMatrix,
+	//	viewMatrix,
+	//	orthoMatrix);
+	//if (!result)
+	//	return false;
 
 	Direct3D->TurnZBufferOn();
 
