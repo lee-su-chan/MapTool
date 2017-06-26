@@ -311,10 +311,6 @@ void TerrainCellClass::CalculateCellDemensions()
 		if (depth < m_minDepth) m_minDepth = depth;
 	}
 
-	m_positionX = m_maxWidth - m_minWidth + m_minWidth;
-	m_positionY = m_maxHeight - m_minHeight + m_minHeight;
-	m_positionZ = m_maxDepth - m_minDepth + m_minDepth;
-
 	return;
 }
 

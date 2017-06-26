@@ -73,7 +73,6 @@ private:
 	int m_vertexCount, m_indexCount, m_lineIndexCount;
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer, *m_lineVertexBuffer, *m_lineIndexBuffer;
 	float m_maxWidth, m_maxHeight, m_maxDepth, m_minWidth, m_minHeight, m_minDepth;
-	float m_positionX, m_positionY, m_positionZ;
 };
 
 #endif
