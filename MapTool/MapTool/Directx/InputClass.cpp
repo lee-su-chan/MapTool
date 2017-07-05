@@ -16,12 +16,14 @@ InputClass::~InputClass()
 }
 
 bool InputClass::initialze(HINSTANCE hinstance,
-	HWND hwnd, 
+	HWND hwnd[], 
 	int screenWidth,
 	int screenHeight)
 {
 	HRESULT result;
 	
+	m_directXViewHwnd = hwnd[0];
+
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 
@@ -45,7 +47,7 @@ bool InputClass::initialze(HINSTANCE hinstance,
 	if (FAILED(result))
 		return false;
 
-	result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+	result = m_keyboard->SetCooperativeLevel(hwnd[1], DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
 	if (FAILED(result))
 		return false;
 
@@ -61,7 +63,7 @@ bool InputClass::initialze(HINSTANCE hinstance,
 	if (FAILED(result))
 		return false;
 
-	result = m_mouse->SetCooperativeLevel(hwnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+	result = m_mouse->SetCooperativeLevel(hwnd[1], DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
 	if (FAILED(result))
 		return false;
 
@@ -136,6 +138,14 @@ void InputClass::GetMouseLocation(int &mouseX, int &mouseY)
 	return;
 }
 
+bool InputClass::IsMouseLightClick()
+{
+	if (m_mouseState.rgbButtons[0] & 0x80)
+		return true;
+
+	return false;
+}
+
 bool InputClass::IsMouseRightClick()
 {
 	if (m_mouseState.rgbButtons[1] & 0x80)
@@ -160,11 +170,22 @@ void InputClass::GetMouseAddPos(int &mouseAddX, int &mouseAddY)
 	return;
 }
 
+void InputClass::GetMouseWindowPosition(int &x, int &y)
+{
+	POINT ptPosition;
+
+	GetCursorPos(&ptPosition);
+	ScreenToClient(m_directXViewHwnd, &ptPosition);
+
+	x = ptPosition.x;
+	y = ptPosition.y;
+}
+
 bool InputClass::IsLeftPressed()
 {
 	if (m_keyboardState[DIK_LEFT] & 0x80)
 		return true;
-
+	
 	return false;
 }
 

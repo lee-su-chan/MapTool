@@ -12,16 +12,18 @@ public:
 	InputClass(const InputClass &);
 	~InputClass();
 
-	bool initialze(HINSTANCE, HWND, int, int);
+	bool initialze(HINSTANCE, HWND[], int, int);
 	void Shutdown();
 	bool Frame();
 
 	bool IsEscapePressed();
 
 	void GetMouseLocation(int &, int &);
+	bool IsMouseLightClick();
 	bool IsMouseRightClick();
 	bool IsMouseMoved();
 	void GetMouseAddPos(int &, int &);
+	void GetMouseWindowPosition(int &, int &);
 
 	bool IsLeftPressed();
 	bool IsRightPressed();
@@ -64,6 +66,8 @@ private:
 	bool m_F3_released;
 	bool m_F4_released;
 	bool m_F5_released;
+
+	HWND m_directXViewHwnd;
 };
 
 #endif
