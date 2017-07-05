@@ -33,21 +33,24 @@ private:
 	int m_TileSize;
 	int m_TextureSize;
 	int m_CurSel;
+	bool m_IsClickedCancel;
 	CStringList fileNameList;
 	std::vector<std::string> *textureNames;
 	CComboBox m_TextureComboBox;
 	CString m_IconName;
+	CImage *image;
 	
 public:
 	virtual BOOL OnInitDialog();
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnCbnSelchangeCombo2();
+	virtual void OnCancel();
 
-	int GetCellSize();
-	int GetTileSize();
-	int GetTextureSize();
-	int GetCurSel();
-
-	std::vector<std::string> *GetTextureNameVector();
+	int GetCellSize() const;
+	int GetTileSize() const;
+	int GetTextureSize() const { return this->m_TextureSize; }
+	int GetCurSel() const { return this->m_CurSel; }
+	bool GetIsClickedCancel() const { return this->m_IsClickedCancel; }
+	std::vector<std::string> *GetTextureNameVector() const { return this->textureNames; }
 };

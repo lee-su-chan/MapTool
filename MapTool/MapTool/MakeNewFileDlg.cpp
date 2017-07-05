@@ -18,6 +18,7 @@ CMakeNewFileDlg::CMakeNewFileDlg(CWnd* pParent /*=NULL*/)
 	, m_CellSize(0)
 	, m_TileSize(0)
 	, m_TextureSize(0)
+	, m_IsClickedCancel(false)
 {
 
 }
@@ -118,17 +119,16 @@ BOOL CMakeNewFileDlg::CastImageType(LPCTSTR InSourceImageFileName,
 void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 {
 	UpdateData(TRUE);
+	if(!image->IsNull())
+		image->Detach();
 
-	m_CurSel = m_TextureComboBox.GetCurSel();
-
-	CImage image;
+	//CImage image;
 	CDC *dc;
-	CString pathAndNewm_IconName;
 	CString strPath = _T("Data/Textures/");
-	int x = 70;
-	int y = 165;
-	int width = 90;
-	int height = 90;
+	const int x = 90;
+	const int y = 180;
+	const int width = 110;
+	const int height = 110;
 
 	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), m_IconName);
 	
@@ -137,9 +137,11 @@ void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 
 	dc = this->GetDC();
 
-	//image.Load(m_IconName);
-	//image.Draw(dc->m_hDC, x, y, image.GetWidth(), image.GetHeight());
-	//image.StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
+	image->Load(m_IconName);
+	dc->SetStretchBltMode(COLORONCOLOR);
+	image->StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
+
+	m_CurSel = m_TextureComboBox.GetCurSel();
 }
 
 
@@ -152,6 +154,7 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 	CString DirName;
 
 	textureNames = new std::vector<std::string>();
+	image = new CImage();
 	
 	//폴더나 파일의 목록을 가져올 디렉터리의 풀 패스
 	CString path = _T("Data\\Textures\\*.*");
@@ -180,7 +183,7 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-int CMakeNewFileDlg::GetCellSize()
+int CMakeNewFileDlg::GetCellSize() const
 {
 	switch (m_CellSize)
 	{
@@ -192,7 +195,7 @@ int CMakeNewFileDlg::GetCellSize()
 	default: AfxMessageBox(_T("GetCellSize() Error!")); return 0;
 	}
 }
-int CMakeNewFileDlg::GetTileSize()
+int CMakeNewFileDlg::GetTileSize() const
 {
 	switch (m_TileSize)
 	{
@@ -204,15 +207,10 @@ int CMakeNewFileDlg::GetTileSize()
 	default: AfxMessageBox(_T("GetTileSize() Error!")); return 0;
 	}
 }
-int CMakeNewFileDlg::GetTextureSize()
+
+void CMakeNewFileDlg::OnCancel()
 {
-	return this->m_TextureSize;
-}
-int CMakeNewFileDlg::GetCurSel()
-{
-	return this->m_CurSel;
-}
-std::vector<std::string> *CMakeNewFileDlg::GetTextureNameVector()
-{
-	return this->textureNames;
+	m_IsClickedCancel = true;
+
+	CDialog::OnCancel();
 }
