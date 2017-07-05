@@ -151,6 +151,8 @@ void CMainFrame::OnFileNew()
 	MyStruct::TERRAIN_DESC terrainDesc;
 
 	makeNewFileDlg.DoModal();
+	if (makeNewFileDlg.GetIsClickedCancel())
+		return;
 
 	terrainDesc.nCell = makeNewFileDlg.GetCellSize();
 	terrainDesc.nTile = makeNewFileDlg.GetTileSize();
