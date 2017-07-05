@@ -215,7 +215,7 @@
     <ClInclude Include="DirectX\LightShaderClass.h" />
     <ClInclude Include="DirectX\MinimapClass.h" />
     <ClInclude Include="DirectX\PositionClass.h" />
-    <ClInclude Include="DirectX\Ray.h" />
+    <ClInclude Include="DirectX\RayClass.h" />
     <ClInclude Include="DirectX\Resources\MyResource.h" />
     <ClInclude Include="DirectX\ShaderManagerClass.h" />
     <ClInclude Include="DirectX\SkyDomeClass.h" />

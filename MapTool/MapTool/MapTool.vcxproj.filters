@@ -158,7 +158,7 @@
     <ClInclude Include="DirectX\Resources\MyResource.h">
       <Filter>Header Files\DirectX\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX\Ray.h">
+    <ClInclude Include="DirectX\RayClass.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
