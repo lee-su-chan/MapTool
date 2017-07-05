@@ -15,7 +15,7 @@
 #include "FrustumClass.h"
 #include "SkyDomeClass.h"
 #include "TerrainClass.h"
-#include "Ray.h"
+#include "RayClass.h"
 #include "Resources\MyResource.h"
 
 class ZoneClass
@@ -43,7 +43,7 @@ private:
 	FrustumClass *m_Frustum;
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
-	Ray m_Ray;
+	RayClass m_Ray;
 	bool m_displayUI, m_wireFrame, m_play, m_cellLines, m_heightLocked;
 	float m_posX, m_posY, m_posZ;
 	int m_ScreenWidth, m_ScreenHeight;
