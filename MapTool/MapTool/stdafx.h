@@ -35,7 +35,8 @@
 
 
 
-
+// xImage header
+//#include <ximage.h>
 
 
 
@@ -53,3 +54,4 @@
 
 // Console On
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+

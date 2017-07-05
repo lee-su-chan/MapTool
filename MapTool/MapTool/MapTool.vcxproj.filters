@@ -158,6 +158,9 @@
     <ClInclude Include="DirectX\Resources\MyResource.h">
       <Filter>Header Files\DirectX\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="DirectX\Ray.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -267,6 +270,9 @@
     </ClCompile>
     <ClCompile Include="DirectX\Resources\MyResource.cpp">
       <Filter>Source Files\DirectX\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Ray.cpp">
+      <Filter>Source Files\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
