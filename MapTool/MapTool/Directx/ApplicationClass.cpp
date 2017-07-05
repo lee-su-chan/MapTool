@@ -35,7 +35,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	if (!m_Input)
 		return false;
 
-	result = m_Input->initialze(hinstance, hwnd[1], screenWidth, screenHeight);
+	result = m_Input->initialze(hinstance, hwnd, screenWidth, screenHeight);
 	if (!result)
 	{
 		MessageBox(hwnd[1], L"Could not initialize the input object.", L"Error", MB_OK);
