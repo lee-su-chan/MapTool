@@ -103,6 +103,9 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	m_cellLines		= true;
 	m_heightLocked	= false;
 
+	m_ScreenWidth = screenWidth;
+	m_ScreenHeight = screenHeight;
+
 	return true;
 }
 
@@ -168,12 +171,12 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
 	int mousePosX, mousePosY;
 
-	HandleMovementInput(input, frameTime);
+	HandleMovementInput(direct3D, input, frameTime);
 
 	m_Position->GetPosition(posX, posY, posZ);
 	m_Position->GetRotation(rotX, rotY, rotZ);
 
-	input->GetMouseLocation(mousePosX, mousePosY);
+	input->GetMouseWindowPosition(mousePosX, mousePosY);
 
 	if(m_play)
 		PushedF3Button(frameTime);
@@ -213,13 +216,47 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	return true;
 }
 
-void ZoneClass::HandleMovementInput(InputClass *input, float frameTime)
+void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float frameTime)
 {
 	bool keyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
 	int mouseAddX, mouseAddY;
+	int mouseWinX, mouseWinY;
 
 	m_Position->SetFrameTime(frameTime);
+
+	if (input->IsMouseLightClick())
+	{
+		const int nVertex = m_Terrain->GetTerrainCellObj()[0].GetVertexCount();
+		XMFLOAT3 *temp = new XMFLOAT3[nVertex];
+		float dist;
+
+		input->GetMouseWindowPosition(mouseWinX, mouseWinY);
+		m_Ray.OnRay(direct3D, m_Camera, m_ScreenWidth, m_ScreenHeight, mouseWinX, mouseWinY);
+
+		for (int i = 0; i < nVertex; ++i)
+		{
+			temp[i].x = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].x;
+			temp[i].y = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].y;
+			temp[i].z = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].z;
+		}
+
+		for (int i = 0; i < nVertex / 3; ++i)
+		{
+			XMVECTOR v0 = XMLoadFloat3(&temp[i * 3 + 0]);
+			XMVECTOR v1 = XMLoadFloat3(&temp[i * 3 + 1]);
+			XMVECTOR v2 = XMLoadFloat3(&temp[i * 3 + 2]);
+
+			if (DirectX::TriangleTests::Intersects(m_Ray.GetOriginal(),
+				m_Ray.GetDirection(),
+				v0, v1, v2,
+				dist))
+			{
+				cout << "Collision!" << endl;
+				cout << "Dist: " << dist << endl << endl;
+			}
+		}
+	}
 
 	if (input->IsMouseRightClick())
 	{
