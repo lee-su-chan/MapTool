@@ -1,8 +1,6 @@
 #ifndef _ZONECLASS_H_
 #define _ZONECLASS_H_
 
-#include <DirectXCollision.h>
-
 #include "D3DClass.h"
 #include "InputClass.h"
 #include "ShaderManagerClass.h"
@@ -16,6 +14,7 @@
 #include "SkyDomeClass.h"
 #include "TerrainClass.h"
 #include "RayClass.h"
+#include "PickingToolSingletonClass.h"
 #include "Resources\MyResource.h"
 
 class ZoneClass

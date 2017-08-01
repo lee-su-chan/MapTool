@@ -56,7 +56,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 		return false;
 
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(-0.5f, -1.0f, -0.5f);
+	m_Light->SetDirection(0.5f, -1.0f, -0.5f);
 
 	m_Frustum = new FrustumClass;
 	if (!m_Frustum)
@@ -218,7 +218,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 
 void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float frameTime)
 {
-	bool keyDown;
+	bool isKeyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
 	int mouseAddX, mouseAddY;
 	int mouseWinX, mouseWinY;
@@ -227,73 +227,47 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 
 	if (input->IsMouseLightClick())
 	{
-		const int nVertex = m_Terrain->GetTerrainCellObj()[0].GetVertexCount();
-		XMFLOAT3 *temp = new XMFLOAT3[nVertex];
-		float dist;
-
 		input->GetMouseWindowPosition(mouseWinX, mouseWinY);
-		m_Ray.OnRay(direct3D, m_Camera, m_ScreenWidth, m_ScreenHeight, mouseWinX, mouseWinY);
-
-		for (int i = 0; i < nVertex; ++i)
-		{
-			temp[i].x = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].x;
-			temp[i].y = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].y;
-			temp[i].z = m_Terrain->GetTerrainCellObj()[0].m_vertexList[i].z;
-		}
-
-		for (int i = 0; i < nVertex / 3; ++i)
-		{
-			XMVECTOR v0 = XMLoadFloat3(&temp[i * 3 + 0]);
-			XMVECTOR v1 = XMLoadFloat3(&temp[i * 3 + 1]);
-			XMVECTOR v2 = XMLoadFloat3(&temp[i * 3 + 2]);
-
-			if (DirectX::TriangleTests::Intersects(m_Ray.GetOriginal(),
-				m_Ray.GetDirection(),
-				v0, v1, v2,
-				dist))
-			{
-				cout << "Collision!" << endl;
-				cout << "Dist: " << dist << endl << endl;
-			}
-		}
+		m_Ray.SetRay(direct3D, m_Camera, m_ScreenWidth, m_ScreenHeight, mouseWinX, mouseWinY);
+		PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain, &m_Ray);
 	}
 
 	if (input->IsMouseRightClick())
 	{
-		keyDown = input->IsMouseMoved();
+		isKeyDown = input->IsMouseMoved();
 		input->GetMouseAddPos(mouseAddX, mouseAddY);
 		m_Position->TurnByMouse(mouseAddX, mouseAddY);
 	}
 
-	keyDown = input->IsWPressed();
-	m_Position->MoveForward(keyDown);
+	isKeyDown = input->IsWPressed();
+	m_Position->MoveForward(isKeyDown);
 
-	keyDown = input->IsSPressed();
-	m_Position->MoveBackward(keyDown);
+	isKeyDown = input->IsSPressed();
+	m_Position->MoveBackward(isKeyDown);
 
-	keyDown = input->IsAPressed();
-	m_Position->MoveLeftward(keyDown);
+	isKeyDown = input->IsAPressed();
+	m_Position->MoveLeftward(isKeyDown);
 
-	keyDown = input->IsDPressed();
-	m_Position->MoveRightward(keyDown);
+	isKeyDown = input->IsDPressed();
+	m_Position->MoveRightward(isKeyDown);
 
-	keyDown = input->IsQPressed();
-	m_Position->MoveUpward(keyDown);
+	isKeyDown = input->IsQPressed();
+	m_Position->MoveUpward(isKeyDown);
 
-	keyDown = input->IsEPressed();
-	m_Position->MoveDownward(keyDown);
+	isKeyDown = input->IsEPressed();
+	m_Position->MoveDownward(isKeyDown);
 
-	keyDown = input->IsUpPressed();
-	m_Position->LookUpward(keyDown);
+	isKeyDown = input->IsUpPressed();
+	m_Position->LookUpward(isKeyDown);
 
-	keyDown = input->IsLeftPressed();
-	m_Position->TurnLeft(keyDown);
+	isKeyDown = input->IsLeftPressed();
+	m_Position->TurnLeft(isKeyDown);
 
-	keyDown = input->IsDownPressed();
-	m_Position->LookDownward(keyDown);
+	isKeyDown = input->IsDownPressed();
+	m_Position->LookDownward(isKeyDown);
 
-	keyDown = input->IsRightPressed();
-	m_Position->TurnRight(keyDown);
+	isKeyDown = input->IsRightPressed();
+	m_Position->TurnRight(isKeyDown);
 
 	m_Position->GetPosition(posX, posY, posZ);
 	m_Position->GetRotation(rotX, rotY, rotZ);
@@ -382,19 +356,17 @@ bool ZoneClass::Render(D3DClass *direct3D,
 				textureManager->GetTexture(terrainDesc.textureCurSel),
 				m_Light->GetDirection(),
 				m_Light->GetDiffuseColor());
-
 			if (!result)
 				return false;
 
 			if (m_cellLines)
 			{
 				m_Terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
-				shaderManager->RenderColorShader(direct3D->GetDeviceContext(),
+				result = shaderManager->RenderColorShader(direct3D->GetDeviceContext(),
 					m_Terrain->GetCellLinesIndexCount(i),
 					worldMatrix,
 					viewMatrix,
 					projectionMatrix);
-
 				if (!result)
 					return false;
 			}
@@ -408,7 +380,6 @@ bool ZoneClass::Render(D3DClass *direct3D,
 		m_Terrain->GetRenderCount(),
 		m_Terrain->GetCellsDrawn(),
 		m_Terrain->GetCellsCulled());
-
 	if (!result)
 		return false;
 
@@ -418,8 +389,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 			shaderManager,
 			worldMatrix,
 			baseViewMatrix,
-			orthoMatrix);	
-
+			orthoMatrix);
 		if (!result)
 			return false;
 	}
