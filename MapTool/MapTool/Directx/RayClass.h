@@ -4,7 +4,6 @@
 #include <iostream>
 #include <direct.h>
 #include <DirectXMath.h>
-#include <DirectXCollision.h>
 
 #include "D3DClass.h"
 #include "CameraClass.h"
@@ -19,7 +18,7 @@ public:
 	RayClass(const RayClass &other);
 	~RayClass();
 
-	void OnRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int x, int y);
+	void SetRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int pointx, int y);
 
 public:
 	XMVECTOR GetOriginal() { return this->m_vOriginal; };

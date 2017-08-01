@@ -13,7 +13,7 @@ RayClass::~RayClass()
 	
 }
 
-void RayClass::OnRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int x, int y)
+void RayClass::SetRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int x, int y)
 {
 	RayAtLocalSpace(direct3D, camera, screenWidth, screenHeight, x, y);
 }
