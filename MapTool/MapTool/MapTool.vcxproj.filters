@@ -161,6 +161,12 @@
     <ClInclude Include="DirectX\RayClass.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="DirectX\PickingToolClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\PickingToolSingletonClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -271,7 +277,13 @@
     <ClCompile Include="DirectX\Resources\MyResource.cpp">
       <Filter>Source Files\DirectX\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="DirectX\Ray.cpp">
+    <ClCompile Include="DirectX\RayClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\PickingToolClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\PickingToolSingletonClass.cpp">
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
