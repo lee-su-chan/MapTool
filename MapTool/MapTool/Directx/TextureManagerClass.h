@@ -1,5 +1,4 @@
-#ifndef _TEXTUREMANAGERCLASS_H_
-#define _TEXTUREMANAGERCLASS_H_
+#pragma once
 
 #include "TextureClass.h"
 
@@ -21,5 +20,3 @@ private:
 	TextureClass *m_TextureArray;
 	int m_textureCount;
 };
-
-#endif
