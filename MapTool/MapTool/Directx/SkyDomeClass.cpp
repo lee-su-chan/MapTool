@@ -95,7 +95,7 @@ bool SkyDomeClass::LoadSkyDomeModel(char *filename)
 
 	m_indexCount = m_vertexCount;
 
-	m_model = new ModelType[m_vertexCount];
+	m_model = new MyStruct::SkyModelType[m_vertexCount];
 	if (!m_model)
 		return false;
 
@@ -130,14 +130,14 @@ void SkyDomeClass::ReleaseSkyDomeModel()
 
 bool SkyDomeClass::InitializeBuffers(ID3D11Device *device)
 {
-	VertexType *vertices;
+	MyStruct::VertexType *vertices;
 	unsigned long *indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 	int i;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::VertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
@@ -152,7 +152,7 @@ bool SkyDomeClass::InitializeBuffers(ID3D11Device *device)
 	}
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::VertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -210,7 +210,7 @@ void SkyDomeClass::RenderBuffers(ID3D11DeviceContext *deviceContext)
 	unsigned int stride;
 	unsigned int offset;
 
-	stride = sizeof(VertexType);
+	stride = sizeof(MyStruct::VertexType);
 	offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);

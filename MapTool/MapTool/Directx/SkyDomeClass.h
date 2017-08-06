@@ -1,27 +1,10 @@
-#ifndef _SKYDOMECLASS_H_
-#define _SKYDOMECLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class SkyDomeClass
 {
 private:
-	struct ModelType
-	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-	};
-
-	struct VertexType
-	{
-		XMFLOAT3 position;
-	};
 
 public:
 	SkyDomeClass();
@@ -48,10 +31,8 @@ private:
 	void RenderBuffers(ID3D11DeviceContext *);
 
 private:
-	ModelType *m_model;
+	MyStruct::SkyModelType *m_model;
 	int m_vertexCount, m_indexCount;
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	XMFLOAT4 m_apexColor, m_centerColor;
 };
-
-#endif
