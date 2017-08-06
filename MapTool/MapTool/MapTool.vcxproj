@@ -206,6 +206,7 @@
     <ClInclude Include="DirectX\CameraClass.h" />
     <ClInclude Include="DirectX\ColorShaderClass.h" />
     <ClInclude Include="DirectX\D3DClass.h" />
+    <ClInclude Include="DirectX\D3D_Defines.h" />
     <ClInclude Include="DirectX\FontClass.h" />
     <ClInclude Include="DirectX\FontShaderClass.h" />
     <ClInclude Include="DirectX\FpsClass.h" />
@@ -218,7 +219,6 @@
     <ClInclude Include="DirectX\PickingToolSingletonClass.h" />
     <ClInclude Include="DirectX\PositionClass.h" />
     <ClInclude Include="DirectX\RayClass.h" />
-    <ClInclude Include="DirectX\Resources\MyResource.h" />
     <ClInclude Include="DirectX\ShaderManagerClass.h" />
     <ClInclude Include="DirectX\SkyDomeClass.h" />
     <ClInclude Include="DirectX\SkyDomeShaderClass.h" />
@@ -239,6 +239,7 @@
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
     <ClInclude Include="MapToolView.h" />
+    <ClInclude Include="MFC_Defines.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -261,7 +262,6 @@
     <ClCompile Include="DirectX\PickingToolSingletonClass.cpp" />
     <ClCompile Include="DirectX\PositionClass.cpp" />
     <ClCompile Include="DirectX\RayClass.cpp" />
-    <ClCompile Include="DirectX\Resources\MyResource.cpp" />
     <ClCompile Include="DirectX\ShaderManagerClass.cpp" />
     <ClCompile Include="DirectX\SkyDomeClass.cpp" />
     <ClCompile Include="DirectX\SkyDomeShaderClass.cpp" />
