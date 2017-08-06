@@ -20,18 +20,14 @@ bool TextureClass::Initialize(ID3D11Device *device,
 	char *filename)
 {
 	bool result;
-	std::string pathFileName;
-	int height, width;
-	D3D11_TEXTURE2D_DESC textureDesc;
+	std::string fullPath;
 	HRESULT hResult;
-	UINT rowPitch;
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	ScratchImage image;
 
-	pathFileName = path;
-	pathFileName += filename;
+	fullPath = path;
+	fullPath += filename;
 	
-	result = LoadTextureFromFile(image, (LPSTR)(LPCTSTR)pathFileName.c_str());
+	result = LoadTextureFromFile(image, (LPSTR)(LPCTSTR)fullPath.c_str());
 	if (!result)
 		return false;
 

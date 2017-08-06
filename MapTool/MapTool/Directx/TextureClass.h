@@ -1,13 +1,6 @@
-#ifndef _TEXTURECLASS_H_
-#define _TEXTURECLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <stdio.h>
-#include <string>
-#include <atlconv.h>
-#include <DirectXTex.h>
-
-using namespace DirectX;
+#include "D3D_Defines.h"
 
 class TextureClass
 {
@@ -29,5 +22,3 @@ private:
 	ID3D11Texture2D *m_texture;
 	ID3D11ShaderResourceView *m_textureView;
 };
-
-#endif
