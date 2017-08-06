@@ -1,7 +1,5 @@
-#ifndef _SHADERMANAGERCLASS_H_
-#define _SHADERMANAGERCLASS_H_
+#pragma once
 
-#include "D3DClass.h"
 #include "ColorShaderClass.h"
 #include "TextureShaderClass.h"
 #include "LightShaderClass.h"
@@ -34,5 +32,3 @@ private:
 	SkyDomeShaderClass *m_SkyDomeShader;
 	TerrainShaderClass *m_TerrainShader;
 };
-
-#endif
