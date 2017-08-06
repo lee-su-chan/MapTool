@@ -1,29 +1,9 @@
-#ifndef _FONTCLASS_H_
-#define _FONTCLASS_H_
-
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#pragma once
 
 #include "TextureClass.h"
 
 class FontClass
 {
-private:
-	struct FontType
-	{
-		float left, right;
-		int size;
-	};
-
-	struct VertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-	};
-
 public:
 	FontClass();
 	FontClass(const FontClass &);
@@ -44,10 +24,8 @@ private:
 	void ReleaseTexture();
 
 private:
-	FontType *m_Font;
+	MyStruct::FontType *m_Font;
 	TextureClass *m_Texture;
 	float m_fontHeight;
 	int m_spaceSize;
 };
-
-#endif

@@ -57,10 +57,10 @@ void FontClass::BuildVertexArray(void *vertices,
 	float drawX, 
 	float drawY)
 {
-	VertexType *vertexPtr;
+	MyStruct::TextureVertexType *vertexPtr;
 	int numLetters, index, i, letter;
 
-	vertexPtr = (VertexType *)vertices;
+	vertexPtr = (MyStruct::TextureVertexType *)vertices;
 	numLetters = (int)strlen(sentence);
 	index = 0;
 
@@ -140,7 +140,7 @@ bool FontClass::LoadFontData(char *filename)
 	int i;
 	char temp;
 
-	m_Font = new FontType[95];
+	m_Font = new MyStruct::FontType[95];
 
 	if (!m_Font)
 		return false;
