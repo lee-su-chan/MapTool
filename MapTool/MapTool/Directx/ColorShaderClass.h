@@ -1,24 +1,9 @@
-#ifndef _COLORSHADERCLASS_H_
-#define _COLORSHADERCLASS_H_
+#pragma once
 
-#include <D3D11.h>
-#include <D3Dcompiler.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class ColorShaderClass
 {
-private:
-	struct MatrixBufferType
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
 public:
 	ColorShaderClass();
 	ColorShaderClass(const ColorShaderClass &);
@@ -42,5 +27,3 @@ private:
 	ID3D11InputLayout *m_layout;
 	ID3D11Buffer *m_matrixBuffer;
 }; 
-
-#endif

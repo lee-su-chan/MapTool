@@ -1,29 +1,9 @@
-#ifndef _FONTSHADERCLASS_H_
-#define _FONTSHADERCLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class FontShaderClass
 {
-private:
-	struct MatrixBufferType
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
-	struct PixelBufferType
-	{
-		XMFLOAT4 pixelColor;
-	};
-
 public:
 	FontShaderClass();
 	FontShaderClass(const FontShaderClass &);
@@ -49,5 +29,3 @@ private:
 	ID3D11SamplerState *m_samplerState;
 	ID3D11Buffer *m_pixelBuffer;
 };
-
-#endif

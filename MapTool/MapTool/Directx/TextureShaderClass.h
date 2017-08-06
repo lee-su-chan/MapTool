@@ -1,24 +1,9 @@
-#ifndef _TEXTURESHADERCLASS_H_
-#define _TEXTURESHADERCLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class TextureShaderClass
 {
-private:
-	struct MatrixBufferType
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
 public:
 	TextureShaderClass();
 	TextureShaderClass(const TextureShaderClass &);
@@ -43,5 +28,3 @@ private:
 	ID3D11Buffer *m_matrixBuffer;
 	ID3D11SamplerState *m_sampleState;
 };
-
-#endif

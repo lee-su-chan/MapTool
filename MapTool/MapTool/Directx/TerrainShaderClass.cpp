@@ -218,7 +218,7 @@ bool TerrainShaderClass::InitializeShader(ID3D11Device *device,
 	pixelShaderBuffer = NULL;
 
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.ByteWidth = sizeof(MyStruct::MatrixBufferType);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
@@ -247,7 +247,7 @@ bool TerrainShaderClass::InitializeShader(ID3D11Device *device,
 		return false;
 
 	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	lightBufferDesc.ByteWidth = sizeof(LightBufferType);
+	lightBufferDesc.ByteWidth = sizeof(MyStruct::LightBufferType);
 	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	lightBufferDesc.MiscFlags = 0;
@@ -340,9 +340,9 @@ bool TerrainShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType *dataPtr;
+	MyStruct::MatrixBufferType *dataPtr;
+	MyStruct::LightBufferType *dataPtr2;
 	unsigned int bufferNumber;
-	LightBufferType *dataPtr2;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -357,7 +357,7 @@ bool TerrainShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr = (MatrixBufferType *)mappedResource.pData;
+	dataPtr = (MyStruct::MatrixBufferType *)mappedResource.pData;
 
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
@@ -383,7 +383,7 @@ bool TerrainShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr2 = (LightBufferType *)mappedResource.pData;
+	dataPtr2 = (MyStruct::LightBufferType *)mappedResource.pData;
 
 	dataPtr2->diffuseColor = diffuseColor;
 	dataPtr2->lightDirection = lightDirection;

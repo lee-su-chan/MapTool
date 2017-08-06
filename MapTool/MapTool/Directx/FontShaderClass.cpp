@@ -162,7 +162,7 @@ bool FontShaderClass::InitializeShader(ID3D11Device *device,
 	pixelShaderBuffer = NULL;
 
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.ByteWidth = sizeof(MyStruct::MatrixBufferType);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
@@ -193,7 +193,7 @@ bool FontShaderClass::InitializeShader(ID3D11Device *device,
 		return false;
 
 	pixelBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	pixelBufferDesc.ByteWidth = sizeof(PixelBufferType);
+	pixelBufferDesc.ByteWidth = sizeof(MyStruct::PixelBufferType);
 	pixelBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	pixelBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	pixelBufferDesc.MiscFlags = 0;
@@ -284,9 +284,9 @@ bool FontShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType *dataPtr;
+	MyStruct::MatrixBufferType *dataPtr;
+	MyStruct::PixelBufferType *dataPtr2;
 	unsigned int bufferNumber;
-	PixelBufferType *dataPtr2;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -301,7 +301,7 @@ bool FontShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr = (MatrixBufferType *)mappedResource.pData;
+	dataPtr = (MyStruct::MatrixBufferType *)mappedResource.pData;
 
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
@@ -323,7 +323,7 @@ bool FontShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr2 = (PixelBufferType *)mappedResource.pData;
+	dataPtr2 = (MyStruct::PixelBufferType *)mappedResource.pData;
 	dataPtr2->pixelColor = pixelColor;
 
 	deviceContext->Unmap(m_pixelBuffer, 0);
