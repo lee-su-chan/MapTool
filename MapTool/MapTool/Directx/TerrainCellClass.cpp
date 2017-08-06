@@ -1,7 +1,4 @@
 #include "TerrainCellClass.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 
 TerrainCellClass::TerrainCellClass()
 {
@@ -28,10 +25,10 @@ bool TerrainCellClass::Initialize(ID3D11Device *device,
 	int tileWidth,
 	int terrainWidth)
 {
-	ModelType *terrainModel;
+	MyStruct::ModelType *terrainModel;
 	bool result;
 
-	terrainModel = (ModelType *)terrainModelPtr;
+	terrainModel = (MyStruct::ModelType *)terrainModelPtr;
 
 	result = InitializeBuffers(device,
 		nodeIndexX,
@@ -75,7 +72,7 @@ void TerrainCellClass::RenderLineBuffers(ID3D11DeviceContext *deviceContext)
 	unsigned int stride;
 	unsigned int offset;
 
-	stride = sizeof(ColorVertexType);
+	stride = sizeof(MyStruct::ColorVertexType);
 	offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &m_lineVertexBuffer, &stride, &offset);
@@ -125,15 +122,39 @@ void TerrainCellClass::GetEdgePosition(float &x, float &y, float &z)
 
 	return;
 }
+
+bool TerrainCellClass::TranslateVertex(ID3D11DeviceContext *deviceContext)
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	MyStruct::TerrainVertexType *dataPtr;
+
+	result = deviceContext->Map(m_vertexBuffer,
+		0,
+		D3D11_MAP_WRITE_DISCARD,
+		0,
+		&mappedResource);
+	if (FAILED(result))
+		return false;
+
+	dataPtr = (MyStruct::TerrainVertexType *)mappedResource.pData;
+	dataPtr = m_vertexList;
+
+	deviceContext->Unmap(m_vertexBuffer, 0);
+	deviceContext->VSSetConstantBuffers(0, 1, &m_vertexBuffer);
+	
+	return true;
+}
+
 bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	int nodeIndexX,
 	int nodeIndexY,
 	int tileHeight,
 	int tileWidth,
 	int terrainWidth,
-	ModelType *terrainModel)
+	MyStruct::ModelType *terrainModel)
 {
-	VertexType *vertices;
+	MyStruct::TerrainVertexType *vertices;
 	unsigned long *indices;
 	int i, j, modelIndex, index;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -143,7 +164,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	m_vertexCount = (tileHeight - 1) * (tileWidth - 1) * 6;
 	m_indexCount = m_vertexCount;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::TerrainVertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
@@ -154,7 +175,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	modelIndex = (nodeIndexX * (tileWidth - 1) + (nodeIndexY * (tileHeight - 1) * (terrainWidth - 1))) * 6;
 
 	index = 0;
-
+	
 	for (j = 0; j < tileHeight - 1; ++j)
 	{
 		for (i = 0; i < (tileWidth - 1) * 6; ++i)
@@ -162,7 +183,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 			vertices[index].position = XMFLOAT3(terrainModel[modelIndex].x,
 				terrainModel[modelIndex].y,
 				terrainModel[modelIndex].z);
-
+			
 			vertices[index].texture = XMFLOAT2(terrainModel[modelIndex].tu,
 				terrainModel[modelIndex].tv);
 
@@ -194,10 +215,10 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 		modelIndex += terrainWidth * 6 - tileWidth * 6;
 	}
 	
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::TerrainVertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
@@ -208,7 +229,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if (FAILED(result))
 		return false;
-
+	
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -224,16 +245,12 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	if (FAILED(result))
 		return false;
 
-	m_vertexList = new VectorType[m_vertexCount];
+	m_vertexList = new MyStruct::TerrainVertexType[m_vertexCount];
 	if (!m_vertexList)
 		return false;
-
+	
 	for (i = 0; i < m_vertexCount; ++i)
-	{
-		m_vertexList[i].x = vertices[i].position.x;
-		m_vertexList[i].y = vertices[i].position.y;
-		m_vertexList[i].z = vertices[i].position.z;
-	}
+		m_vertexList[i] = vertices[i];
 
 	delete[] vertices;
 	vertices = NULL;
@@ -272,9 +289,9 @@ void TerrainCellClass::RenderBuffers(ID3D11DeviceContext *deviceContext)
 	unsigned int stride;
 	unsigned int offset;
 
-	stride = sizeof(VertexType);
+	stride = sizeof(MyStruct::TerrainVertexType);
 	offset = 0;
-
+	
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -297,9 +314,9 @@ void TerrainCellClass::CalculateCellDemensions()
 
 	for (i = 0; i < m_vertexCount; ++i)
 	{
-		width = m_vertexList[i].x;
-		height = m_vertexList[i].y;
-		depth = m_vertexList[i].z;
+		width = m_vertexList[i].position.x;
+		height = m_vertexList[i].position.y;
+		depth = m_vertexList[i].position.z;
 
 		if (width > m_maxWidth) m_maxWidth = width;
 		if (width < m_minWidth) m_minWidth = width;
@@ -316,7 +333,7 @@ void TerrainCellClass::CalculateCellDemensions()
 
 bool TerrainCellClass::BuildLineBuffers(ID3D11Device *device)
 {
-	ColorVertexType *vertices;
+	MyStruct::ColorVertexType *vertices;
 	unsigned long *indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -328,7 +345,7 @@ bool TerrainCellClass::BuildLineBuffers(ID3D11Device *device)
 	vertexCount = 24;
 	indexCount = vertexCount;
 
-	vertices = new ColorVertexType[vertexCount];
+	vertices = new MyStruct::ColorVertexType[vertexCount];
 	if (!vertices)
 		return false;
 
@@ -337,7 +354,7 @@ bool TerrainCellClass::BuildLineBuffers(ID3D11Device *device)
 		return false;
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(ColorVertexType) * vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::ColorVertexType) * vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
