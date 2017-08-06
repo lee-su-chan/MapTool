@@ -174,19 +174,19 @@ bool TerrainClass::GetHeightAtPosition(float inputX, float inputZ, float &height
 	{
 		index = i * 3;
 
-		vertex1[0] = m_TerrainCells[cellId].m_vertexList[index].x;
-		vertex1[1] = m_TerrainCells[cellId].m_vertexList[index].y;
-		vertex1[2] = m_TerrainCells[cellId].m_vertexList[index].z;
+		vertex1[0] = m_TerrainCells[cellId].m_vertexList[index].position.x;
+		vertex1[1] = m_TerrainCells[cellId].m_vertexList[index].position.y;
+		vertex1[2] = m_TerrainCells[cellId].m_vertexList[index].position.z;
 		++index;
 
-		vertex2[0] = m_TerrainCells[cellId].m_vertexList[index].x;
-		vertex2[1] = m_TerrainCells[cellId].m_vertexList[index].y;
-		vertex2[2] = m_TerrainCells[cellId].m_vertexList[index].z;
+		vertex2[0] = m_TerrainCells[cellId].m_vertexList[index].position.x;
+		vertex2[1] = m_TerrainCells[cellId].m_vertexList[index].position.y;
+		vertex2[2] = m_TerrainCells[cellId].m_vertexList[index].position.z;
 		++index;
 
-		vertex3[0] = m_TerrainCells[cellId].m_vertexList[index].x;
-		vertex3[1] = m_TerrainCells[cellId].m_vertexList[index].y;
-		vertex3[2] = m_TerrainCells[cellId].m_vertexList[index].z;
+		vertex3[0] = m_TerrainCells[cellId].m_vertexList[index].position.x;
+		vertex3[1] = m_TerrainCells[cellId].m_vertexList[index].position.y;
+		vertex3[2] = m_TerrainCells[cellId].m_vertexList[index].position.z;
 
 		foundHeight = CheckHeightOfTriangle(inputX,
 			inputZ,
@@ -264,7 +264,7 @@ bool TerrainClass::LoadTerrainDesc(MyStruct::TERRAIN_DESC &terrainDesc)
 	m_terrainHeight			= m_terrainWidth;
 	m_heightScale			= 12.0f;
 
-	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
+	m_heightMap = new MyStruct::HeightMapType[m_terrainWidth * m_terrainHeight];
 	if (!m_heightMap)
 		return false;
 
@@ -292,7 +292,7 @@ bool TerrainClass::LoadBitmapHeightMap()
 	unsigned char *bitmapImage;
 	unsigned char height;
 
-	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
+	m_heightMap = new MyStruct::HeightMapType[m_terrainWidth * m_terrainHeight];
 	if (!m_heightMap)
 		return false;
 
@@ -366,7 +366,7 @@ bool TerrainClass::LoadRawHeightMap()
 	unsigned long long imageSize, count;
 	unsigned short *rawImage;
 
-	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
+	m_heightMap = new MyStruct::HeightMapType[m_terrainWidth * m_terrainHeight];
 	if (!m_heightMap)
 		return false;
 
@@ -447,9 +447,9 @@ bool TerrainClass::CalculateNormals()
 {
 	int i, j, index1, index2, index3, index;
 	float vertex1[3], vertex2[3], vertex3[3], vector1[3], vector2[3], sum[3], length;
-	VectorType *normals;
+	MyStruct::VectorType *normals;
 
-	normals = new VectorType[(m_terrainHeight - 1) * (m_terrainWidth - 1)];
+	normals = new MyStruct::VectorType[(m_terrainHeight - 1) * (m_terrainWidth - 1)];
 	if (!normals)
 		return false;
 
@@ -637,7 +637,7 @@ bool TerrainClass::BuildTerrainModel()
 
 	m_vertexCount = (m_terrainHeight - 1) * (m_terrainWidth - 1) * 6;
 
-	m_terrainModel = new ModelType[m_vertexCount];
+	m_terrainModel = new MyStruct::ModelType[m_vertexCount];
 	if (!m_terrainModel)
 		return false;
 
@@ -795,8 +795,8 @@ void TerrainClass::ShutdownTerrainModel()
 void TerrainClass::CalculateTerrainVectors()
 {
 	int faceCount, i, index;
-	TempVertexType vertex1, vertex2, vertex3;
-	VectorType tangent, binormal;
+	MyStruct::TempVertexType vertex1, vertex2, vertex3;
+	MyStruct::VectorType tangent, binormal;
 
 	faceCount = m_vertexCount / 3;
 	index = 0;
@@ -860,11 +860,12 @@ void TerrainClass::CalculateTerrainVectors()
 	return;
 }
 
-void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1,
-	TempVertexType vertex2,
-	TempVertexType vertex3,
-	VectorType &tangent,
-	VectorType &binormal)
+void TerrainClass::CalculateTangentBinormal(
+	MyStruct::TempVertexType vertex1,
+	MyStruct::TempVertexType vertex2,
+	MyStruct::TempVertexType vertex3,
+	MyStruct::VectorType &tangent,
+	MyStruct::VectorType &binormal)
 {
 	float vector1[3], vector2[3];
 	float tuVector[2], tvVector[2];
@@ -942,7 +943,6 @@ bool TerrainClass::LoadTerrainCells(ID3D11Device *device, MyStruct::TERRAIN_DESC
 				tileHeight,
 				tileWidth,
 				m_terrainWidth);
-
 			if (!result)
 				return false;
 		}
@@ -1086,6 +1086,13 @@ bool TerrainClass::CheckHeightOfTriangle(float x,
 		return false;
 
 	height = Q[1];
+
+	return true;
+}
+
+bool TerrainClass::BuildBrushCircleBuffers(ID3D11Device *device, int nVertex, XMFLOAT3 color)
+{
+	
 
 	return true;
 }

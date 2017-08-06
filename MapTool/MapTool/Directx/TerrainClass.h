@@ -1,49 +1,10 @@
-#ifndef _TERRAINCLASS_H_
-#define _TERRAINCLASS_H_
-
-#include <fstream>
-#include <stdio.h>
-
-#include "Resources\MyResource.h"
+#pragma once
 
 #include "TerrainCellClass.h"
 #include "FrustumClass.h"
 
-using namespace std;
-
 class TerrainClass
 {
-private:
-	struct HeightMapType
-	{
-		float x, y, z;
-		float nx, ny, nz;
-		float r, g, b;
-	};
-
-	struct ModelType
-	{
-		float x, y, z;
-		float tu, tv;
-		float tu2, tv2;
-		float nx, ny, nz;
-		float tx, ty, tz;
-		float bx, by, bz;
-		float r, g, b;
-	};
-
-	struct VectorType
-	{
-		float x, y, z;
-	};
-
-	struct TempVertexType
-	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-	};
-	
 public:
 	TerrainClass();
 	TerrainClass(const TerrainClass &);
@@ -57,6 +18,7 @@ public:
 	bool RenderCell(ID3D11DeviceContext *, int, FrustumClass *);
 	void RenderCellLines(ID3D11DeviceContext *, int);
 
+public:
 	int GetCellIndexCount(int);
 	int GetCellLinesIndexCount(int);
 	int GetCellCount();
@@ -71,26 +33,33 @@ private:
 	bool LoadTerrainDesc(MyStruct::TERRAIN_DESC &);
 	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
-	void ShutdownHeightMap();
-	void SetTerrainCoordinates();
-	bool CalculateNormals();
-	bool LoadColorMap();
-	bool BuildTerrainModel();
-	void ShutdownTerrainModel();
-	void CalculateTerrainVectors();
-	void CalculateTangentBinormal(TempVertexType, TempVertexType, TempVertexType, VectorType &, VectorType &);
 	bool LoadTerrainCells(ID3D11Device *, MyStruct::TERRAIN_DESC &);
+	bool LoadColorMap();
+
+private:
+	void ShutdownHeightMap();
 	void ShutdownTerrainCells();
+	void ShutdownTerrainModel();
+
+private:
+	bool CalculateNormals();
+	void CalculateTerrainVectors();
+	void CalculateTangentBinormal(MyStruct::TempVertexType, MyStruct::TempVertexType, MyStruct::TempVertexType, MyStruct::VectorType &, MyStruct::VectorType &);
+	
 	bool CheckHeightOfTriangle(float, float, float &, float[3], float[3], float[3]);
+
+private:
+	void SetTerrainCoordinates();
+
+	bool BuildTerrainModel();
+	bool BuildBrushCircleBuffers(ID3D11Device *, int, XMFLOAT3);
 
 private:
 	int m_terrainHeight, m_terrainWidth, m_vertexCount;
 	float m_heightScale;
 	char *m_terrainFilename, *m_colorMapFilename;
-	HeightMapType *m_heightMap;
-	ModelType *m_terrainModel;
+	MyStruct::HeightMapType *m_heightMap;
+	MyStruct::ModelType *m_terrainModel;
 	TerrainCellClass *m_TerrainCells;
 	int m_cellCount, m_renderCount, m_cellsDrawn, m_cellsCulled;
 };
-
-#endif
