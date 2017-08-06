@@ -90,7 +90,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		result = m_TextureManager->LoadTexture(m_Direct3D->GetDevice(),
 			m_Direct3D->GetDeviceContext(),
 			"Data/Textures/",
-			(char *)terrainDesc.textureNames->at(i).c_str(),
+			(char *)terrainDesc.textureNames->at(i).data(),
 			i);
 		if (!result)
 			return false;

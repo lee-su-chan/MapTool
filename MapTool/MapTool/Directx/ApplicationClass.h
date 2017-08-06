@@ -1,7 +1,6 @@
-#ifndef _APPLICATIONCLASS_H_
-#define _APPLICATIONCLASS_H_
+#pragma once
 
-#include "Resources\MyResource.h"
+#include "D3D_Defines.h"
 
 #include "InputClass.h"
 #include "D3DClass.h"
@@ -38,5 +37,3 @@ private:
 
 	MyStruct::TERRAIN_DESC terrainDesc;
 };
-
-#endif
