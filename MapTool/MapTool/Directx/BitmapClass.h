@@ -1,21 +1,9 @@
-#ifndef _BITMAPCLASS_H_
-#define _BITMAPCLASS_H_
-
-#include <DirectXMath.h>
-
-using namespace DirectX;
+#pragma once
 
 #include "TextureClass.h"
 
 class BitmapClass
 {
-private:
-	struct VertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-	};
-
 public:
 	BitmapClass();
 	BitmapClass(const BitmapClass &);
@@ -44,5 +32,3 @@ private:
 	int m_previousPosX, m_previousPosY;
 	TextureClass *m_Texture;
 };
-
-#endif

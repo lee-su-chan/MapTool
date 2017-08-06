@@ -81,7 +81,7 @@ ID3D11ShaderResourceView * BitmapClass::GetTexture()
 
 bool BitmapClass::InitializeBuffers(ID3D11Device *device)
 {
-	VertexType *vertices;
+	MyStruct::TextureVertexType *vertices;
 	unsigned long *indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -91,7 +91,7 @@ bool BitmapClass::InitializeBuffers(ID3D11Device *device)
 	m_vertexCount = 6;
 	m_indexCount = m_vertexCount;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::TextureVertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
@@ -99,13 +99,13 @@ bool BitmapClass::InitializeBuffers(ID3D11Device *device)
 	if (!indices)
 		return false;
 
-	memset(vertices, 0, sizeof(VertexType) * m_vertexCount);
+	memset(vertices, 0, sizeof(MyStruct::TextureVertexType) * m_vertexCount);
 
 	for (i = 0; i < m_indexCount; ++i)
 		indices[i] = i;
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::TextureVertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
@@ -163,9 +163,9 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext *deviceContext,
 	int positionY)
 {
 	float left, right, top, bottom;
-	VertexType *vertices;
+	MyStruct::TextureVertexType *vertices;
+	MyStruct::TextureVertexType *dataPtr;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	VertexType *dataPtr;
 	HRESULT result;
 
 	if (positionX == m_previousPosX && positionY == m_previousPosY)
@@ -179,7 +179,7 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext *deviceContext,
 	top = (float)(m_screenHeight / 2) - (float)positionY;
 	bottom = top - (float)m_bitmapHeight;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::TextureVertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
@@ -212,9 +212,9 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr = (VertexType *)mappedResource.pData;
+	dataPtr = (MyStruct::TextureVertexType *)mappedResource.pData;
 
-	memcpy(dataPtr, (void *)vertices, sizeof(VertexType) * m_vertexCount);
+	memcpy(dataPtr, (void *)vertices, sizeof(MyStruct::TextureVertexType) * m_vertexCount);
 
 	deviceContext->Unmap(m_vertexBuffer, 0);
 
@@ -231,7 +231,7 @@ void BitmapClass::RenderBuffers(ID3D11DeviceContext *deviceContext)
 	unsigned int stride;
 	unsigned int offset;
 
-	stride = sizeof(VertexType);
+	stride = sizeof(MyStruct::TextureVertexType);
 	offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
