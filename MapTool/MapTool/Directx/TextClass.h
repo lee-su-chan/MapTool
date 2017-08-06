@@ -1,5 +1,4 @@
-#ifndef _TEXTCLASS_H_
-#define _TEXTCLASS_H_
+#pragma once
 
 #include "FontClass.h"
 #include "ShaderManagerClass.h"
@@ -7,11 +6,6 @@
 class TextClass
 {
 private:
-	struct VertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-	};
 
 public:
 	TextClass();
@@ -34,5 +28,3 @@ private:
 	bool m_shadow;
 	XMFLOAT4 m_pixelColor;
 };
-
-#endif

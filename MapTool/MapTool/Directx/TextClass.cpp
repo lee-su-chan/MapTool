@@ -102,7 +102,7 @@ void TextClass::Render(ID3D11DeviceContext *deviceContext,
 bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *font, char *text, int posX, int posY, float red, float green, float blue)
 {
 	int numLetters;
-	VertexType *vertices;
+	MyStruct::TextureVertexType *vertices;
 	float drawX, drawY;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	void *verticesPtr;
@@ -114,11 +114,11 @@ bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *fo
 	if (numLetters > m_maxLength)
 		return false;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::TextureVertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
-	memset(vertices, 0, (sizeof(VertexType) * m_vertexCount));
+	memset(vertices, 0, (sizeof(MyStruct::TextureVertexType) * m_vertexCount));
 
 	drawX = (float)(m_screenWidth / 2 * -1 + posX);
 	drawY = (float)(m_screenHeight / 2 + posY);
@@ -135,13 +135,13 @@ bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *fo
 		return false;
 
 	verticesPtr = (void *)mappedResource.pData;
-	memcpy(verticesPtr, (void *)vertices, (sizeof(VertexType) * m_vertexCount));
+	memcpy(verticesPtr, (void *)vertices, (sizeof(MyStruct::TextureVertexType) * m_vertexCount));
 	
 	deviceContext->Unmap(m_vertexBuffer, 0);
 
 	if (m_shadow)
 	{
-		memset(vertices, 0, (sizeof(VertexType) * m_vertexCount));
+		memset(vertices, 0, (sizeof(MyStruct::TextureVertexType) * m_vertexCount));
 
 		drawX = (float)(m_screenWidth / 2 * -1 + posX + 2);
 		drawY = (float)(m_screenHeight / 2 - posX - 2);
@@ -158,7 +158,7 @@ bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *fo
 			return false;
 
 		verticesPtr = (void *)mappedResource.pData;
-		memcpy(verticesPtr, (void *)vertices, (sizeof(VertexType) * m_vertexCount));
+		memcpy(verticesPtr, (void *)vertices, (sizeof(MyStruct::TextureVertexType) * m_vertexCount));
 		
 		deviceContext->Unmap(m_vertexBuffer2, 0);
 	}
@@ -179,7 +179,7 @@ bool TextClass::InitializeSentence(ID3D11Device *device,
 	float green, 
 	float blue)
 {
-	VertexType *vertices;
+	MyStruct::TextureVertexType *vertices;
 	unsigned long *indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -189,7 +189,7 @@ bool TextClass::InitializeSentence(ID3D11Device *device,
 	m_vertexCount = 6 * m_maxLength;
 	m_indexCount = 6 * m_maxLength;
 
-	vertices = new VertexType[m_vertexCount];
+	vertices = new MyStruct::TextureVertexType[m_vertexCount];
 	if (!vertices)
 		return false;
 
@@ -197,13 +197,13 @@ bool TextClass::InitializeSentence(ID3D11Device *device,
 	if (!indices)
 		return false;
 
-	memset(vertices, 0, (sizeof(VertexType) * m_vertexCount));
+	memset(vertices, 0, (sizeof(MyStruct::TextureVertexType) * m_vertexCount));
 
 	for (i = 0; i < m_indexCount; ++i)
 		indices[i] = i;
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::TextureVertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
@@ -274,7 +274,7 @@ void TextClass::RenderSentence(ID3D11DeviceContext *deviceContext,
 	unsigned int stride, offset;
 	XMFLOAT4 shadowColor;
 
-	stride = sizeof(VertexType);
+	stride = sizeof(MyStruct::TextureVertexType);
 	offset = 0;
 
 	if (m_shadow)
