@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "MapTool.h"
 
-#include "DirectX\Resources\MyResource.h"
+#include "MFC_Defines.h"
+
 #include "MainFrm.h"
 #include "MapToolDoc.h"
 #include "MapToolView.h"
@@ -159,7 +160,7 @@ void CMainFrame::OnFileNew()
 	terrainDesc.textureNames = makeNewFileDlg.GetTextureNameVector();
 	terrainDesc.textureCurSel = makeNewFileDlg.GetCurSel();
 	terrainDesc.nTexture = makeNewFileDlg.GetTextureSize();
-	terrainDesc.baseTextureName = (char *)terrainDesc.textureNames->at(terrainDesc.textureCurSel).c_str();
+	terrainDesc.baseTextureName = (char *)terrainDesc.textureNames->at(terrainDesc.textureCurSel).data();
 
 	tempHwnd[0] = m_wndSplitter.GetPane(0, 0)->GetSafeHwnd();
 	tempHwnd[1] = this->GetSafeHwnd();
