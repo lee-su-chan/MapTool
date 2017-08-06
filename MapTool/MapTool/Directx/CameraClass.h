@@ -1,8 +1,6 @@
-#ifndef _CAMERACLASS_H_
-#define _CAMERACLASS_H_
+#pragma once
 
-#include <DirectXMath.h>
-using namespace DirectX;
+#include "D3D_Defines.h"
 
 class CameraClass
 {
@@ -28,5 +26,3 @@ private:
 	float m_rotX, m_rotY, m_rotZ;
 	XMMATRIX m_viewMatrix, m_baseViewMatrix;
 };
-
-#endif

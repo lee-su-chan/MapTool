@@ -1,9 +1,6 @@
-#ifndef _LIGHTCLASS_H_
-#define _LIGHTCLASS_H_
+#pragma once
 
-#include <DirectXMath.h>
-
-using namespace DirectX;
+#include "D3D_Defines.h"
 
 class LightClass
 {
@@ -28,5 +25,3 @@ private:
 	XMFLOAT3 m_direction;
 	XMFLOAT3 m_position;
 };
-
-#endif

@@ -1,5 +1,6 @@
-#ifndef _ZONECLASS_H_
-#define _ZONECLASS_H_
+#pragma once
+
+#include "D3D_Defines.h"
 
 #include "D3DClass.h"
 #include "InputClass.h"
@@ -15,7 +16,6 @@
 #include "TerrainClass.h"
 #include "RayClass.h"
 #include "PickingToolSingletonClass.h"
-#include "Resources\MyResource.h"
 
 class ZoneClass
 {
@@ -27,11 +27,10 @@ public:
 	bool Initialize(D3DClass *, HWND, int, int, float, MyStruct::TERRAIN_DESC &);
 	void Shutdown();
 	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int, MyStruct::TERRAIN_DESC &);
+	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, MyStruct::TERRAIN_DESC &);
 
 private:
 	void HandleMovementInput(D3DClass *, InputClass *, float);
-	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, MyStruct::TERRAIN_DESC &);
-
 	void PushedF3Button(float);
 
 private:
@@ -47,5 +46,3 @@ private:
 	float m_posX, m_posY, m_posZ;
 	int m_ScreenWidth, m_ScreenHeight;
 };
-
-#endif

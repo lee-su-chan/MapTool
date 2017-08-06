@@ -1,9 +1,6 @@
-#ifndef _FRUSTUMCLASS_H_
-#define _FRUSTUMCLASS_H_
+#pragma once
 
-#include <DirectXMath.h>
-
-using namespace DirectX;
+#include "D3D_Defines.h"
 
 class FrustumClass
 {
@@ -26,5 +23,3 @@ private:
 	float m_screenDepth;
 	float m_planes[6][4];
 };
-
-#endif

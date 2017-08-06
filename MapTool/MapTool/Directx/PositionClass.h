@@ -1,5 +1,4 @@
-#ifndef _POSITIONCLASS_H_
-#define _POSITIONCLASS_H_
+#pragma once
 
 #include <math.h>
 
@@ -43,5 +42,3 @@ private:
 	float m_lookUpSpeed, m_lookDownSpeed;
 	float m_mouseSpeed;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _INPUTCLASS_H_
-#define _INPUTCLASS_H_
+#pragma once
 
 #define DIRECTINPUT_VERTSION 0x0800
 
@@ -69,5 +68,3 @@ private:
 
 	HWND m_directXViewHwnd;
 };
-
-#endif

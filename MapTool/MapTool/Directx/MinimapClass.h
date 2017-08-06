@@ -1,5 +1,4 @@
-#ifndef _MINIMAPCLASS_H_
-#define _MINIMAPCLASS_H_
+#pragma once
 
 #include "BitmapClass.h"
 #include "ShaderManagerClass.h"
@@ -22,5 +21,3 @@ private:
 	float m_mapSizeX, m_mapSizeY, m_terrainWidth, m_terrainHeight;
 	BitmapClass *m_MiniMapBitmap, *m_PointBitmap;
 };
-
-#endif

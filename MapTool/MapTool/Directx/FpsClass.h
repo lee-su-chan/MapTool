@@ -1,5 +1,4 @@
-#ifndef _FPSCLASS_H_
-#define _FPSCLASS_H_
+#pragma once
 
 #include <Windows.h>
 #include <mmsystem.h>
@@ -19,5 +18,3 @@ private:
 	int m_fps, m_count;
 	unsigned long m_startTime;
 };
-
-#endif

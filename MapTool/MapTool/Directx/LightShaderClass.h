@@ -1,31 +1,9 @@
-#ifndef _LIGHTSHADERCLASS_H_
-#define _LIGHTSHADERCLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class LightShaderClass
 {
-private:
-	struct MatrixBufferType
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
-	struct LightBufferType
-	{
-		XMFLOAT4 diffuseColor;
-		XMFLOAT3 lightDirection;
-		float padding;
-	};
-
 public:
 	LightShaderClass();
 	LightShaderClass(const LightShaderClass &);
@@ -51,5 +29,3 @@ private:
 	ID3D11SamplerState *m_sampleState;
 	ID3D11Buffer *m_lightBuffer;
 };
-
-#endif

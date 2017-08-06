@@ -1,15 +1,7 @@
-#ifndef _RAY_H_
-#define _RAY_H_
-
-#include <iostream>
-#include <direct.h>
-#include <DirectXMath.h>
+#pragma once
 
 #include "D3DClass.h"
 #include "CameraClass.h"
-
-using namespace DirectX;
-using namespace std;
 
 class RayClass
 {
@@ -33,5 +25,3 @@ private:
 	XMVECTOR m_vOriginal;
 	XMVECTOR m_vDirection;
 };
-
-#endif

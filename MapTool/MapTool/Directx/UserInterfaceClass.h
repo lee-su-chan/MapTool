@@ -1,6 +1,6 @@
-#ifndef _USERINTERFACECLASS_H_
-#define _USERINTERFACECLASS_H_
+#pragma once
 
+#include "D3DClass.h"
 #include "TextClass.h"
 #include "MinimapClass.h"
 
@@ -43,5 +43,3 @@ private:
 
 	MiniMapClass *m_MiniMap;
 };
-
-#endif

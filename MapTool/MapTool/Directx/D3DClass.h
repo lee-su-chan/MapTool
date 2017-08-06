@@ -1,14 +1,6 @@
-#ifndef _D3DCLASS_H_
-#define _D3DCLASS_H_
+#pragma once
 
-//#pragma comment(lib, "d3d11.lib")
-//#pragma comment(lib, "dxgi.lib")
-//#pragma comment(lib, "d3dcompiler.lib")
-
-#include <D3D11.h>
-#include <DirectXMath.h>
-
-using namespace DirectX;
+#include "D3D_Defines.h"
 
 class D3DClass
 {
@@ -71,5 +63,3 @@ private:
 	ID3D11BlendState *m_alphaDisalbeBlendingState;
 	ID3D11BlendState *m_alphaEnableBlendingState2;
 };
-
-#endif

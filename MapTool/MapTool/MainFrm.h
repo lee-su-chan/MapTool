@@ -6,8 +6,10 @@
 
 #include "FormView2.h"
 #include "FixedSplitterWnd.h"
-#include "DirectX\ApplicationClass.h"
 #include "MakeNewFileDlg.h"
+
+#include "MFC_Defines.h"
+#include "DirectX\ApplicationClass.h"
 
 class CMainFrame : public CFrameWnd
 {

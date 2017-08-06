@@ -1,30 +1,9 @@
-#ifndef _SKYDOMESHADERCLASS_H_
-#define _SKYDOMESHADERCLASS_H_
+#pragma once
 
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <fstream>
-
-using namespace DirectX;
-using namespace std;
+#include "D3D_Defines.h"
 
 class SkyDomeShaderClass
 {
-private:
-	struct MatrixBufferType
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
-	struct ColorBufferType
-	{
-		XMFLOAT4 apexColor;
-		XMFLOAT4 centerColor;
-	};
-
 public:
 	SkyDomeShaderClass();
 	SkyDomeShaderClass(const SkyDomeShaderClass &);
@@ -49,5 +28,3 @@ private:
 	ID3D11Buffer *m_matrixBuffer;
 	ID3D11Buffer *m_colorBuffer;
 };
-
-#endif

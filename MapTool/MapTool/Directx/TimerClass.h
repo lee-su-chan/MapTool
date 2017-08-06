@@ -1,5 +1,4 @@
-#ifndef _TIMERCLASS_H_
-#define _TIMERCLASS_H_
+#pragma once
 
 #include <Windows.h>
 
@@ -25,5 +24,3 @@ private:
 	float m_frameTime;
 	INT64 m_beginTime, m_endTime;
 };
-
-#endif
