@@ -160,7 +160,7 @@ bool SkyDomeShaderClass::InitializeShader(ID3D11Device *device,
 	pixelShaderBuffer = NULL;
 
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.ByteWidth = sizeof(MyStruct::MatrixBufferType);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
@@ -171,7 +171,7 @@ bool SkyDomeShaderClass::InitializeShader(ID3D11Device *device,
 		return false;
 
 	colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	colorBufferDesc.ByteWidth = sizeof(ColorBufferType);
+	colorBufferDesc.ByteWidth = sizeof(MyStruct::ColorBufferType);
 	colorBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	colorBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	colorBufferDesc.MiscFlags = 0;
@@ -254,9 +254,9 @@ bool SkyDomeShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType *dataPtr;
+	MyStruct::MatrixBufferType *dataPtr;
+	MyStruct::ColorBufferType *dataPtr2;
 	unsigned int bufferNumber;
-	ColorBufferType *dataPtr2;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -271,7 +271,7 @@ bool SkyDomeShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr = (MatrixBufferType *)mappedResource.pData;
+	dataPtr = (MyStruct::MatrixBufferType *)mappedResource.pData;
 
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
@@ -292,7 +292,7 @@ bool SkyDomeShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	if (FAILED(result))
 		return false;
 
-	dataPtr2 = (ColorBufferType *)mappedResource.pData;
+	dataPtr2 = (MyStruct::ColorBufferType *)mappedResource.pData;
 
 	dataPtr2->apexColor = apexColor;
 	dataPtr2->centerColor = centerColor;
