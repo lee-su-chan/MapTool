@@ -5,7 +5,8 @@
 #include "MapTool.h"
 #include "MakeNewFileDlg.h"
 #include "afxdialogex.h"
-#include "DirectX\Resources\MyResource.h"
+
+#include "MFC_Defines.h"
 
 #pragma warning(disable:4996)
 
@@ -57,7 +58,7 @@ void CMakeNewFileDlg::OnBnClickedOk()
 	CDialog::OnOK();
 }
 
-void CMakeNewFileDlg::SetTextureComboBox()
+void CMakeNewFileDlg::InitTextureComboBox()
 {
 	POSITION pos;
 	
@@ -77,69 +78,51 @@ std::string CMakeNewFileDlg::CStringToString(CString cStr)
 }
 
 
-BOOL CMakeNewFileDlg::CastImageType(LPCTSTR InSourceImageFileName, 
-	LPCTSTR InDestImageFileName, 
-	const CRect& InTagetRect, 
-	REFGUID InImageFormat)
-{
-	CImage TempSourceImage;
-	CImage TempDestImage;
-	
-	CRect TempTargetRect = InTagetRect;
-
-	// 1. 원본 이미지를 TempSourceImage에 로딩
-	TempSourceImage.Load(InSourceImageFileName);
-	CDC *pSourceDC = CDC::FromHandle(TempSourceImage.GetDC());
-
-	// 2. 파일로 만들 이미지 객체 TempDestImage 생성
-	int BitPerPixel = pSourceDC->GetDeviceCaps(BITSPIXEL);
-	TempDestImage.Create(TempTargetRect.Width(), TempTargetRect.Height(), BitPerPixel);
-	CDC *pDestDC = CDC::FromHandle(TempDestImage.GetDC());
-
-	if (!pSourceDC || !pDestDC)
-		return FALSE;
-
-	// 3. 타겟 DC에 원본 이미지 DC의 내용을 쓴다.
-	pDestDC->BitBlt(0, 0,
-		TempTargetRect.Width(),
-		TempTargetRect.Height(),
-		pSourceDC,
-		TempTargetRect.left,
-		TempTargetRect.top,
-		SRCCOPY);
-
-	TempDestImage.ReleaseDC();
-	TempSourceImage.ReleaseDC();
-
-	TempDestImage.Save(InDestImageFileName, InImageFormat);
-	
-	return TRUE;
-}
-
 void CMakeNewFileDlg::OnCbnSelchangeCombo2()
 {
 	UpdateData(TRUE);
-	if(!image->IsNull())
-		image->Detach();
+	if(!m_IconImage->IsNull())
+		m_IconImage->Detach();
 
-	//CImage image;
-	CDC *dc;
-	CString strPath = _T("Data/Textures/");
+	//CDC *dc = this->GetDC();
+	//std::string fullPath = "Data/Textures/";
+	//CString iconName;
+	//const int x = 90;
+	//const int y = 180;
+	//const int width = 110;
+	//const int height = 110;
+	//int error;
+	//int count;
+	//FILE *filePtr;
+	//TargaHeader targaFileHeader;
+	
+	//m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), iconName);
+	//CT2CA pszConvertedAnsiString(iconName);
+	//fullPath += pszConvertedAnsiString;
+
+	//error = fopen_s(&filePtr, fullPath.c_str(), "rb");
+	//if (error != 0)
+	//	return;
+
+	//count = (unsigned int)fread(&targaFileHeader, sizeof(TargaHeader), 1, filePtr);
+	//if (count != 1)
+	//	return;
+
+	//---------------------------------------------------------------------------
+	CDC *dc = this->GetDC();
+	CString fullPath = _T("Data/Textures/");
+	CString iconName = _T("");
 	const int x = 90;
 	const int y = 180;
 	const int width = 110;
 	const int height = 110;
-
-	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), m_IconName);
 	
-	strPath += m_IconName;
-	m_IconName = strPath;
-
-	dc = this->GetDC();
-
-	image->Load(m_IconName);
+	m_TextureComboBox.GetLBText(m_TextureComboBox.GetCurSel(), iconName);
+	fullPath += iconName;
+	m_IconImage->Load(fullPath);
 	dc->SetStretchBltMode(COLORONCOLOR);
-	image->StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
+	m_IconImage->StretchBlt(dc->m_hDC, CRect(x, y, x + width, y + height), SRCCOPY);
+	//---------------------------------------------------------------------------
 
 	m_CurSel = m_TextureComboBox.GetCurSel();
 }
@@ -149,24 +132,21 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int textureNameIndex = 0;
-	CString fileName;
-	CString DirName;
-
-	textureNames = new std::vector<std::string>();
-	image = new CImage();
-	
-	//폴더나 파일의 목록을 가져올 디렉터리의 풀 패스
+	int i;
+	int nTexture = 0;
 	CString path = _T("Data\\Textures\\*.*");
+	CString fileName;
 	CFileFind finder;
+	
+	textureNames = new std::vector<std::string>();
+	m_IconImage = new CImage;
 
 	//CFileFind는 파일, 디렉터리가 존재하면 TRUE 를 반환함 
-	BOOL bWorking = finder.FindFile(path);
-
-	while (bWorking)
+	BOOL isWorking = finder.FindFile(path);
+	while (isWorking)
 	{
 		//다음 파일/폴더가 존재하다면 TRUE 반환
-		bWorking = finder.FindNextFile();
+		isWorking = finder.FindNextFile();
 
 		//파일 일때
 		if (finder.IsArchived())
@@ -176,35 +156,63 @@ BOOL CMakeNewFileDlg::OnInitDialog()
 			textureNames->push_back(CStringToString(fileName));
 		}
 	}
-
-	SetTextureComboBox();
+	
+	InitTextureComboBox();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+bool CMakeNewFileDlg::InitTextures(ID3D11Device *device, ID3D11DeviceContext *deviceContext)
+{
+	bool result;
+	int i;
+
+	m_TextureManager = new TextureManagerClass;
+	if (!m_TextureManager)
+		return false;
+
+	result = m_TextureManager->Initialize(textureNames->size());
+	if (!result)
+	{
+		AfxMessageBox(_T("Could not initialize TextureManagerClass object."));
+		return false;
+	}
+
+	for (i = 0; i < textureNames->size(); ++i)
+	{
+		result = m_TextureManager->LoadTexture(device,
+			deviceContext,
+			"Data/Textures/",
+			(char *)textureNames->at(i).data(),
+			i);
+		if (!result)
+			return false;
+	}
 }
 
 int CMakeNewFileDlg::GetCellSize() const
 {
 	switch (m_CellSize)
 	{
-	case 0: return 4;
-	case 1: return 8;
-	case 2: return 16;
-	case 3: return 32;
-	case 4: return 64;
-	default: AfxMessageBox(_T("GetCellSize() Error!")); return 0;
+		case 0: return 4;
+		case 1: return 8;
+		case 2: return 16;
+		case 3: return 32;
+		case 4: return 64;
+		default: AfxMessageBox(_T("GetCellSize() Error!")); return 0;
 	}
 }
 int CMakeNewFileDlg::GetTileSize() const
 {
 	switch (m_TileSize)
 	{
-	case 0: return 4;
-	case 1: return 8;
-	case 2: return 16;
-	case 3: return 32;
-	case 4: return 64;
-	default: AfxMessageBox(_T("GetTileSize() Error!")); return 0;
+		case 0: return 4;
+		case 1: return 8;
+		case 2: return 16;
+		case 3: return 32;
+		case 4: return 64;
+		default: AfxMessageBox(_T("GetTileSize() Error!")); return 0;
 	}
 }
 
