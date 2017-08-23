@@ -71,8 +71,8 @@ bool TerrainShaderClass::Render(ID3D11DeviceContext *deviceContext,
 
 bool TerrainShaderClass::InitializeShader(ID3D11Device *device, 
 	HWND hwnd,
-	WCHAR *vsFilename,
-	WCHAR *psFilename)
+	const WCHAR *vsFilename,
+	const WCHAR *psFilename)
 {
 	HRESULT result;
 	ID3D10Blob *errorMessage;
@@ -303,7 +303,7 @@ void TerrainShaderClass::ShutdownShader()
 
 void TerrainShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage,
 	HWND hwnd,
-	WCHAR *shaderFilename)
+	const WCHAR *shaderFilename)
 {
 	char *compileErrors;
 	unsigned long long bufferSize, i;

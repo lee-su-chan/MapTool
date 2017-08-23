@@ -21,8 +21,8 @@ bool BitmapClass::Initialize(ID3D11Device *device,
 	int screenHeight,
 	int bitmapWidth,
 	int bitmapHeight,
-	char *path,
-	char *textureFilename)
+	const char *path,
+	const char *textureFilename)
 {
 	bool result;
 
@@ -243,8 +243,8 @@ void BitmapClass::RenderBuffers(ID3D11DeviceContext *deviceContext)
 
 bool BitmapClass::LoadTexture(ID3D11Device *device,
 	ID3D11DeviceContext *deviceContext,
-	char *path,
-	char *filename)
+	const char *path,
+	const char *filename)
 {
 	bool result;
 

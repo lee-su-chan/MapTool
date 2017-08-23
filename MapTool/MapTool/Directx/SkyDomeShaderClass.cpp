@@ -62,8 +62,8 @@ bool SkyDomeShaderClass::Render(ID3D11DeviceContext *deviceContext,
 
 bool SkyDomeShaderClass::InitializeShader(ID3D11Device *device,
 	HWND hwnd,
-	WCHAR *vsFilename,
-	WCHAR *psFilename)
+	const WCHAR *vsFilename,
+	const WCHAR *psFilename)
 {
 	HRESULT result;
 	ID3D10Blob *errorMessage;
@@ -221,7 +221,7 @@ void SkyDomeShaderClass::ShutdownShader()
 
 void SkyDomeShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage,
 	HWND hwnd,
-	WCHAR *shaderFilename)
+	const WCHAR *shaderFilename)
 {
 	char *compileErrors;
 	unsigned __int64 bufferSize, i;

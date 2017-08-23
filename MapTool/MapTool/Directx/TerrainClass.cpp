@@ -17,7 +17,7 @@ TerrainClass::~TerrainClass()
 {
 }
 
-bool TerrainClass::Initialize(ID3D11Device *device, char *setupFilename, MyStruct::TERRAIN_DESC &terrainDesc)
+bool TerrainClass::Initialize(ID3D11Device *device, const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result;
 
@@ -206,57 +206,57 @@ TerrainCellClass *TerrainClass::GetTerrainCellObj()
 	return m_TerrainCells;
 }
 
-bool TerrainClass::LoadSetupFile(char *filename)
-{
-	int stringLength;
-	ifstream fin;
-	char input;
+//bool TerrainClass::LoadSetupFile(char *filename)
+//{
+//	int stringLength;
+//	ifstream fin;
+//	char input;
+//
+//	stringLength = 256;
+//	
+//	m_terrainFilename = new char[stringLength];
+//	if (!m_terrainFilename)
+//		return false;
+//
+//	m_colorMapFilename = new char[stringLength];
+//	if (!m_colorMapFilename)
+//		return false;
+//
+//	fin.open(filename);
+//	if (fin.fail())
+//		return false;
+//
+//	fin.get(input);
+//	while (input != ':')
+//		fin.get(input);
+//	fin >> m_terrainFilename;
+//
+//	fin.get(input);
+//	while (input != ':')
+//		fin.get(input);
+//	fin >> m_terrainHeight;
+//
+//	fin.get(input);
+//	while (input != ':')
+//		fin.get(input);
+//	fin >> m_terrainWidth;
+//
+//	fin.get(input);
+//	while (input != ':')
+//		fin.get(input);
+//	fin >> m_heightScale;
+//
+//	fin.get(input);
+//	while (input != ':')
+//		fin.get(input);
+//	fin >> m_colorMapFilename;
+//
+//	fin.close();
+//
+//	return true;
+//}
 
-	stringLength = 256;
-	
-	m_terrainFilename = new char[stringLength];
-	if (!m_terrainFilename)
-		return false;
-
-	m_colorMapFilename = new char[stringLength];
-	if (!m_colorMapFilename)
-		return false;
-
-	fin.open(filename);
-	if (fin.fail())
-		return false;
-
-	fin.get(input);
-	while (input != ':')
-		fin.get(input);
-	fin >> m_terrainFilename;
-
-	fin.get(input);
-	while (input != ':')
-		fin.get(input);
-	fin >> m_terrainHeight;
-
-	fin.get(input);
-	while (input != ':')
-		fin.get(input);
-	fin >> m_terrainWidth;
-
-	fin.get(input);
-	while (input != ':')
-		fin.get(input);
-	fin >> m_heightScale;
-
-	fin.get(input);
-	while (input != ':')
-		fin.get(input);
-	fin >> m_colorMapFilename;
-
-	fin.close();
-
-	return true;
-}
-
-bool TerrainClass::LoadTerrainDesc(MyStruct::TERRAIN_DESC &terrainDesc)
+bool TerrainClass::LoadTerrainDesc(const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	int i, j, index;
 	const int stringLength	= 256;
@@ -861,9 +861,9 @@ void TerrainClass::CalculateTerrainVectors()
 }
 
 void TerrainClass::CalculateTangentBinormal(
-	MyStruct::TempVertexType vertex1,
-	MyStruct::TempVertexType vertex2,
-	MyStruct::TempVertexType vertex3,
+	const MyStruct::TempVertexType vertex1,
+	const MyStruct::TempVertexType vertex2,
+	const MyStruct::TempVertexType vertex3,
 	MyStruct::VectorType &tangent,
 	MyStruct::VectorType &binormal)
 {
@@ -915,7 +915,7 @@ void TerrainClass::CalculateTangentBinormal(
 	return;
 }
 
-bool TerrainClass::LoadTerrainCells(ID3D11Device *device, MyStruct::TERRAIN_DESC &terrainDesc)
+bool TerrainClass::LoadTerrainCells(ID3D11Device *device, const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	int tileHeight, tileWidth, cellRowCount, i, j, index;
 	bool result;

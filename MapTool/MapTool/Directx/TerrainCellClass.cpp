@@ -152,7 +152,7 @@ bool TerrainCellClass::InitializeBuffers(ID3D11Device *device,
 	int tileHeight,
 	int tileWidth,
 	int terrainWidth,
-	MyStruct::ModelType *terrainModel)
+	const MyStruct::ModelType *terrainModel)
 {
 	MyStruct::TerrainVertexType *vertices;
 	unsigned long *indices;

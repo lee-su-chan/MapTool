@@ -42,8 +42,8 @@ void TextureManagerClass::Shutdown()
 
 bool TextureManagerClass::LoadTexture(ID3D11Device *device,
 	ID3D11DeviceContext *deviceContext,
-	char *path,
-	char *filename,
+	const char *path,
+	const char *filename,
 	int location)
 {
 	bool result;

@@ -60,8 +60,8 @@ bool TextureShaderClass::Render(ID3D11DeviceContext *deviceContext,
 
 bool TextureShaderClass::InitializeShader(ID3D11Device *device,
 	HWND hwnd,
-	WCHAR *vsFilename, 
-	WCHAR *psFilename)
+	const WCHAR *vsFilename, 
+	const WCHAR *psFilename)
 {
 	HRESULT result;
 	ID3D10Blob *errorMessage;
@@ -232,7 +232,7 @@ void TextureShaderClass::ShutdownShader()
 	return;
 }
 
-void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND hwnd, WCHAR *shaderFilename)
+void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND hwnd, const WCHAR *shaderFilename)
 {
 	char *compileErrors;
 	unsigned long long bufferSize, i;

@@ -9,7 +9,7 @@ public:
 	BitmapClass(const BitmapClass &);
 	~BitmapClass();
 
-	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, int, int, int, int, char *, char *);
+	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, int, int, int, int, const char *, const char *);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext *, int, int);
 
@@ -21,7 +21,7 @@ private:
 	void ShutdownBuffers();
 	bool UpdateBuffers(ID3D11DeviceContext *, int, int);
 	void RenderBuffers(ID3D11DeviceContext *);
-	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, char *, char *);
+	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, const char *, const char *);
 	void ReleaseTexture();
 
 private:

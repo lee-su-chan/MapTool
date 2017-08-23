@@ -16,9 +16,9 @@ FontClass::~FontClass()
 
 bool FontClass::Initialize(ID3D11Device *device, 
 	ID3D11DeviceContext *deviceContext,
-	char *path,
-	char *fontFilename,
-	char *textureFilename, 
+	const char *path,
+	const char *fontFilename,
+	const char *textureFilename,
 	float fontHeight, 
 	int spaceSize)
 {
@@ -53,7 +53,7 @@ ID3D11ShaderResourceView * FontClass::GetTexture()
 }
 
 void FontClass::BuildVertexArray(void *vertices, 
-	char *sentence, 
+	const char *sentence,
 	float drawX, 
 	float drawY)
 {
@@ -109,7 +109,7 @@ void FontClass::BuildVertexArray(void *vertices,
 	return;
 }
 
-int FontClass::GetSentencePixelLength(char *sentence)
+int FontClass::GetSentencePixelLength(const char *sentence)
 {
 	int pixelLength, numLetters, i, letter;
 
@@ -183,8 +183,8 @@ void FontClass::ReleaseFontData()
 
 bool FontClass::LoadTexture(ID3D11Device *device, 
 	ID3D11DeviceContext *deviceContext, 
-	char *path,
-	char *filename)
+	const char *path,
+	const char *filename)
 {
 	bool result;
 

@@ -9,14 +9,14 @@ public:
 	TextureClass(const TextureClass &);
 	~TextureClass();
 
-	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *, char *);
+	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, const char *, const char *);
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture();
 
 private:
-	bool LoadTextureFromFile(ScratchImage &, LPCSTR filename);
-	std::wstring strconvert(const std::string& _src);
+	bool LoadTextureFromFile(ScratchImage &, const LPCSTR);
+	std::wstring strconvert(const std::string &);
 
 private:
 	ID3D11Texture2D *m_texture;

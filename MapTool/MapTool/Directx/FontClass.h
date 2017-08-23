@@ -9,18 +9,18 @@ public:
 	FontClass(const FontClass &);
 	~FontClass();
 
-	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, char *, char *, char *, float, int);
+	bool Initialize(ID3D11Device *, ID3D11DeviceContext *, const char *, const char *, const char *, float, int);
 	void Shutdown();
 
 	ID3D11ShaderResourceView *GetTexture();
-	void BuildVertexArray(void *, char *, float, float);
-	int GetSentencePixelLength(char *);
+	void BuildVertexArray(void *, const char *, float, float);
+	int GetSentencePixelLength(const char *);
 	int GetFontHeight();
 
 private:
 	bool LoadFontData(char *);
 	void ReleaseFontData();
-	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, char *, char *);
+	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, const char *, const char *);
 	void ReleaseTexture();
 
 private:

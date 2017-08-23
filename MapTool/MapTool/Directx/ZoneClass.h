@@ -24,10 +24,10 @@ public:
 	ZoneClass(const ZoneClass &);
 	~ZoneClass();
 
-	bool Initialize(D3DClass *, HWND, int, int, float, MyStruct::TERRAIN_DESC &);
+	bool Initialize(D3DClass *, HWND, int, int, float, const MyStruct::TERRAIN_DESC &);
 	void Shutdown();
-	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int, MyStruct::TERRAIN_DESC &);
-	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, MyStruct::TERRAIN_DESC &);
+	bool Frame(D3DClass *, InputClass *, ShaderManagerClass *, TextureManagerClass *, float, int, const MyStruct::TERRAIN_DESC &);
+	bool Render(D3DClass *, ShaderManagerClass *, TextureManagerClass *, const MyStruct::TERRAIN_DESC &);
 
 private:
 	void HandleMovementInput(D3DClass *, InputClass *, float);
@@ -42,7 +42,7 @@ private:
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
 	RayClass m_Ray;
-	bool m_displayUI, m_wireFrame, m_play, m_cellLines, m_heightLocked;
-	float m_posX, m_posY, m_posZ;
+	bool m_IsDisplayUI, m_IsWireFrame, m_IsPlay, m_IsCellLines, m_IsHeightLocked;
+	float m_PosX, m_PosY, m_PosZ;
 	int m_ScreenWidth, m_ScreenHeight;
 };

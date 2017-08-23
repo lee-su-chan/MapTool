@@ -23,7 +23,7 @@ bool TextClass::Initialize(ID3D11Device *device,
 	int maxLength, 
 	bool shadow, 
 	FontClass *font, 
-	char *text, 
+	const char *text,
 	int posX, 
 	int posY,
 	float red, 
@@ -99,7 +99,14 @@ void TextClass::Render(ID3D11DeviceContext *deviceContext,
 	return;
 }
 
-bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *font, char *text, int posX, int posY, float red, float green, float blue)
+bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, 
+	FontClass *font, 
+	const char *text, 
+	int posX, 
+	int posY, 
+	float red, 
+	float green, 
+	float blue)
 {
 	int numLetters;
 	MyStruct::TextureVertexType *vertices;
@@ -172,7 +179,7 @@ bool TextClass::UpdateSentence(ID3D11DeviceContext *deviceContext, FontClass *fo
 bool TextClass::InitializeSentence(ID3D11Device *device, 
 	ID3D11DeviceContext *deviceContext, 
 	FontClass *font, 
-	char *text,
+	const char *text,
 	int posX, 
 	int posY, 
 	float red, 

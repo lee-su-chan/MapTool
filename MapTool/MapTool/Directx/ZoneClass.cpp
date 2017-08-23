@@ -9,9 +9,9 @@ ZoneClass::ZoneClass()
 	m_Frustum = 0;
 	m_SkyDome = 0;
 	m_Terrain = 0;
-	m_posX = 0;
-	m_posY = 0;
-	m_posZ = 0;
+	m_PosX = 0;
+	m_PosY = 0;
+	m_PosZ = 0;
 }
 
 ZoneClass::ZoneClass(const ZoneClass &other)
@@ -27,7 +27,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	int screenWidth, 
 	int screenHeight, 
 	float screenDepth,
-	MyStruct::TERRAIN_DESC &terrainDesc)
+	const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result;
 
@@ -80,7 +80,7 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!m_Terrain)
 		return false;
 
-	result = m_Terrain->Initialize(direct3D->GetDevice(), "Data/Setup.txt", terrainDesc);
+	result = m_Terrain->Initialize(direct3D->GetDevice(), terrainDesc);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
@@ -92,16 +92,16 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!m_Position)
 		return false;
 	
-	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_posX, m_posY, m_posZ);
+	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_PosX, m_PosY, m_PosZ);
 
-	m_Position->SetPosition(m_posX, m_posY + 5.0f, m_posZ);
+	m_Position->SetPosition(m_PosX, m_PosY + 5.0f, m_PosZ);
 	m_Position->SetRotation(36.0f, 136.0f, 0.0f);
 	
-	m_displayUI		= true;
-	m_wireFrame		= false;
-	m_play			= false;
-	m_cellLines		= true;
-	m_heightLocked	= false;
+	m_IsDisplayUI		= true;
+	m_IsWireFrame		= false;
+	m_IsPlay			= false;
+	m_IsCellLines		= true;
+	m_IsHeightLocked	= false;
 
 	m_ScreenWidth = screenWidth;
 	m_ScreenHeight = screenHeight;
@@ -165,7 +165,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	TextureManagerClass *textureManager,
 	float frameTime,
 	int fps,
-	MyStruct::TERRAIN_DESC &terrainDesc)
+	const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
@@ -178,7 +178,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 
 	input->GetMouseWindowPosition(mousePosX, mousePosY);
 
-	if(m_play)
+	if(m_IsPlay)
 		PushedF3Button(frameTime);
 	
 	result = m_UserInterface->Frame(direct3D->GetDeviceContext(),
@@ -199,7 +199,7 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 
 	m_Terrain->Frame();
 	
-	if (m_heightLocked)
+	if (m_IsHeightLocked)
 	{
 		foundHeight = m_Terrain->GetHeightAtPosition(posX, posZ, height);
 		if (foundHeight)
@@ -276,19 +276,19 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 	m_Camera->SetRotation(rotX, rotY, rotZ);
 
 	if (input->IsF1Toggled())
-		m_displayUI = !m_displayUI;
+		m_IsDisplayUI = !m_IsDisplayUI;
 
 	if (input->IsF2Toggled())
-		m_wireFrame = !m_wireFrame;
+		m_IsWireFrame = !m_IsWireFrame;
 
 	if (input->IsF3Toggled())
-		m_play = !m_play;
+		m_IsPlay = !m_IsPlay;
 
 	if (input->IsF4Toggled())
-		m_cellLines = !m_cellLines;
+		m_IsCellLines = !m_IsCellLines;
 
 	if (input->IsF5Toggled())
-		m_heightLocked = !m_heightLocked;
+		m_IsHeightLocked = !m_IsHeightLocked;
 
 	return;
 }
@@ -296,7 +296,7 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 bool ZoneClass::Render(D3DClass *direct3D, 
 	ShaderManagerClass *shaderManager,
 	TextureManagerClass *textureManager,
-	MyStruct::TERRAIN_DESC &terrainDesc)
+	const MyStruct::TERRAIN_DESC &terrainDesc)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -340,7 +340,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 	direct3D->TurnZBufferOn();
 	direct3D->TurnOnCulling();
 
-	if (m_wireFrame)
+	if (m_IsWireFrame)
 		direct3D->EnableWireframe();
 
 	for (i = 0; i < m_Terrain->GetCellCount(); ++i)
@@ -359,7 +359,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 			if (!result)
 				return false;
 
-			if (m_cellLines)
+			if (m_IsCellLines)
 			{
 				m_Terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
 				result = shaderManager->RenderColorShader(direct3D->GetDeviceContext(),
@@ -373,7 +373,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 		}
 	}
 
-	if (m_wireFrame)
+	if (m_IsWireFrame)
 		direct3D->DisableWireframe();
 
 	result = m_UserInterface->UpdateRenderCounts(direct3D->GetDeviceContext(),
@@ -383,7 +383,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 	if (!result)
 		return false;
 
-	if (m_displayUI)
+	if (m_IsDisplayUI)
 	{
 		result = m_UserInterface->Render(direct3D,
 			shaderManager,

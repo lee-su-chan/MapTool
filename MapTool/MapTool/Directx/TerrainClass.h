@@ -10,7 +10,7 @@ public:
 	TerrainClass(const TerrainClass &);
 	~TerrainClass();
 
-	bool Initialize(ID3D11Device *, char *, MyStruct::TERRAIN_DESC &);
+	bool Initialize(ID3D11Device *, const MyStruct::TERRAIN_DESC &);
 	void Shutdown();
 	
 	void Frame();
@@ -29,11 +29,11 @@ public:
 	TerrainCellClass *GetTerrainCellObj();
 
 private:
-	bool LoadSetupFile(char *);
-	bool LoadTerrainDesc(MyStruct::TERRAIN_DESC &);
+	//bool LoadSetupFile(char *);
+	bool LoadTerrainDesc(const MyStruct::TERRAIN_DESC &);
 	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
-	bool LoadTerrainCells(ID3D11Device *, MyStruct::TERRAIN_DESC &);
+	bool LoadTerrainCells(ID3D11Device *, const MyStruct::TERRAIN_DESC &);
 	bool LoadColorMap();
 
 private:
@@ -44,7 +44,7 @@ private:
 private:
 	bool CalculateNormals();
 	void CalculateTerrainVectors();
-	void CalculateTangentBinormal(MyStruct::TempVertexType, MyStruct::TempVertexType, MyStruct::TempVertexType, MyStruct::VectorType &, MyStruct::VectorType &);
+	void CalculateTangentBinormal(const MyStruct::TempVertexType, const MyStruct::TempVertexType, const MyStruct::TempVertexType, MyStruct::VectorType &, MyStruct::VectorType &);
 	
 	bool CheckHeightOfTriangle(float, float, float &, float[3], float[3], float[3]);
 

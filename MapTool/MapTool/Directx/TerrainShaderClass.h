@@ -14,9 +14,9 @@ public:
 	bool Render(ID3D11DeviceContext *, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, XMFLOAT3, XMFLOAT4);
 
 private:
-	bool InitializeShader(ID3D11Device *, HWND, WCHAR *, WCHAR *);
+	bool InitializeShader(ID3D11Device *, HWND, const WCHAR *, const WCHAR *);
 	void ShutdownShader();
-	void OutputShaderErrorMessage(ID3D10Blob *, HWND, WCHAR *);
+	void OutputShaderErrorMessage(ID3D10Blob *, HWND, const WCHAR *);
 
 	bool SetShaderParameters(ID3D11DeviceContext *, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, ID3D11ShaderResourceView *, XMFLOAT3, XMFLOAT4);
 	void RenderShader(ID3D11DeviceContext *, int);

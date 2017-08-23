@@ -12,7 +12,7 @@ public:
 	bool Initialize(int);
 	void Shutdown();
 
-	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, char *, char *, int);
+	bool LoadTexture(ID3D11Device *, ID3D11DeviceContext *, const char *, const char *, int);
 
 	ID3D11ShaderResourceView *GetTexture(int);
 

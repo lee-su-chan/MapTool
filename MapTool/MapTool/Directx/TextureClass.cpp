@@ -16,8 +16,8 @@ TextureClass::~TextureClass()
 
 bool TextureClass::Initialize(ID3D11Device *device,
 	ID3D11DeviceContext *deviceContext,
-	char *path,
-	char *filename)
+	const char *path,
+	const char *filename)
 {
 	bool result;
 	std::string fullPath;
@@ -66,7 +66,7 @@ ID3D11ShaderResourceView* TextureClass::GetTexture()
 	return m_textureView;
 }
 
-bool TextureClass::LoadTextureFromFile(ScratchImage &image, LPCSTR filename)
+bool TextureClass::LoadTextureFromFile(ScratchImage &image, const LPCSTR filename)
 {
 	HRESULT hr;
 	std::string str(filename);
@@ -95,7 +95,7 @@ bool TextureClass::LoadTextureFromFile(ScratchImage &image, LPCSTR filename)
 
 	return true;
 }
-std::wstring TextureClass::strconvert(const std::string& _src)
+std::wstring TextureClass::strconvert(const std::string &_src)
 {
 	USES_CONVERSION;
 

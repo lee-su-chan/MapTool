@@ -25,7 +25,7 @@ public:
 	bool TranslateVertex(ID3D11DeviceContext *);
 
 private:
-	bool InitializeBuffers(ID3D11Device *, int, int, int, int, int, MyStruct::ModelType *);
+	bool InitializeBuffers(ID3D11Device *, int, int, int, int, int, const MyStruct::ModelType *);
 	void ShutdownBuffers();
 	void RenderBuffers(ID3D11DeviceContext *);
 	void CalculateCellDemensions();
