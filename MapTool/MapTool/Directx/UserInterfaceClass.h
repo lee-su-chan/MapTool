@@ -26,20 +26,20 @@ private:
 	bool UpdateMousePositionStrings(ID3D11DeviceContext *, int, int);
 
 private:
-	FontClass *m_font1;
+	FontClass *m_Font1;
 	
-	TextClass *m_fpsString;
-	TextClass *m_videoStrings;
-	TextClass *m_positionStrings;
-	TextClass *m_skyColorTypeStrings;
-	TextClass *m_skyColorStrings;
-	TextClass *m_renderCountStrings;
-	TextClass *m_mousePositionStrings;
+	TextClass *m_FpsString;
+	TextClass *m_VideoStrings;
+	TextClass *m_PositionStrings;
+	TextClass *m_SkyColorTypeStrings;
+	TextClass *m_SkyColorStrings;
+	TextClass *m_RenderCountStrings;
+	TextClass *m_MousePositionStrings;
 	
-	int m_previousFps;
-	int m_previousPosition[6];
-	int m_previousSkyColor[8];
-	int m_previousMousePosition[2];
+	int m_PreviousFps;
+	int m_PreviousPosition[6];
+	int m_PreviousSkyColor[8];
+	int m_PreviousMousePosition[2];
 
 	MiniMapClass *m_MiniMap;
 };

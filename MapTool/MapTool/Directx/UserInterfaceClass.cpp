@@ -2,14 +2,14 @@
 
 UserInterfaceClass::UserInterfaceClass()
 {
-	m_font1 = 0;
-	m_fpsString = 0;
-	m_videoStrings = 0;
-	m_positionStrings = 0;
-	m_skyColorStrings = 0;
-	m_renderCountStrings = 0;
+	m_Font1 = 0;
+	m_FpsString = 0;
+	m_VideoStrings = 0;
+	m_PositionStrings = 0;
+	m_SkyColorStrings = 0;
+	m_RenderCountStrings = 0;
 	m_MiniMap = 0;
-	m_mousePositionStrings = 0;
+	m_MousePositionStrings = 0;
 }
 
 UserInterfaceClass::UserInterfaceClass(const UserInterfaceClass &other)
@@ -32,11 +32,11 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	char tempString[16];
 	int i;
 
-	m_font1 = new FontClass;
-	if (!m_font1)
+	m_Font1 = new FontClass;
+	if (!m_Font1)
 		return false;
 
-	result = m_font1->Initialize(Direct3D->GetDevice(),
+	result = m_Font1->Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		"Data/font/",
 		"font01.txt",
@@ -46,17 +46,17 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	m_fpsString = new TextClass;
-	if (!m_fpsString)
+	m_FpsString = new TextClass;
+	if (!m_FpsString)
 		return false;
 
-	result = m_fpsString->Initialize(Direct3D->GetDevice(),
+	result = m_FpsString->Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"Fps: 0",
 		10,
 		-50,
@@ -66,7 +66,7 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	m_previousFps = -1;
+	m_PreviousFps = -1;
 
 	Direct3D->GetVideoCardInfo(videoCard, videoMemory);
 	strcpy_s(videoString, "Video Card: ");
@@ -78,17 +78,17 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	strcat_s(memoryString, tempString);
 	strcat_s(memoryString, " MB");
 
-	m_videoStrings = new TextClass[2];
-	if (!m_videoStrings)
+	m_VideoStrings = new TextClass[2];
+	if (!m_VideoStrings)
 		return false;
 
-	result = m_videoStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_VideoStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		256,
 		false,
-		m_font1,
+		m_Font1,
 		videoString,
 		10,
 		-10,
@@ -98,13 +98,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_videoStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_VideoStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		32,
 		false,
-		m_font1,
+		m_Font1,
 		memoryString,
 		10,
 		-30,
@@ -114,17 +114,17 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	m_positionStrings = new TextClass[6];
-	if (!m_positionStrings)
+	m_PositionStrings = new TextClass[6];
+	if (!m_PositionStrings)
 		return false;
 
-	result = m_positionStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"X: 0",
 		10,
 		-310,
@@ -134,13 +134,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_positionStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"Y: 0",
 		10,
 		-330,
@@ -150,13 +150,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_positionStrings[2].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[2].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"Z: 0",
 		10,
 		-350,
@@ -166,13 +166,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_positionStrings[3].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[3].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"rX: 0",
 		10,
 		-370,
@@ -182,13 +182,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_positionStrings[4].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[4].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"rY: 0",
 		10,
 		-390,
@@ -198,13 +198,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_positionStrings[5].Initialize(Direct3D->GetDevice(),
+	result = m_PositionStrings[5].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"rZ: 0",
 		10,
 		-410,
@@ -215,19 +215,19 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		return false;
 
 	for (i = 0; i < 6; ++i)
-		m_previousPosition[i] = -1;
+		m_PreviousPosition[i] = -1;
 
-	m_skyColorTypeStrings = new TextClass[2];
-	if (!m_skyColorTypeStrings)
+	m_SkyColorTypeStrings = new TextClass[2];
+	if (!m_SkyColorTypeStrings)
 		return false;
 
-	result = m_skyColorTypeStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorTypeStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"ApexColor",
 		10,
 		-270,
@@ -237,13 +237,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorTypeStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorTypeStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"CenterColor",
 		10,
 		-380,
@@ -253,17 +253,17 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	m_skyColorStrings = new TextClass[8];
-	if (!m_skyColorStrings)
+	m_SkyColorStrings = new TextClass[8];
+	if (!m_SkyColorStrings)
 		return false;
 
-	result = m_skyColorStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"R: 0",
 		10,
 		-290,
@@ -273,13 +273,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"G: 0",
 		10,
 		-310,
@@ -290,13 +290,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		return false;
 
 
-	result = m_skyColorStrings[2].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[2].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"B: 0",
 		10,
 		-330,
@@ -306,13 +306,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[3].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[3].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"A: 0",
 		10,
 		-350,
@@ -322,13 +322,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[4].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[4].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"R: 0",
 		10,
 		-400,
@@ -338,13 +338,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[5].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[5].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"G: 0",
 		10,
 		-420,
@@ -354,13 +354,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[6].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[6].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"B: 0",
 		10,
 		-440,
@@ -370,13 +370,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_skyColorStrings[7].Initialize(Direct3D->GetDevice(),
+	result = m_SkyColorStrings[7].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"A: 0",
 		10,
 		-460,
@@ -387,19 +387,19 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		return false;
 
 	for (i = 0; i < 8; ++i)
-		m_previousSkyColor[i] = -1;
+		m_PreviousSkyColor[i] = -1;
 
-	m_renderCountStrings = new TextClass[3];
-	if (!m_renderCountStrings)
+	m_RenderCountStrings = new TextClass[3];
+	if (!m_RenderCountStrings)
 		return false;
 
-	result = m_renderCountStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_RenderCountStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		32,
 		false,
-		m_font1,
+		m_Font1,
 		"Polys Drawn: 0",
 		10,
 		-490,
@@ -409,13 +409,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_renderCountStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_RenderCountStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		32,
 		false,
-		m_font1,
+		m_Font1,
 		"Cells Drawn: 0",
 		10,
 		-510,
@@ -425,13 +425,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 
 	if (!result)
 		return false;
-	result = m_renderCountStrings[2].Initialize(Direct3D->GetDevice(),
+	result = m_RenderCountStrings[2].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		32,
 		false,
-		m_font1,
+		m_Font1,
 		"Cells Culled: 0",
 		10,
 		-530,
@@ -441,16 +441,16 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	m_mousePositionStrings = new TextClass[2];
-	if (!m_mousePositionStrings)
+	m_MousePositionStrings = new TextClass[2];
+	if (!m_MousePositionStrings)
 		return false;
-	result = m_mousePositionStrings[0].Initialize(Direct3D->GetDevice(),
+	result = m_MousePositionStrings[0].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"X: 0",
 		5,
 		-560,
@@ -460,13 +460,13 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 	if (!result)
 		return false;
 
-	result = m_mousePositionStrings[1].Initialize(Direct3D->GetDevice(),
+	result = m_MousePositionStrings[1].Initialize(Direct3D->GetDevice(),
 		Direct3D->GetDeviceContext(),
 		screenWidth,
 		screenHeight,
 		16,
 		false,
-		m_font1,
+		m_Font1,
 		"Y: 0",
 		5,
 		-580,
@@ -477,7 +477,7 @@ bool UserInterfaceClass::Initialize(D3DClass *Direct3D,
 		return false;
 
 	for (i = 0; i < 2; ++i)
-		m_previousMousePosition[i] = -1;
+		m_PreviousMousePosition[i] = -1;
 
 	//m_MiniMap = new MiniMapClass;
 	//if (!m_MiniMap)
@@ -503,83 +503,83 @@ void UserInterfaceClass::Shutdown()
 	//	m_MiniMap = NULL;
 	//}
 
-	if (m_mousePositionStrings)
+	if (m_MousePositionStrings)
 	{
-		m_mousePositionStrings[0].Shutdown();
-		m_mousePositionStrings[1].Shutdown();
+		m_MousePositionStrings[0].Shutdown();
+		m_MousePositionStrings[1].Shutdown();
 
-		delete[] m_mousePositionStrings;
-		m_mousePositionStrings = NULL;
+		delete[] m_MousePositionStrings;
+		m_MousePositionStrings = NULL;
 	}
 
-	if (m_renderCountStrings)
+	if (m_RenderCountStrings)
 	{
-		m_renderCountStrings[0].Shutdown();
-		m_renderCountStrings[1].Shutdown();
-		m_renderCountStrings[2].Shutdown();
+		m_RenderCountStrings[0].Shutdown();
+		m_RenderCountStrings[1].Shutdown();
+		m_RenderCountStrings[2].Shutdown();
 
-		delete[] m_renderCountStrings;
-		m_renderCountStrings = NULL;
+		delete[] m_RenderCountStrings;
+		m_RenderCountStrings = NULL;
 	}
 
-	if (m_positionStrings)
+	if (m_PositionStrings)
 	{
-		m_positionStrings[0].Shutdown();
-		m_positionStrings[1].Shutdown();
-		m_positionStrings[2].Shutdown();
-		m_positionStrings[3].Shutdown();
-		m_positionStrings[4].Shutdown();
-		m_positionStrings[5].Shutdown();
+		m_PositionStrings[0].Shutdown();
+		m_PositionStrings[1].Shutdown();
+		m_PositionStrings[2].Shutdown();
+		m_PositionStrings[3].Shutdown();
+		m_PositionStrings[4].Shutdown();
+		m_PositionStrings[5].Shutdown();
 
-		delete[] m_positionStrings;
-		m_positionStrings = NULL;
+		delete[] m_PositionStrings;
+		m_PositionStrings = NULL;
 	}
 
-	if (m_skyColorStrings)
+	if (m_SkyColorStrings)
 	{
-		m_skyColorStrings[0].Shutdown();
-		m_skyColorStrings[1].Shutdown();
-		m_skyColorStrings[2].Shutdown();
-		m_skyColorStrings[3].Shutdown();
-		m_skyColorStrings[4].Shutdown();
-		m_skyColorStrings[5].Shutdown();
-		m_skyColorStrings[6].Shutdown();
-		m_skyColorStrings[7].Shutdown();
+		m_SkyColorStrings[0].Shutdown();
+		m_SkyColorStrings[1].Shutdown();
+		m_SkyColorStrings[2].Shutdown();
+		m_SkyColorStrings[3].Shutdown();
+		m_SkyColorStrings[4].Shutdown();
+		m_SkyColorStrings[5].Shutdown();
+		m_SkyColorStrings[6].Shutdown();
+		m_SkyColorStrings[7].Shutdown();
 
-		delete[] m_skyColorStrings;
-		m_skyColorStrings = NULL;
+		delete[] m_SkyColorStrings;
+		m_SkyColorStrings = NULL;
 	}
 
-	if (m_skyColorTypeStrings)
+	if (m_SkyColorTypeStrings)
 	{
-		m_skyColorTypeStrings[0].Shutdown();
-		m_skyColorTypeStrings[1].Shutdown();
+		m_SkyColorTypeStrings[0].Shutdown();
+		m_SkyColorTypeStrings[1].Shutdown();
 
-		delete[] m_skyColorTypeStrings;
-		m_skyColorTypeStrings = NULL;
+		delete[] m_SkyColorTypeStrings;
+		m_SkyColorTypeStrings = NULL;
 	}
 
-	if (m_videoStrings)
+	if (m_VideoStrings)
 	{
-		m_videoStrings[0].Shutdown();
-		m_videoStrings[1].Shutdown();
+		m_VideoStrings[0].Shutdown();
+		m_VideoStrings[1].Shutdown();
 
-		delete[] m_videoStrings;
-		m_videoStrings = NULL;
+		delete[] m_VideoStrings;
+		m_VideoStrings = NULL;
 	}
 
-	if (m_fpsString)
+	if (m_FpsString)
 	{
-		m_fpsString->Shutdown();
-		delete m_fpsString;
-		m_fpsString = NULL;
+		m_FpsString->Shutdown();
+		delete m_FpsString;
+		m_FpsString = NULL;
 	}
 
-	if (m_font1)
+	if (m_Font1)
 	{
-		m_font1->Shutdown();
-		delete m_font1;
-		m_font1 = NULL;
+		m_Font1->Shutdown();
+		delete m_Font1;
+		m_Font1 = NULL;
 	}
 
 	return;
@@ -646,70 +646,70 @@ bool UserInterfaceClass::Render(D3DClass *Direct3D,
 	Direct3D->TurnZBufferOff();
 	Direct3D->EnableAlphaBlending();
 
-	m_fpsString->Render(Direct3D->GetDeviceContext(),
+	m_FpsString->Render(Direct3D->GetDeviceContext(),
 		shaderManager,
 		worldMatrix,
 		viewMatrix,
 		orthoMatrix,
-		m_font1->GetTexture());
+		m_Font1->GetTexture());
 
-	m_videoStrings[0].Render(Direct3D->GetDeviceContext(),
+	m_VideoStrings[0].Render(Direct3D->GetDeviceContext(),
 		shaderManager,
 		worldMatrix,
 		viewMatrix,
 		orthoMatrix,
-		m_font1->GetTexture());
-	m_videoStrings[1].Render(Direct3D->GetDeviceContext(),
+		m_Font1->GetTexture());
+	m_VideoStrings[1].Render(Direct3D->GetDeviceContext(),
 		shaderManager,
 		worldMatrix,
 		viewMatrix,
 		orthoMatrix,
-		m_font1->GetTexture());
+		m_Font1->GetTexture());
 
 	for (i = 0; i < 6; ++i)
-		m_positionStrings[i].Render(Direct3D->GetDeviceContext(),
+		m_PositionStrings[i].Render(Direct3D->GetDeviceContext(),
 			shaderManager,
 			worldMatrix,
 			viewMatrix,
 			orthoMatrix,
-			m_font1->GetTexture());
+			m_Font1->GetTexture());
 
-	m_skyColorTypeStrings[0].Render(Direct3D->GetDeviceContext(),
+	m_SkyColorTypeStrings[0].Render(Direct3D->GetDeviceContext(),
 		shaderManager,
 		worldMatrix,
 		viewMatrix,
 		orthoMatrix,
-		m_font1->GetTexture());
-	m_skyColorTypeStrings[1].Render(Direct3D->GetDeviceContext(),
+		m_Font1->GetTexture());
+	m_SkyColorTypeStrings[1].Render(Direct3D->GetDeviceContext(),
 		shaderManager,
 		worldMatrix,
 		viewMatrix,
 		orthoMatrix,
-		m_font1->GetTexture());
+		m_Font1->GetTexture());
 
 	for (i = 0; i < 8; ++i)
-		m_skyColorStrings[i].Render(Direct3D->GetDeviceContext(),
+		m_SkyColorStrings[i].Render(Direct3D->GetDeviceContext(),
 			shaderManager,
 			worldMatrix,
 			viewMatrix,
 			orthoMatrix,
-			m_font1->GetTexture());
+			m_Font1->GetTexture());
 
 	for (i = 0; i < 3; ++i)
-		m_renderCountStrings[i].Render(Direct3D->GetDeviceContext(),
+		m_RenderCountStrings[i].Render(Direct3D->GetDeviceContext(),
 			shaderManager,
 			worldMatrix,
 			viewMatrix,
 			orthoMatrix,
-			m_font1->GetTexture());
+			m_Font1->GetTexture());
 
 	for (i = 0; i < 2; ++i)
-		m_mousePositionStrings[i].Render(Direct3D->GetDeviceContext(),
+		m_MousePositionStrings[i].Render(Direct3D->GetDeviceContext(),
 			shaderManager,
 			worldMatrix,
 			viewMatrix,
 			orthoMatrix,
-			m_font1->GetTexture());
+			m_Font1->GetTexture());
 
 	Direct3D->DisableAlphaBlending();
 
@@ -740,8 +740,8 @@ bool UserInterfaceClass::UpdateRenderCounts(ID3D11DeviceContext *deviceContext,
 	strcpy_s(finalString, "Polys Drawn: ");
 	strcat_s(finalString, tempString);
 
-	result = m_renderCountStrings[0].UpdateSentence(deviceContext,
-		m_font1,
+	result = m_RenderCountStrings[0].UpdateSentence(deviceContext,
+		m_Font1,
 		finalString,
 		10,
 		-490,
@@ -757,8 +757,8 @@ bool UserInterfaceClass::UpdateRenderCounts(ID3D11DeviceContext *deviceContext,
 	strcpy_s(finalString, "Cells Drawn: ");
 	strcat_s(finalString, tempString);
 
-	result = m_renderCountStrings[1].UpdateSentence(deviceContext,
-		m_font1,
+	result = m_RenderCountStrings[1].UpdateSentence(deviceContext,
+		m_Font1,
 		finalString,
 		10,
 		-510,
@@ -774,8 +774,8 @@ bool UserInterfaceClass::UpdateRenderCounts(ID3D11DeviceContext *deviceContext,
 	strcpy_s(finalString, "Cells Culled: ");
 	strcat_s(finalString, tempString);
 
-	result = m_renderCountStrings[2].UpdateSentence(deviceContext,
-		m_font1,
+	result = m_RenderCountStrings[2].UpdateSentence(deviceContext,
+		m_Font1,
 		finalString,
 		10,
 		-530,
@@ -796,10 +796,10 @@ bool UserInterfaceClass::UpdateFpsString(ID3D11DeviceContext *deviceContext, int
 	float red, green, blue;
 	bool result;
 
-	if (m_previousFps == fps)
+	if (m_PreviousFps == fps)
 		return true;
 
-	m_previousFps = fps;
+	m_PreviousFps = fps;
 
 	if (fps > 99999)
 		fps = 99999;
@@ -828,8 +828,8 @@ bool UserInterfaceClass::UpdateFpsString(ID3D11DeviceContext *deviceContext, int
 		blue = 0.0f;
 	}
 
-	result = m_fpsString->UpdateSentence(deviceContext,
-		m_font1,
+	result = m_FpsString->UpdateSentence(deviceContext,
+		m_Font1,
 		finalString,
 		10,
 		-50,
@@ -863,14 +863,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 	rotationY = (int)rotY;
 	rotationZ = (int)rotZ;
 
-	if (positionX != m_previousPosition[0])
+	if (positionX != m_PreviousPosition[0])
 	{
-		m_previousPosition[0] = positionX;
+		m_PreviousPosition[0] = positionX;
 		_itoa_s(positionX, tempString, 10);
 		strcpy_s(finalString, "X: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[0].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[0].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-100,
@@ -881,14 +881,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (positionY != m_previousPosition[1])
+	if (positionY != m_PreviousPosition[1])
 	{
-		m_previousPosition[1] = positionY;
+		m_PreviousPosition[1] = positionY;
 		_itoa_s(positionY, tempString, 10);
 		strcpy_s(finalString, "Y: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[1].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[1].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-120,
@@ -899,14 +899,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (positionZ != m_previousPosition[2])
+	if (positionZ != m_PreviousPosition[2])
 	{
-		m_previousPosition[2] = positionZ;
+		m_PreviousPosition[2] = positionZ;
 		_itoa_s(positionZ, tempString, 10);
 		strcpy_s(finalString, "Z: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[2].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[2].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-140,
@@ -918,14 +918,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 			return false;
 	}
 
-	if (rotationX != m_previousPosition[3])
+	if (rotationX != m_PreviousPosition[3])
 	{
-		m_previousPosition[3] = rotationX;
+		m_PreviousPosition[3] = rotationX;
 		_itoa_s(rotationX, tempString, 10);
 		strcpy_s(finalString, "rX: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[3].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[3].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-180,
@@ -936,14 +936,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (rotationY != m_previousPosition[4])
+	if (rotationY != m_PreviousPosition[4])
 	{
-		m_previousPosition[4] = rotationY;
+		m_PreviousPosition[4] = rotationY;
 		_itoa_s(rotationY, tempString, 10);
 		strcpy_s(finalString, "rY: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[4].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[4].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-200,
@@ -954,14 +954,14 @@ bool UserInterfaceClass::UpdatePositionStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (rotationZ != m_previousPosition[5])
+	if (rotationZ != m_PreviousPosition[5])
 	{
-		m_previousPosition[5] = rotationZ;
+		m_PreviousPosition[5] = rotationZ;
 		_itoa_s(rotationZ, tempString, 10);
 		strcpy_s(finalString, "rZ: ");
 		strcat_s(finalString, tempString);
-		result = m_positionStrings[5].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_PositionStrings[5].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-220,
@@ -996,14 +996,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 	centerB = centerColor.z;
 	centerA = centerColor.w;
 
-	if (apexR != m_previousSkyColor[0])
+	if (apexR != m_PreviousSkyColor[0])
 	{
-		m_previousSkyColor[0] = apexR;
+		m_PreviousSkyColor[0] = apexR;
 		sprintf_s(tempString, "%.3f", apexR);
 		strcpy_s(finalString, "R: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[0].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[0].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-290,
@@ -1014,14 +1014,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (apexG != m_previousSkyColor[1])
+	if (apexG != m_PreviousSkyColor[1])
 	{
-		m_previousSkyColor[1] = apexG;
+		m_PreviousSkyColor[1] = apexG;
 		sprintf_s(tempString, "%.3f", apexG);
 		strcpy_s(finalString, "G: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[1].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[1].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-310,
@@ -1032,14 +1032,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (apexB != m_previousSkyColor[2])
+	if (apexB != m_PreviousSkyColor[2])
 	{
-		m_previousSkyColor[2] = apexB;
+		m_PreviousSkyColor[2] = apexB;
 		sprintf_s(tempString, "%.3f", apexB);
 		strcpy_s(finalString, "B: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[2].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[2].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-330,
@@ -1050,14 +1050,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (apexA != m_previousSkyColor[3])
+	if (apexA != m_PreviousSkyColor[3])
 	{
-		m_previousSkyColor[3] = apexA;
+		m_PreviousSkyColor[3] = apexA;
 		sprintf_s(tempString, "%.3f", apexA);
 		strcpy_s(finalString, "A: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[3].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[3].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-350,
@@ -1069,14 +1069,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 			return false;
 	}
 
-	if (centerR != m_previousSkyColor[4])
+	if (centerR != m_PreviousSkyColor[4])
 	{
-		m_previousSkyColor[4] = centerR;
+		m_PreviousSkyColor[4] = centerR;
 		sprintf_s(tempString, "%.3f", centerR);
 		strcpy_s(finalString, "R: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[4].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[4].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-400,
@@ -1087,14 +1087,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (centerG != m_previousSkyColor[5])
+	if (centerG != m_PreviousSkyColor[5])
 	{
-		m_previousSkyColor[5] = centerG;
+		m_PreviousSkyColor[5] = centerG;
 		sprintf_s(tempString, "%.3f", centerG);
 		strcpy_s(finalString, "G: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[5].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[5].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-420,
@@ -1105,14 +1105,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (centerB != m_previousSkyColor[6])
+	if (centerB != m_PreviousSkyColor[6])
 	{
-		m_previousSkyColor[6] = centerB;
+		m_PreviousSkyColor[6] = centerB;
 		sprintf_s(tempString, "%.3f", centerB);
 		strcpy_s(finalString, "B: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[6].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[6].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-440,
@@ -1123,14 +1123,14 @@ bool UserInterfaceClass::UpdateSkyColorStrings(ID3D11DeviceContext *deviceContex
 		if (!result)
 			return false;
 	}
-	if (centerA != m_previousSkyColor[7])
+	if (centerA != m_PreviousSkyColor[7])
 	{
-		m_previousSkyColor[7] = centerA;
+		m_PreviousSkyColor[7] = centerA;
 		sprintf_s(tempString, "%.3f", centerA);
 		strcpy_s(finalString, "A: ");
 		strcat_s(finalString, tempString);
-		result = m_skyColorStrings[7].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_SkyColorStrings[7].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			10,
 			-460,
@@ -1153,14 +1153,14 @@ bool UserInterfaceClass::UpdateMousePositionStrings(ID3D11DeviceContext *deviceC
 	char finalString[16];
 	bool result;
 
-	if (posX != m_previousMousePosition[0])
+	if (posX != m_PreviousMousePosition[0])
 	{
-		m_previousMousePosition[0] = posX;
+		m_PreviousMousePosition[0] = posX;
 		_itoa_s(posX, tempString, 10);
 		strcpy_s(finalString, "X: ");
 		strcat_s(finalString, tempString);
-		result = m_mousePositionStrings[0].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_MousePositionStrings[0].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			5,
 			-560,
@@ -1168,14 +1168,14 @@ bool UserInterfaceClass::UpdateMousePositionStrings(ID3D11DeviceContext *deviceC
 			1.0f,
 			1.0f);
 	}
-	if (posY != m_previousMousePosition[1])
+	if (posY != m_PreviousMousePosition[1])
 	{
-		m_previousMousePosition[1] = posY;
+		m_PreviousMousePosition[1] = posY;
 		_itoa_s(posY, tempString, 10);
 		strcpy_s(finalString, "Y: ");
 		strcat_s(finalString, tempString);
-		result = m_mousePositionStrings[1].UpdateSentence(deviceContext,
-			m_font1,
+		result = m_MousePositionStrings[1].UpdateSentence(deviceContext,
+			m_Font1,
 			finalString,
 			5,
 			-580,
