@@ -40,7 +40,6 @@ private:
 	FrustumClass *m_Frustum;
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
-	RayClass m_Ray;
 
 	HWND m_Hwnd;
 
