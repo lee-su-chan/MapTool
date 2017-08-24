@@ -15,6 +15,15 @@
 using namespace std;
 using namespace DirectX;
 
+namespace MyEnum
+{
+	enum BrushShape
+	{
+		CIRCLE,
+		RECTANGLE
+	};
+}
+
 namespace MyStruct
 {
 	struct VectorType
