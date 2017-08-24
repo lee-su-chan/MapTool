@@ -13,12 +13,18 @@ RayClass::~RayClass()
 	
 }
 
-void RayClass::SetRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int x, int y)
+void RayClass::SetRay(D3DClass *direct3D, 
+	CameraClass *camera, 
+	HWND hwnd, 
+	int screenWidth, 
+	int screenHeight, 
+	int cursorX, 
+	int cursorY)
 {
-	RayAtLocalSpace(direct3D, camera, screenWidth, screenHeight, x, y);
+	RayAtLocalSpace(direct3D, camera, screenWidth, screenHeight, cursorX, cursorY);
 }
 
-void RayClass::RayAtViewSpace(D3DClass *direct3D, RayClass &ray, int screenWidth, int screenHeight, int x, int y)
+void RayClass::RayAtViewSpace(D3DClass *direct3D, RayClass &ray, int screenWidth, int screenHeight, int cursorX, int cursorY)
 {
 	XMMATRIX matProjection;
 	XMFLOAT4X4 tempProjection;
@@ -26,21 +32,21 @@ void RayClass::RayAtViewSpace(D3DClass *direct3D, RayClass &ray, int screenWidth
 	direct3D->GetProjectionMatrix(matProjection);
 	XMStoreFloat4x4(&tempProjection, matProjection);
 
-	float vx = ((2.0f * x) / screenWidth - 1.0f) / tempProjection._11;
-	float vy = ((-2.0f * y) / screenHeight + 1.0f) / tempProjection._22;
+	float vx = ((2.0f * cursorX) / screenWidth - 1.0f) / tempProjection._11;
+	float vy = ((-2.0f * cursorY) / screenHeight + 1.0f) / tempProjection._22;
 
 	ray.m_vOriginal = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	ray.m_vDirection = XMVectorSet(vx, vy, 1.0f, 0.0f);
 }
 
-void RayClass::RayAtLocalSpace(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int x, int y)
+void RayClass::RayAtLocalSpace(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int cursorX, int cursorY)
 {
 	XMMATRIX matView, matInvView;
 	XMMATRIX matWorld, matInvWorld;
 	XMMATRIX matLocal;
 	RayClass ray;
 
-	RayAtViewSpace(direct3D, ray, screenWidth, screenHeight, x, y);
+	RayAtViewSpace(direct3D, ray, screenWidth, screenHeight, cursorX, cursorY);
 
 	camera->GetViewMatrix(matView);
 	matInvView = XMMatrixInverse(&XMMatrixDeterminant(matView), matView);
