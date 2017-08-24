@@ -203,6 +203,7 @@
   <ItemGroup>
     <ClInclude Include="DirectX\ApplicationClass.h" />
     <ClInclude Include="DirectX\BitmapClass.h" />
+    <ClInclude Include="DirectX\BrushClass.h" />
     <ClInclude Include="DirectX\CameraClass.h" />
     <ClInclude Include="DirectX\ColorShaderClass.h" />
     <ClInclude Include="DirectX\D3DClass.h" />
@@ -247,6 +248,7 @@
   <ItemGroup>
     <ClCompile Include="DirectX\ApplicationClass.cpp" />
     <ClCompile Include="DirectX\BitmapClass.cpp" />
+    <ClCompile Include="DirectX\BrushClass.cpp" />
     <ClCompile Include="DirectX\CameraClass.cpp" />
     <ClCompile Include="DirectX\ColorShaderClass.cpp" />
     <ClCompile Include="DirectX\D3DClass.cpp" />

@@ -164,6 +164,9 @@
     <ClInclude Include="DirectX\D3D_Defines.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="DirectX\BrushClass.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -278,6 +281,9 @@
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="DirectX\PickingToolSingletonClass.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\BrushClass.cpp">
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
