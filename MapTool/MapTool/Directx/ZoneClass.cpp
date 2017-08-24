@@ -31,6 +31,17 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 {
 	bool result;
 
+	m_IsDisplayUI = true;
+	m_IsWireFrame = false;
+	m_IsPlay = false;
+	m_IsCellLines = true;
+	m_IsHeightLocked = false;
+
+	m_ScreenWidth = screenWidth;
+	m_ScreenHeight = screenHeight;
+
+	m_Hwnd = hwnd;
+
 	m_UserInterface = new UserInterfaceClass;
 	if (!m_UserInterface)
 		return false;
@@ -96,15 +107,6 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 
 	m_Position->SetPosition(m_PosX, m_PosY + 5.0f, m_PosZ);
 	m_Position->SetRotation(36.0f, 136.0f, 0.0f);
-	
-	m_IsDisplayUI		= true;
-	m_IsWireFrame		= false;
-	m_IsPlay			= false;
-	m_IsCellLines		= true;
-	m_IsHeightLocked	= false;
-
-	m_ScreenWidth = screenWidth;
-	m_ScreenHeight = screenHeight;
 
 	return true;
 }
@@ -221,15 +223,26 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 	bool isKeyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
 	int mouseAddX, mouseAddY;
-	int mouseWinX, mouseWinY;
 
 	m_Position->SetFrameTime(frameTime);
 
 	if (input->IsMouseLightClick())
 	{
-		input->GetMouseWindowPosition(mouseWinX, mouseWinY);
-		m_Ray.SetRay(direct3D, m_Camera, m_ScreenWidth, m_ScreenHeight, mouseWinX, mouseWinY);
-		PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain, &m_Ray);
+		int cursorX, cursorY;
+		bool isPickSuccess;
+
+		input->GetMouseWindowPosition(cursorX, cursorY);
+		isPickSuccess = PickingToolSingletonClass::GetInstance()->InitPick(direct3D, 
+			m_Camera, 
+			m_Hwnd, 
+			m_ScreenWidth, 
+			m_ScreenHeight, 
+			cursorX, 
+			cursorY);
+		if (isPickSuccess)
+		{
+			PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain);
+		}
 	}
 
 	if (input->IsMouseRightClick())

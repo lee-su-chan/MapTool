@@ -14,7 +14,6 @@
 #include "FrustumClass.h"
 #include "SkyDomeClass.h"
 #include "TerrainClass.h"
-#include "RayClass.h"
 #include "PickingToolSingletonClass.h"
 
 class ZoneClass
@@ -42,6 +41,10 @@ private:
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
 	RayClass m_Ray;
+
+	HWND m_Hwnd;
+
+public:
 	bool m_IsDisplayUI, m_IsWireFrame, m_IsPlay, m_IsCellLines, m_IsHeightLocked;
 	float m_PosX, m_PosY, m_PosZ;
 	int m_ScreenWidth, m_ScreenHeight;
