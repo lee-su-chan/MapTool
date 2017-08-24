@@ -73,8 +73,21 @@ bool PickingToolClass::BuildCircleBuffers(ID3D11Device *device)
 	return true;
 }
 
-void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain, RayClass *ray)
+bool PickingToolClass::InitPick(D3DClass *direct3D, CameraClass *camera, HWND hwnd, int screenWidth, int screenHeight, int cursorX, int cursorY)
 {
+	bool result;
+
+	result = IsCursorInWindow(hwnd);
+	if (!result)
+		return false;
+
+	m_Ray.SetRay(direct3D, camera, hwnd, screenWidth, screenHeight, cursorX, cursorY);
+
+	return true;
+}
+
+void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain)
+{	
 	int pickVertex = -1;
 	XMVECTOR v0, v1, v2;
 
@@ -105,8 +118,8 @@ void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain, RayCla
 			v2 = XMLoadFloat3(&tempVertexList[i * 3 + 2]);
 
 			float currentDist = 0.0f;
-			if (DirectX::TriangleTests::Intersects(ray->GetOriginal(),
-				ray->GetDirection(),
+			if (DirectX::TriangleTests::Intersects(m_Ray.GetOriginal(),
+				m_Ray.GetDirection(),
 				v0, v1, v2,
 				currentDist))
 			{
@@ -142,4 +155,22 @@ void PickingToolClass::RenderPickingCircle(ID3D11DeviceContext *deviceContext)
 	deviceContext->IASetVertexBuffers(0, 1, &m_circleVertexBuffer, &stride, &offset);
 	deviceContext->IASetIndexBuffer(m_circleIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+}
+
+bool PickingToolClass::IsCursorInWindow(HWND hwnd)
+{
+	POINT cursor;
+	RECT rc;
+
+	// InitPick함수 파라미터로 받은 커서 포지션 값은 DirectXViewHwnd 기준이기 때문에
+	// 못쓰고, 전체 화면에서의 포지션 값으로 받아와야 함.
+	GetCursorPos(&cursor);
+	GetWindowRect(hwnd, &rc);
+	if ((rc.left   > cursor.x || rc.right < cursor.x) ||
+		(rc.bottom < cursor.y || rc.top   > cursor.y))
+	{
+		return false;
+	}
+
+	return true;
 }
