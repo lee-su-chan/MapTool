@@ -34,3 +34,8 @@
 # Debug Folder
 **/x64/Debug
 **/Debug/
+
+# Ipch Folder
+**/ipch
+*.opensdf
+*.sdf
