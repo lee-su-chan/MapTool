@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Debug Folder
+**/x64/Debug
+**/Debug/
