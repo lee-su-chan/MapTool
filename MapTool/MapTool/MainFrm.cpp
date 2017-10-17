@@ -116,7 +116,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext *pContext)
 		return FALSE;
 	}
 	// CFormView2 is right
-	if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CFormView2), size2, pContext))
+	if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolEditView), size2, pContext))
 	{
 		TRACE0("Failed to create CFormView2 pane \n");
 

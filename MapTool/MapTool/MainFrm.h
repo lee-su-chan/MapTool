@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "FormView2.h"
+#include "ToolEditView.h"
 #include "FixedSplitterWnd.h"
 #include "MakeNewFileDlg.h"
 
