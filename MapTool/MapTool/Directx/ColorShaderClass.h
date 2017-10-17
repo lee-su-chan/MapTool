@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D_Defines.h"
+#include "D3D_Core.h"
 
 class ColorShaderClass
 {

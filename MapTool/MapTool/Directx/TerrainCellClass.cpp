@@ -138,7 +138,7 @@ bool TerrainCellClass::TranslateVertex(ID3D11DeviceContext *deviceContext)
 		return false;
 
 	dataPtr = (MyStruct::TerrainVertexType *)mappedResource.pData;
-	dataPtr = m_vertexList;
+	dataPtr->position = m_vertexList->position;
 
 	deviceContext->Unmap(m_vertexBuffer, 0);
 	deviceContext->VSSetConstantBuffers(0, 1, &m_vertexBuffer);
