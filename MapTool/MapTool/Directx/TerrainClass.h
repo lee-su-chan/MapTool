@@ -52,7 +52,6 @@ private:
 	void SetTerrainCoordinates();
 
 	bool BuildTerrainModel();
-	bool BuildBrushCircleBuffers(ID3D11Device *, int, XMFLOAT3);
 
 private:
 	int m_terrainHeight, m_terrainWidth, m_vertexCount;

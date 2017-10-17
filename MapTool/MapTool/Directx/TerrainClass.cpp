@@ -1089,10 +1089,3 @@ bool TerrainClass::CheckHeightOfTriangle(float x,
 
 	return true;
 }
-
-bool TerrainClass::BuildBrushCircleBuffers(ID3D11Device *device, int nVertex, XMFLOAT3 color)
-{
-	
-
-	return true;
-}
