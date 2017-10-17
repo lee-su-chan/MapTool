@@ -31,6 +31,12 @@
     <Filter Include="Text Files">
       <UniqueIdentifier>{7d26a87b-799e-421c-9a5d-78f8bd3569b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Manager">
+      <UniqueIdentifier>{5499f417-c38e-41d7-8990-3f77769c2e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager">
+      <UniqueIdentifier>{5d2ebfa6-7fd3-44e1-9bb7-84d1128de9b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -54,9 +60,6 @@
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files\MFC</Filter>
-    </ClInclude>
-    <ClInclude Include="FormView2.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
     <ClInclude Include="FixedSplitterWnd.h">
@@ -161,11 +164,23 @@
     <ClInclude Include="MFC_Defines.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX\D3D_Defines.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="DirectX\BrushClass.h">
       <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\BaseSingleton.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\EditInputManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\EditEnums.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\D3D_Core.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolEditView.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +197,6 @@
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="MapToolView.cpp">
-      <Filter>Source Files\MFC</Filter>
-    </ClCompile>
-    <ClCompile Include="FormView2.cpp">
       <Filter>Source Files\MFC</Filter>
     </ClCompile>
     <ClCompile Include="FixedSplitterWnd.cpp">
@@ -285,6 +297,9 @@
     </ClCompile>
     <ClCompile Include="DirectX\BrushClass.cpp">
       <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolEditView.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

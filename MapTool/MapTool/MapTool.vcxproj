@@ -207,7 +207,7 @@
     <ClInclude Include="DirectX\CameraClass.h" />
     <ClInclude Include="DirectX\ColorShaderClass.h" />
     <ClInclude Include="DirectX\D3DClass.h" />
-    <ClInclude Include="DirectX\D3D_Defines.h" />
+    <ClInclude Include="DirectX\D3D_Core.h" />
     <ClInclude Include="DirectX\FontClass.h" />
     <ClInclude Include="DirectX\FontShaderClass.h" />
     <ClInclude Include="DirectX\FpsClass.h" />
@@ -234,9 +234,11 @@
     <ClInclude Include="DirectX\UserInterfaceClass.h" />
     <ClInclude Include="DirectX\ZoneClass.h" />
     <ClInclude Include="FixedSplitterWnd.h" />
-    <ClInclude Include="FormView2.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MakeNewFileDlg.h" />
+    <ClInclude Include="Manager\BaseSingleton.h" />
+    <ClInclude Include="Manager\EditEnums.h" />
+    <ClInclude Include="Manager\EditInputManager.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
     <ClInclude Include="MapToolView.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ToolEditView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX\ApplicationClass.cpp" />
@@ -278,7 +281,6 @@
     <ClCompile Include="DirectX\UserInterfaceClass.cpp" />
     <ClCompile Include="DirectX\ZoneClass.cpp" />
     <ClCompile Include="FixedSplitterWnd.cpp" />
-    <ClCompile Include="FormView2.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MakeNewFileDlg.cpp" />
     <ClCompile Include="MapTool.cpp" />
@@ -290,6 +292,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ToolEditView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapTool.rc" />
