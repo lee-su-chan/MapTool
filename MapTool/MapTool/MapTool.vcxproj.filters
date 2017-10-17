@@ -158,9 +158,6 @@
     <ClInclude Include="DirectX\PickingToolClass.h">
       <Filter>Header Files\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX\PickingToolSingletonClass.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="MFC_Defines.h">
       <Filter>Header Files\MFC</Filter>
     </ClInclude>
@@ -290,9 +287,6 @@
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="DirectX\PickingToolClass.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectX\PickingToolSingletonClass.cpp">
       <Filter>Source Files\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="DirectX\BrushClass.cpp">

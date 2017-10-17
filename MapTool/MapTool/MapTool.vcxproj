@@ -217,7 +217,6 @@
     <ClInclude Include="DirectX\LightShaderClass.h" />
     <ClInclude Include="DirectX\MinimapClass.h" />
     <ClInclude Include="DirectX\PickingToolClass.h" />
-    <ClInclude Include="DirectX\PickingToolSingletonClass.h" />
     <ClInclude Include="DirectX\PositionClass.h" />
     <ClInclude Include="DirectX\RayClass.h" />
     <ClInclude Include="DirectX\ShaderManagerClass.h" />
@@ -264,7 +263,6 @@
     <ClCompile Include="DirectX\LightShaderClass.cpp" />
     <ClCompile Include="DirectX\MinimapClass.cpp" />
     <ClCompile Include="DirectX\PickingToolClass.cpp" />
-    <ClCompile Include="DirectX\PickingToolSingletonClass.cpp" />
     <ClCompile Include="DirectX\PositionClass.cpp" />
     <ClCompile Include="DirectX\RayClass.cpp" />
     <ClCompile Include="DirectX\ShaderManagerClass.cpp" />
