@@ -1,79 +1,12 @@
 #include "PickingToolClass.h"
 
-PickingToolClass::PickingToolClass()
-{
-	m_isFirstCall = false;
-}
-
-bool PickingToolClass::BuildCircleBuffers(ID3D11Device *device)
-{
-	MyStruct::ColorVertexType *vertices;
-	unsigned long *indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData, indexData;
-	HRESULT result;
-	XMFLOAT4 lineColor;
-	int index, vertexCount, indexCount;
-
-	lineColor = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-	index = 0;
-	vertexCount = 24;
-	indexCount = vertexCount;
-
-	vertices = new MyStruct::ColorVertexType[vertexCount];
-	if (!vertices)
-		return false;
-
-	indices = new unsigned long[indexCount];
-	if (!indices)
-		return false;
-
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(MyStruct::ColorVertexType) * vertexCount;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-	vertexBufferDesc.StructureByteStride = 0;
-
-	vertexData.pSysMem = vertices;
-	vertexData.SysMemPitch = 0;
-	vertexData.SysMemSlicePitch = 0;
-
-	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * indexCount;
-	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.CPUAccessFlags = 0;
-	indexBufferDesc.MiscFlags = 0;
-	indexBufferDesc.StructureByteStride = 0;
-
-	indexData.pSysMem = indices;
-	indexData.SysMemPitch = 0;
-	indexData.SysMemSlicePitch = 0;
-
-	// TODO: 정점 정보 채우기
-	vertices[index].position = XMFLOAT3(0, 0, 0);
-	vertices[index].color = lineColor;
-	indices[index] = index;
-	++index;
-
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_circleVertexBuffer);
-	if (FAILED(result))
-		return false;
-
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_circleIndexBuffer);
-	if (FAILED(result))
-		return false;
-
-	delete[] vertices;
-	vertices = NULL;
-
-	delete[] indices;
-	indices = NULL;
-
-	return true;
-}
-
-bool PickingToolClass::InitPick(D3DClass *direct3D, CameraClass *camera, HWND hwnd, int screenWidth, int screenHeight, int cursorX, int cursorY)
+bool PickingToolClass::InitPick(D3DClass *direct3D, 
+	CameraClass *camera, 
+	HWND hwnd, 
+	int screenWidth, 
+	int screenHeight, 
+	int cursorX, 
+	int cursorY)
 {
 	bool result;
 
@@ -86,16 +19,10 @@ bool PickingToolClass::InitPick(D3DClass *direct3D, CameraClass *camera, HWND hw
 	return true;
 }
 
-void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain)
+void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain, XMVECTOR &pickPos)
 {	
 	int pickVertex = -1;
 	XMVECTOR v0, v1, v2;
-
-	if (!m_isFirstCall)
-	{
-		BuildCircleBuffers(direct3D->GetDevice());
-		m_isFirstCall = true;
-	}
 
 	for (int cellIndex = 0; cellIndex < terrain->GetCellCount(); ++cellIndex)
 	{
@@ -127,6 +54,7 @@ void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain)
 				{
 					minDist = currentDist;
 					pickVertex = i * 3;
+					pickPos = m_Ray.GetOriginal() + m_Ray.GetDirection() * minDist;
 				}
 
 				// TODO: 마우스 포인터에 따른 원 그리기
@@ -146,15 +74,6 @@ void PickingToolClass::Picking(D3DClass *direct3D, TerrainClass *terrain)
 
 void PickingToolClass::RenderPickingCircle(ID3D11DeviceContext *deviceContext)
 {
-	unsigned int stride;
-	unsigned int offset;
-
-	stride = sizeof(MyStruct::ColorVertexType);
-	offset = 0;
-	
-	deviceContext->IASetVertexBuffers(0, 1, &m_circleVertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(m_circleIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 }
 
 bool PickingToolClass::IsCursorInWindow(HWND hwnd)
