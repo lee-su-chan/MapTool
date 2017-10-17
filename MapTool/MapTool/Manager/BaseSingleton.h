@@ -5,12 +5,12 @@
 template <typename T>
 class BaseSingleton
 {
-private:
+protected:
 	BaseSingleton() = default;
-	~BaseSingleton() = default;
+	virtual ~BaseSingleton() = default;
 
 public:
-	static T *GetInstance()
+	static T * GetInstance()
 	{
 		if (instance == nullptr)
 			instance = new T();
