@@ -1,7 +1,5 @@
 #include "ApplicationClass.h"
 
-#define _CRT_SECURE_NO_WARNINGS
-
 ApplicationClass::ApplicationClass()
 {
 	m_Input = NULL;

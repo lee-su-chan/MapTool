@@ -1,7 +1,6 @@
 #pragma once
 
-#include "D3D_Defines.h"
-
+#include "D3D_Core.h"
 #include "InputClass.h"
 #include "D3DClass.h"
 #include "ShaderManagerClass.h"
