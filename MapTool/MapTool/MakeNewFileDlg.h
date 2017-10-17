@@ -57,21 +57,6 @@ private:
  //   BYTE  bits;               // image bits per pixel 8,16,24,32
  //   BYTE  descriptor;
 	//};
-
-private:
-	int m_CellSize;
-	int m_TileSize;
-	int m_TextureSize;
-	int m_CurSel;
-	bool m_IsClickedCancel;
-
-	CStringList fileNameList;
-	std::vector<std::string> *textureNames;
-
-	CComboBox m_TextureComboBox;
-	CImage *m_IconImage;
-
-	TextureManagerClass *m_TextureManager;
 	
 public:
 	virtual BOOL OnInitDialog();
@@ -90,4 +75,19 @@ public:
 	int GetCurSel() const { return this->m_CurSel; }
 	bool GetIsClickedCancel() const { return this->m_IsClickedCancel; }
 	std::vector<std::string> *GetTextureNameVector() const { return this->textureNames; }
+
+private:
+	int m_CellSize;
+	int m_TileSize;
+	int m_TextureSize;
+	int m_CurSel;
+	bool m_IsClickedCancel;
+
+	CStringList fileNameList;
+	std::vector<std::string> *textureNames;
+
+	CComboBox m_TextureComboBox;
+	CImage *m_IconImage;
+
+	TextureManagerClass *m_TextureManager;
 };
