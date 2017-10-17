@@ -2,44 +2,9 @@
 
 CameraClass::CameraClass()
 {
-	m_posX = m_posY = m_posZ = 0.0f;
-	m_rotX = m_rotY = m_rotZ = 0.0f;
-}
-
-CameraClass::CameraClass(const CameraClass &)
-{
-}
-
-CameraClass::~CameraClass()
-{
-}
-
-void CameraClass::SetPosition(float x, float y, float z)
-{
-	m_posX = x;
-	m_posY = y;
-	m_posZ = z;
-
-	return;
-}
-
-void CameraClass::SetRotation(float x, float y, float z)
-{
-	m_rotX = x;
-	m_rotY = y;
-	m_rotZ = z;
-
-	return;
-}
-
-XMFLOAT3 CameraClass::GetPosition()
-{
-	return XMFLOAT3(m_posX, m_posY, m_posZ);
-}
-
-XMFLOAT3 CameraClass::GetRotation()
-{
-	return XMFLOAT3(m_rotX, m_rotY, m_rotZ);
+	m_position = new PositionClass;
+	m_position->SetPosition(0.0f, 0.0f, 0.0f);
+	m_position->SetRotation(0.0f, 0.0f, 0.0f);
 }
 
 void CameraClass::Render()
@@ -55,9 +20,7 @@ void CameraClass::Render()
 
 	upVec = XMLoadFloat3(&up);
 
-	position.x = m_posX;
-	position.y = m_posY;
-	position.z = m_posZ;
+	m_position->GetPosition(position.x, position.y, position.z);
 
 	positionVec = XMLoadFloat3(&position);
 
@@ -68,9 +31,10 @@ void CameraClass::Render()
 	lookAtVec = XMLoadFloat3(&lookAt);
 
 	// Set the yaw(Y axis), pitch(X axis), and roll(Z axis) rotations in radians.
-	pitch = m_rotX * 0.0174532925f;
-	yaw = m_rotY * 0.0174532925f;
-	roll = m_rotZ * 0.0174532925f;
+	m_position->GetRotation(pitch, yaw, roll);
+	pitch *= 0.0174532925f;
+	yaw *= 0.0174532925f;
+	roll *= 0.0174532925f;
 
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
@@ -106,9 +70,7 @@ void CameraClass::RenderBaseViewMatrix()
 	up.z = 0.0f;
 	upVector = XMLoadFloat3(&up);
 
-	position.x = m_posX;
-	position.y = m_posY;
-	position.z = m_posZ;
+	m_position->GetPosition(position.x, position.y, position.z);
 	positionVector = XMLoadFloat3(&position);
 
 	lookAt.x = 0.0f;
@@ -116,9 +78,10 @@ void CameraClass::RenderBaseViewMatrix()
 	lookAt.z = 1.0f;
 	lookAtVector = XMLoadFloat3(&lookAt);
 
-	pitch = m_rotX * 0.0174532925f;
-	yaw = m_rotY * 0.0174532925f;
-	roll = m_rotZ * 0.0174532925f;
+	m_position->GetRotation(pitch, yaw, roll);
+	pitch *= 0.0174532925f;
+	yaw *= 0.0174532925f;
+	roll *= 0.0174532925f;
 
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
@@ -130,6 +93,15 @@ void CameraClass::RenderBaseViewMatrix()
 	m_baseViewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 
 	return;
+}
+
+void CameraClass::Shutdown()
+{
+	if (m_position)
+	{
+		delete m_position;
+		m_position = NULL;
+	}
 }
 
 void CameraClass::GetBaseViewMatrix(XMMATRIX &viewMatrix)

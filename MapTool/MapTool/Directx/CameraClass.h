@@ -1,28 +1,33 @@
 #pragma once
 
-#include "D3D_Defines.h"
+#include "D3D_Core.h"
+#include "PositionClass.h"
 
 class CameraClass
 {
 public:
 	CameraClass();
-	CameraClass(const CameraClass &);
-	~CameraClass();
-
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
-
-	XMFLOAT3 GetPosition();
-	XMFLOAT3 GetRotation();
+	CameraClass(const CameraClass &) = default;
+	~CameraClass() = default;
 
 	void Render();
-	void GetViewMatrix(XMMATRIX &);
-
 	void RenderBaseViewMatrix();
+	void Shutdown();
+
+public:
+	inline void SetPosition(float x, float y, float z)		{ m_position->SetPosition(x, y, z); }
+	inline void SetRotation(float x, float y, float z)		{ m_position->SetRotation(x, y, z); }
+
+	PositionClass * GetPosition()							{ return m_position; }
+	inline void GetPosition(float &x, float &y, float &z)	{ m_position->GetPosition(x, y, z); }
+	inline void GetRotation(float &x, float &y, float &z)	{ m_position->GetRotation(x, y, z); }
+
+	void GetViewMatrix(XMMATRIX &);
 	void GetBaseViewMatrix(XMMATRIX &);
 
 private:
-	float m_posX, m_posY, m_posZ;
-	float m_rotX, m_rotY, m_rotZ;
-	XMMATRIX m_viewMatrix, m_baseViewMatrix;
+	XMMATRIX m_viewMatrix;
+	XMMATRIX m_baseViewMatrix;
+
+	PositionClass *m_position;
 };
