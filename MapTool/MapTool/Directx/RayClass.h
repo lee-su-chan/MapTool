@@ -11,8 +11,8 @@ public:
 	~RayClass();
 
 public:
-	XMVECTOR GetOriginal() { return this->m_vOriginal; };
-	XMVECTOR GetDirection() { return this->m_vDirection; };
+	XMVECTOR GetOriginal() { return m_vOriginal; };
+	XMVECTOR GetDirection() { return m_vDirection; };
 
 public:
 	void SetRay(D3DClass *direct3D, CameraClass *camera, HWND hwnd, int screenWidth, int screenHeight, int cursorX, int cursorY);
