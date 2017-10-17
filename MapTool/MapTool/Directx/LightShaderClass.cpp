@@ -166,7 +166,7 @@ bool LightShaderClass::InitializeShader(ID3D11Device *device,
 		vertexShaderBuffer->GetBufferPointer(),
 		vertexShaderBuffer->GetBufferSize(),
 		&m_layout);
-
+	
 	if (FAILED(result))
 		return false;
 
@@ -226,32 +226,26 @@ void LightShaderClass::ShutdownShader()
 		m_lightBuffer->Release();
 		m_lightBuffer = NULL;
 	}
-
 	if (m_sampleState)
 	{
 		m_sampleState->Release();
 		m_sampleState = NULL;
 	}
-
 	if (m_matrixBuffer)
 	{
 		m_matrixBuffer->Release();
 		m_matrixBuffer = NULL;
 	}
-
 	if (m_layout)
 	{
 		m_layout->Release();
 		m_layout = NULL;
 	}
-
 	if (m_vertexShader)
 	{
 		m_vertexShader->Release();
 		m_vertexShader = NULL;
 	}
-
-	return;
 }
 
 void LightShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage,
@@ -292,7 +286,8 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MyStruct::MatrixBufferType *dataPtr;
 	MyStruct::LightBufferType *dataPtr2;
-	unsigned int bufferNumber;
+	unsigned int vertexBufferNumber;
+	unsigned int pixelBufferNumber;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -315,9 +310,8 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 
 	deviceContext->Unmap(m_matrixBuffer, 0);
 
-	bufferNumber = 0;
-
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	vertexBufferNumber = 0;
+	deviceContext->VSSetConstantBuffers(vertexBufferNumber, 1, &m_matrixBuffer);
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	result = deviceContext->Map(m_lightBuffer,
@@ -337,9 +331,8 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 
 	deviceContext->Unmap(m_lightBuffer, 0);
 
-	bufferNumber = 0;
-
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
+	pixelBufferNumber = 0;
+	deviceContext->PSSetConstantBuffers(pixelBufferNumber, 1, &m_lightBuffer);
 
 	return true;
 }
@@ -347,7 +340,7 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 void LightShaderClass::RenderShader(ID3D11DeviceContext *deviceContext, int indexCount)
 {
 	deviceContext->IASetInputLayout(m_layout);
-
+	
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
