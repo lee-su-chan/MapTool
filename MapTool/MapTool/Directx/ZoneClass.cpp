@@ -2,13 +2,13 @@
 
 ZoneClass::ZoneClass()
 {
-	m_UserInterface = 0;
-	m_Camera = 0;
-	m_Light = 0;
-	m_Position = 0;
-	m_Frustum = 0;
-	m_SkyDome = 0;
-	m_Terrain = 0;
+	m_UserInterface = NULL;
+	m_Camera = NULL;
+	m_Light = NULL;
+	m_Frustum = NULL;
+	m_SkyDome = NULL;
+	m_Terrain = NULL;
+	m_Pick = NULL;
 	m_PosX = 0;
 	m_PosY = 0;
 	m_PosZ = 0;
@@ -98,15 +98,13 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 
 		return false;
 	}
-	
-	m_Position = new PositionClass;
-	if (!m_Position)
-		return false;
+
+	m_Pick = new PickingToolClass;
 	
 	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_PosX, m_PosY, m_PosZ);
 
-	m_Position->SetPosition(m_PosX, m_PosY + 5.0f, m_PosZ);
-	m_Position->SetRotation(36.0f, 136.0f, 0.0f);
+	m_Camera->SetPosition(m_PosX, m_PosY + 5.0f, m_PosZ);
+	m_Camera->SetRotation(36.0f, 136.0f, 0.0f);
 
 	return true;
 }
@@ -119,46 +117,39 @@ void ZoneClass::Shutdown()
 		delete m_Terrain;
 		m_Terrain = NULL;
 	}
-
 	if (m_SkyDome)
 	{
 		m_SkyDome->Shutdown();
 		delete m_SkyDome;
 		m_SkyDome = NULL;
 	}
-
 	if (m_Frustum)
 	{
 		delete m_Frustum;
 		m_Frustum = NULL;
 	}
-
-	if (m_Position)
-	{
-		delete m_Position;
-		m_Position = NULL;
-	}
-
 	if (m_Light)
 	{
 		delete m_Light;
 		m_Light = NULL;
 	}
-
 	if (m_Camera)
 	{
+		m_Camera->Shutdown();
 		delete m_Camera;
 		m_Camera = NULL;
 	}
-
 	if (m_UserInterface)
 	{
 		m_UserInterface->Shutdown();
 		delete m_UserInterface;
 		m_UserInterface = NULL;
 	}
-
-	return;
+	if (m_Pick)
+	{
+		delete m_Pick;
+		m_Pick = NULL;
+	}
 }
 
 bool ZoneClass::Frame(D3DClass *direct3D, 
@@ -175,8 +166,8 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 
 	HandleMovementInput(direct3D, input, frameTime);
 
-	m_Position->GetPosition(posX, posY, posZ);
-	m_Position->GetRotation(rotX, rotY, rotZ);
+	m_Camera->GetPosition(posX, posY, posZ);
+	m_Camera->GetRotation(rotX, rotY, rotZ);
 
 	input->GetMouseWindowPosition(mousePosX, mousePosY);
 
@@ -206,7 +197,6 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 		foundHeight = m_Terrain->GetHeightAtPosition(posX, posZ, height);
 		if (foundHeight)
 		{
-			m_Position->SetPosition(posX, height + 1.0f, posZ);
 			m_Camera->SetPosition(posX, height + 1.0f, posZ);
 		}
 	}
@@ -224,24 +214,24 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 	float posX, posY, posZ, rotX, rotY, rotZ;
 	int mouseAddX, mouseAddY;
 
-	m_Position->SetFrameTime(frameTime);
+	m_Camera->GetPosition()->SetFrameTime(frameTime);
 
 	if (input->IsMouseLightClick())
 	{
 		int cursorX, cursorY;
-		bool isPickSuccess;
+		bool isPickSuccessed;
 
 		input->GetMouseWindowPosition(cursorX, cursorY);
-		isPickSuccess = PickingToolSingletonClass::GetInstance()->InitPick(direct3D, 
+		isPickSuccessed = PickingToolSingletonClass::GetInstance()->InitPick(direct3D, 
 			m_Camera, 
 			m_Hwnd, 
 			m_ScreenWidth, 
 			m_ScreenHeight, 
 			cursorX, 
 			cursorY);
-		if (isPickSuccess)
+		if (isPickSuccessed)
 		{
-			PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain);
+			PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain, m_PickPos);
 		}
 	}
 
@@ -249,44 +239,44 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 	{
 		isKeyDown = input->IsMouseMoved();
 		input->GetMouseAddPos(mouseAddX, mouseAddY);
-		m_Position->TurnByMouse(mouseAddX, mouseAddY);
+		m_Camera->GetPosition()->TurnByMouse(mouseAddX, mouseAddY);
 	}
 
 	isKeyDown = input->IsWPressed();
-	m_Position->MoveForward(isKeyDown);
+	m_Camera->GetPosition()->MoveForward(isKeyDown);
 
 	isKeyDown = input->IsSPressed();
-	m_Position->MoveBackward(isKeyDown);
+	m_Camera->GetPosition()->MoveBackward(isKeyDown);
 
 	isKeyDown = input->IsAPressed();
-	m_Position->MoveLeftward(isKeyDown);
+	m_Camera->GetPosition()->MoveLeftward(isKeyDown);
 
 	isKeyDown = input->IsDPressed();
-	m_Position->MoveRightward(isKeyDown);
+	m_Camera->GetPosition()->MoveRightward(isKeyDown);
 
 	isKeyDown = input->IsQPressed();
-	m_Position->MoveUpward(isKeyDown);
+	m_Camera->GetPosition()->MoveUpward(isKeyDown);
 
 	isKeyDown = input->IsEPressed();
-	m_Position->MoveDownward(isKeyDown);
+	m_Camera->GetPosition()->MoveDownward(isKeyDown);
 
 	isKeyDown = input->IsUpPressed();
-	m_Position->LookUpward(isKeyDown);
+	m_Camera->GetPosition()->LookUpward(isKeyDown);
 
 	isKeyDown = input->IsLeftPressed();
-	m_Position->TurnLeft(isKeyDown);
+	m_Camera->GetPosition()->TurnLeft(isKeyDown);
 
 	isKeyDown = input->IsDownPressed();
-	m_Position->LookDownward(isKeyDown);
+	m_Camera->GetPosition()->LookDownward(isKeyDown);
 
 	isKeyDown = input->IsRightPressed();
-	m_Position->TurnRight(isKeyDown);
+	m_Camera->GetPosition()->TurnRight(isKeyDown);
 
-	m_Position->GetPosition(posX, posY, posZ);
-	m_Position->GetRotation(rotX, rotY, rotZ);
+	//m_Position->GetPosition(posX, posY, posZ);
+	//m_Position->GetRotation(rotX, rotY, rotZ);
 
-	m_Camera->SetPosition(posX, posY, posZ);
-	m_Camera->SetRotation(rotX, rotY, rotZ);
+	//m_Camera->SetPosition(posX, posY, posZ);
+	//m_Camera->SetRotation(rotX, rotY, rotZ);
 
 	if (input->IsF1Toggled())
 		m_IsDisplayUI = !m_IsDisplayUI;
@@ -302,8 +292,6 @@ void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float
 
 	if (input->IsF5Toggled())
 		m_IsHeightLocked = !m_IsHeightLocked;
-
-	return;
 }
 
 bool ZoneClass::Render(D3DClass *direct3D, 
@@ -324,7 +312,7 @@ bool ZoneClass::Render(D3DClass *direct3D,
 	m_Camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
 
-	cameraPosition = m_Camera->GetPosition();
+	m_Camera->GetPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 	m_Frustum->ConstructFrustum(projectionMatrix, viewMatrix);
 
