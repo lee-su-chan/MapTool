@@ -3,6 +3,7 @@
 #define DIRECTINPUT_VERTSION 0x0800
 
 #include <dinput.h>
+#include "../MFC_Core.h"
 
 class InputClass
 {
@@ -18,11 +19,11 @@ public:
 	bool IsEscapePressed();
 
 	void GetMouseLocation(int &, int &);
-	bool IsMouseLightClick();
+	bool IsMouseLeftClick();
 	bool IsMouseRightClick();
 	bool IsMouseMoved();
 	void GetMouseAddPos(int &, int &);
-	void GetMouseWindowPosition(int &, int &);
+	bool GetMouseWindowPosition(int &, int &);
 
 	bool IsLeftPressed();
 	bool IsRightPressed();

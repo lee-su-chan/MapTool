@@ -2,9 +2,9 @@
 
 CameraClass::CameraClass()
 {
-	m_position = new PositionClass;
-	m_position->SetPosition(0.0f, 0.0f, 0.0f);
-	m_position->SetRotation(0.0f, 0.0f, 0.0f);
+	m_Position = new PositionClass;
+	m_Position->SetPosition(0.0f, 0.0f, 0.0f);
+	m_Position->SetRotation(0.0f, 0.0f, 0.0f);
 }
 
 void CameraClass::Render()
@@ -20,7 +20,7 @@ void CameraClass::Render()
 
 	upVec = XMLoadFloat3(&up);
 
-	m_position->GetPosition(position.x, position.y, position.z);
+	m_Position->GetPosition(position.x, position.y, position.z);
 
 	positionVec = XMLoadFloat3(&position);
 
@@ -31,7 +31,7 @@ void CameraClass::Render()
 	lookAtVec = XMLoadFloat3(&lookAt);
 
 	// Set the yaw(Y axis), pitch(X axis), and roll(Z axis) rotations in radians.
-	m_position->GetRotation(pitch, yaw, roll);
+	m_Position->GetRotation(pitch, yaw, roll);
 	pitch *= 0.0174532925f;
 	yaw *= 0.0174532925f;
 	roll *= 0.0174532925f;
@@ -46,16 +46,14 @@ void CameraClass::Render()
 	lookAtVec = XMVectorAdd(positionVec, lookAtVec);
 
 	// Finally create the view matrix from the three updated vectors.
-	m_viewMatrix = XMMatrixLookAtLH(positionVec, lookAtVec, upVec);
+	m_ViewMatrix = XMMatrixLookAtLH(positionVec, lookAtVec, upVec);
 
 	return;
 }
 
 void CameraClass::GetViewMatrix(XMMATRIX &viewMatrix)
 {
-	viewMatrix = m_viewMatrix;
-
-	return;
+	viewMatrix = m_ViewMatrix;
 }
 
 void CameraClass::RenderBaseViewMatrix()
@@ -70,7 +68,7 @@ void CameraClass::RenderBaseViewMatrix()
 	up.z = 0.0f;
 	upVector = XMLoadFloat3(&up);
 
-	m_position->GetPosition(position.x, position.y, position.z);
+	m_Position->GetPosition(position.x, position.y, position.z);
 	positionVector = XMLoadFloat3(&position);
 
 	lookAt.x = 0.0f;
@@ -78,7 +76,7 @@ void CameraClass::RenderBaseViewMatrix()
 	lookAt.z = 1.0f;
 	lookAtVector = XMLoadFloat3(&lookAt);
 
-	m_position->GetRotation(pitch, yaw, roll);
+	m_Position->GetRotation(pitch, yaw, roll);
 	pitch *= 0.0174532925f;
 	yaw *= 0.0174532925f;
 	roll *= 0.0174532925f;
@@ -90,23 +88,63 @@ void CameraClass::RenderBaseViewMatrix()
 
 	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
 
-	m_baseViewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
+	m_BaseViewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 
 	return;
 }
 
+void CameraClass::Frame(InputClass *input)
+{
+	bool isKeyDown;
+	int mouseAddX, mouseAddY;
+
+	if (input->IsMouseRightClick())
+	{
+		input->GetMouseAddPos(mouseAddX, mouseAddY);
+		m_Position->TurnByMouse(mouseAddX, mouseAddY);
+	}
+
+	isKeyDown = input->IsWPressed();
+	m_Position->MoveForward(isKeyDown);
+
+	isKeyDown = input->IsSPressed();
+	m_Position->MoveBackward(isKeyDown);
+
+	isKeyDown = input->IsAPressed();
+	m_Position->MoveLeftward(isKeyDown);
+
+	isKeyDown = input->IsDPressed();
+	m_Position->MoveRightward(isKeyDown);
+
+	isKeyDown = input->IsQPressed();
+	m_Position->MoveUpward(isKeyDown);
+
+	isKeyDown = input->IsEPressed();
+	m_Position->MoveDownward(isKeyDown);
+
+	isKeyDown = input->IsUpPressed();
+	m_Position->LookUpward(isKeyDown);
+
+	isKeyDown = input->IsLeftPressed();
+	m_Position->TurnLeft(isKeyDown);
+
+	isKeyDown = input->IsDownPressed();
+	m_Position->LookDownward(isKeyDown);
+
+	isKeyDown = input->IsRightPressed();
+	m_Position->TurnRight(isKeyDown);
+}
+
 void CameraClass::Shutdown()
 {
-	if (m_position)
+	if (m_Position)
 	{
-		delete m_position;
-		m_position = NULL;
+		delete m_Position;
+		m_Position = NULL;
 	}
 }
 
 void CameraClass::GetBaseViewMatrix(XMMATRIX &viewMatrix)
 {
-	viewMatrix = m_baseViewMatrix;
-
-	return;
+	viewMatrix = m_BaseViewMatrix;
 }

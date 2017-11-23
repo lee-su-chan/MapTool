@@ -6,16 +6,17 @@ class PositionClass
 {
 public:
 	PositionClass();
-	PositionClass(const PositionClass &);
-	~PositionClass();
+	PositionClass(const PositionClass &) = default;
+	~PositionClass() = default;
 
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
+public:
+	inline void SetPosition(float x, float y, float z) { m_posX = x; m_posY = y; m_posZ = z; }
+	inline void SetRotation(float x, float y, float z) { m_rotX = x; m_rotY = y; m_rotZ = z; }
 
-	void GetPosition(float &, float &, float &);
-	void GetRotation(float &, float &, float &);
+	inline void GetPosition(float &x, float &y, float &z) { x = m_posX; y = m_posY; z = m_posZ; }
+	inline void GetRotation(float &x, float &y, float &z) { x = m_rotX; y = m_rotY; z = m_rotZ; }
 
-	void SetFrameTime(float);
+	inline void SetFrameTime(float time) { m_frameTime = time; }
 
 	void MoveForward(bool);
 	void MoveBackward(bool);

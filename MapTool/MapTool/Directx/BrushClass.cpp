@@ -2,63 +2,50 @@
 
 BrushClass::BrushClass()
 {
-
+	m_CircleVertexBuffer = nullptr;
+	m_CircleIndexBuffer = nullptr;
+	m_RectangleVertexBuffer = nullptr;
+	m_RectangleIndexBuffer = nullptr;
+	m_CircleIndexCount = 0;
+	m_RectangleIndexCount = 0;
+	m_IndexCount = 0;
 }
 
-bool BrushClass::Init(ID3D11Device *device, 
-	MyEnum::BrushShape eShape, 
-	XMFLOAT4 color, 
-	int radius, 
-	int VertexCount)
+bool BrushClass::Initialize(ID3D11Device *device,
+	XMFLOAT4 color)
 {
 	bool result;
 
-	m_eShape = eShape;
 	m_Color = color;
-	m_Radius = radius;
-	m_VertexCount = VertexCount;
 
 	result = BuildCircleBuffers(device);
 	if (!result)
 		return false;
 
-	result = BuildSquareleBuffers(device);
+	result = BuildRectangleBuffers(device);
 	if (!result)
 		return false;
 
 	return true;
 }
 
-void BrushClass::Render(ID3D11DeviceContext *deviceContext)
+bool BrushClass::Render(ID3D11DeviceContext *deviceContext)
 {
-	//ID3D11Buffer *tempVertexBuffer;
-	//ID3D11Buffer *tempIndexBuffer;
-	//unsigned int stride;
-	//unsigned int offset;
+	switch (EditInputManager::GetInstance()->m_BrushType)
+	{
+	case BrushType::CIRCLE:
+		m_IndexCount = m_CircleIndexCount;
+		RenderCircle(deviceContext);
+		return true;
 
-	//stride = sizeof(MyStruct::ColorVertexType);
-	//offset = 0;
+	case BrushType::RECTANGLE:
+		m_IndexCount = m_RectangleIndexCount;
+		RenderRectangle(deviceContext);
+		return true;
 
-	//switch (m_eShape)
-	//{
-	//case MyEnum::BrushShape::CIRCLE:
-	//	tempVertexBuffer = m_CircleVertexBuffer;
-	//	tempIndexBuffer  = m_CircleIndexBuffer;
-	//	break;
-
-	//case MyEnum::BrushShape::RECTANGLE:
-	//	tempVertexBuffer = m_SquareVertexBuffer;
-	//	tempIndexBuffer = m_SquareIndexBuffer;
-	//	break;
-
-	//default:
-	//	logic_error("BrushClass : Nothing case!");
-	//	break;
-	//}
-	//
-	//deviceContext->IASetVertexBuffers(0, 1, &tempVertexBuffer, &stride, &offset);
-	//deviceContext->IASetIndexBuffer(tempIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	//deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	default:
+		return false;
+	}
 }
 
 void BrushClass::Shutdown()
@@ -73,15 +60,15 @@ void BrushClass::Shutdown()
 		m_CircleIndexBuffer->Release();
 		m_CircleIndexBuffer = nullptr;
 	}
-	if (m_SquareVertexBuffer)
+	if (m_RectangleVertexBuffer)
 	{
-		m_SquareVertexBuffer->Release();
-		m_SquareVertexBuffer = nullptr;
+		m_RectangleVertexBuffer->Release();
+		m_RectangleVertexBuffer = nullptr;
 	}
-	if (m_SquareIndexBuffer)
+	if (m_RectangleIndexBuffer)
 	{
-		m_SquareIndexBuffer->Release();
-		m_SquareIndexBuffer = nullptr;
+		m_RectangleIndexBuffer->Release();
+		m_RectangleIndexBuffer = nullptr;
 	}
 }
 
@@ -91,21 +78,19 @@ bool BrushClass::BuildCircleBuffers(ID3D11Device *device)
 
 	MyStruct::ColorVertexType *vertices;
 	unsigned long *indices;
-
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
-
-	int index, indexCount;
+	int index, indexCount, vertexCount;
 	float radian;
 	XMVECTOR currentPos, newPos;
 	XMMATRIX matRot;
 
 	index = 0;
-	indexCount = m_VertexCount;
-	radian = XM_PI * 2.0f / m_VertexCount;
+	indexCount = vertexCount = 24;
+	radian = XM_PI * 2.0f / vertexCount;
 	currentPos = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0);
 
-	vertices = new MyStruct::ColorVertexType[m_VertexCount];
+	vertices = new MyStruct::ColorVertexType[vertexCount];
 	if (!vertices)
 		return false;
 
@@ -114,7 +99,7 @@ bool BrushClass::BuildCircleBuffers(ID3D11Device *device)
 		return false;
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(MyStruct::ColorVertexType) * m_VertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(MyStruct::ColorVertexType) * vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -136,14 +121,14 @@ bool BrushClass::BuildCircleBuffers(ID3D11Device *device)
 	indexData.SysMemSlicePitch = 0;
 
 	// TODO vertex of infomation
-	XMStoreFloat3(&vertices[index].position, currentPos * m_Radius);
+	XMStoreFloat3(&vertices[index].position, currentPos * EditInputManager::GetInstance()->m_BrushRadius);
 	vertices[index].color = m_Color;
 	indices[index] = index;
 	++index;
 
-	for (int i = 1; i < m_VertexCount + 1; ++m_VertexCount)
+	for (int i = 1; i < vertexCount + 1; ++vertexCount)
 	{
-
+		// TODO: set vertecies
 	}
 
 	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_CircleVertexBuffer);
@@ -160,10 +145,11 @@ bool BrushClass::BuildCircleBuffers(ID3D11Device *device)
 	delete[] indices;
 	indices = NULL;
 
+	m_CircleIndexCount = index - 1;
+
 	return true;
 }
-
-bool BrushClass::BuildSquareleBuffers(ID3D11Device *device)
+bool BrushClass::BuildRectangleBuffers(ID3D11Device *device)
 {
 	MyStruct::ColorVertexType *vertices;
 	unsigned long *indices;
@@ -173,7 +159,7 @@ bool BrushClass::BuildSquareleBuffers(ID3D11Device *device)
 	HRESULT result;
 
 	index = 0;
-	vertexCount = 24;
+	vertexCount = 4;
 	indexCount = vertexCount;
 
 	vertices = new MyStruct::ColorVertexType[vertexCount];
@@ -206,17 +192,31 @@ bool BrushClass::BuildSquareleBuffers(ID3D11Device *device)
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	// TODO : vertex of infomation
+	// TODO : set vertices
 	vertices[index].position = XMFLOAT3(0, 0, 0);
 	vertices[index].color = m_Color;
 	indices[index] = index;
 	++index;
 
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_SquareVertexBuffer);
+	vertices[index].position = XMFLOAT3(1, 0, 0);
+	vertices[index].color = m_Color;
+	indices[index] = index;
+	++index;
+
+	vertices[index].position = XMFLOAT3(0, 0, -1);
+	vertices[index].color = m_Color;
+	indices[index] = index;
+	++index;
+
+	vertices[index].position = XMFLOAT3(1, 0, 1);
+	vertices[index].color = m_Color;
+	indices[index] = index;
+
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_RectangleVertexBuffer);
 	if (FAILED(result))
 		return false;
 
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_SquareIndexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_RectangleIndexBuffer);
 	if (FAILED(result))
 		return false;
 
@@ -226,5 +226,32 @@ bool BrushClass::BuildSquareleBuffers(ID3D11Device *device)
 	delete[] indices;
 	indices = NULL;
 
+	m_RectangleIndexCount = index;
+
 	return true;
+}
+
+void BrushClass::RenderCircle(ID3D11DeviceContext *deviceContext)
+{
+	unsigned int stride;
+	unsigned int offset;
+
+	stride = sizeof(MyStruct::ColorVertexType);
+	offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &m_CircleVertexBuffer, &stride, &offset);
+	deviceContext->IASetIndexBuffer(m_CircleIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+}
+void BrushClass::RenderRectangle(ID3D11DeviceContext *deviceContext)
+{
+	unsigned int stride;
+	unsigned int offset;
+
+	stride = sizeof(MyStruct::ColorVertexType);
+	offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &m_RectangleVertexBuffer, &stride, &offset);
+	deviceContext->IASetIndexBuffer(m_RectangleIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 }

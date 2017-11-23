@@ -138,7 +138,7 @@ void InputClass::GetMouseLocation(int &mouseX, int &mouseY)
 	return;
 }
 
-bool InputClass::IsMouseLightClick()
+bool InputClass::IsMouseLeftClick()
 {
 	if (m_mouseState.rgbButtons[0] & 0x80)
 		return true;
@@ -170,7 +170,8 @@ void InputClass::GetMouseAddPos(int &mouseAddX, int &mouseAddY)
 	return;
 }
 
-void InputClass::GetMouseWindowPosition(int &x, int &y)
+// Return: 현재 커서와 Direct단 윈도우 충돌 여부
+bool InputClass::GetMouseWindowPosition(int &x, int &y)
 {
 	POINT ptPosition;
 
@@ -179,6 +180,11 @@ void InputClass::GetMouseWindowPosition(int &x, int &y)
 
 	x = ptPosition.x;
 	y = ptPosition.y;
+
+	if (x < 0 || DIRECT_WND_WIDTH  < x) return false;
+	if (y < 0 || DIRECT_WND_HEIGHT < y) return false;
+
+	return true;
 }
 
 bool InputClass::IsLeftPressed()

@@ -6,7 +6,7 @@
 #include "MakeNewFileDlg.h"
 #include "afxdialogex.h"
 
-#include "MFC_Defines.h"
+#include "MFC_Core.h"
 
 #pragma warning(disable:4996)
 

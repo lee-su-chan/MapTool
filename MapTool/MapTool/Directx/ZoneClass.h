@@ -13,6 +13,7 @@
 #include "SkyDomeClass.h"
 #include "TerrainClass.h"
 #include "PickingToolClass.h"
+#include "BrushClass.h"
 
 class ZoneClass
 {
@@ -27,7 +28,7 @@ public:
 	void Shutdown();
 
 private:
-	void HandleMovementInput(D3DClass *, InputClass *, float);
+	void HandleMovementInput(D3DClass *, InputClass *, int &, int &);
 	void PushedF3Button(float);
 
 private:
@@ -38,8 +39,7 @@ private:
 	SkyDomeClass *m_SkyDome;
 	TerrainClass *m_Terrain;
 	PickingToolClass *m_Pick;
-
-	HWND m_Hwnd;
+	BrushClass *m_Brush;
 
 public:
 	bool m_IsDisplayUI;
@@ -47,13 +47,6 @@ public:
 	bool m_IsPlay;
 	bool m_IsCellLines;
 	bool m_IsHeightLocked;
-
-	float m_PosX;
-	float m_PosY;
-	float m_PosZ;
-
-	int m_ScreenWidth;
-	int m_ScreenHeight;
 
 	XMVECTOR m_PickPos;
 };

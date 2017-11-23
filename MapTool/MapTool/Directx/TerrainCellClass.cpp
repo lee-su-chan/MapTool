@@ -118,7 +118,7 @@ void TerrainCellClass::GetEdgePosition(float &x, float &y, float &z)
 {
 	x = m_minWidth;
 	y = m_maxHeight;
-	z = m_maxDepth;
+	z = m_minDepth;
 
 	return;
 }

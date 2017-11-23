@@ -510,8 +510,6 @@ void D3DClass::Shutdown()
 		m_swapChain->Release();
 		m_swapChain = NULL;
 	}
-
-	return;
 }
 
 void D3DClass::BeginScene(float red, float green, float blue, float alpha)
@@ -528,8 +526,6 @@ void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 
 	// Clear the depth buffer.
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-	return;
 }
 
 void D3DClass::EndScene()
@@ -541,8 +537,6 @@ void D3DClass::EndScene()
 	else
 		// Present as fast as possible.
 		m_swapChain->Present(0, 0);
-
-	return;
 }
 
 ID3D11Device* D3DClass::GetDevice()
@@ -558,54 +552,42 @@ ID3D11DeviceContext* D3DClass::GetDeviceContext()
 void D3DClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 {
 	projectionMatrix = m_projectionMatrix;
-	return;
 }
 
 void D3DClass::GetWorldMatrix(XMMATRIX& worldMatrix)
 {
 	worldMatrix = m_worldMatrix;
-	return;
 }
 
 void D3DClass::GetOrthoMatrix(XMMATRIX& orthoMatrix)
 {
 	orthoMatrix = m_orthoMatrix;
-	return;
 }
 
 void D3DClass::GetVideoCardInfo(char *cardName, int &memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
-	return;
 }
 
 void D3DClass::TurnZBufferOn()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
-	
-	return;
 }
 
 void D3DClass::TurnZBufferOff()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
-
-	return;
 }
 
 void D3DClass::TurnOnCulling()
 {
 	m_deviceContext->RSSetState(m_rasterState);
-
-	return;
 }
 
 void D3DClass::TurnOffCulling()
 {
 	m_deviceContext->RSSetState(m_rasterStateNoCulling);
-
-	return;
 }
 
 void D3DClass::EnableAlphaBlending()
@@ -618,8 +600,6 @@ void D3DClass::EnableAlphaBlending()
 	blendFactor[3] = 0.0f;
 
 	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
-
-	return;
 }
 
 void D3DClass::EnableAlphaToCoverageBlending()
@@ -632,8 +612,6 @@ void D3DClass::EnableAlphaToCoverageBlending()
 	blendFactor[3] = 0.0f;
 
 	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState2, blendFactor, 0xffffffff);
-
-	return;
 }
 
 void D3DClass::DisableAlphaBlending()
@@ -646,20 +624,14 @@ void D3DClass::DisableAlphaBlending()
 	blendFactor[3] = 0.0f;
 
 	m_deviceContext->OMSetBlendState(m_alphaDisalbeBlendingState, blendFactor, 0xffffffff);
-
-	return;
 }
 
 void D3DClass::EnableWireframe()
 {
 	m_deviceContext->RSSetState(m_rasterStateWireframe);
-	
-	return;
 }
 
 void D3DClass::DisableWireframe()
 {
 	m_deviceContext->RSSetState(m_rasterState);
-
-	return;
 }

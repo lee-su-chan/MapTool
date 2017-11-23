@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "MapTool.h"
 
-#include "MFC_Defines.h"
+#include "MFC_Core.h"
 
 #include "MainFrm.h"
 #include "MapToolDoc.h"

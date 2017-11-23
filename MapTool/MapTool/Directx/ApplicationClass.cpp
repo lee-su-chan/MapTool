@@ -29,6 +29,14 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 	int i;
 	bool result;
 
+	this->terrainDesc = terrainDesc;
+	if (!&this->terrainDesc)
+	{
+		MessageBox(hwnd[0], L"Could not get the terrainDesc.", L"Error", MB_OK);
+
+		return false;
+	}
+
 	m_Input = new InputClass;
 	if (!m_Input)
 		return false;
@@ -129,14 +137,6 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance,
 		return false;
 	}
 
-	this->terrainDesc = terrainDesc;
-	if (!&this->terrainDesc)
-	{
-		MessageBox(hwnd[0], L"Could not get the terrainDesc.", L"Error", MB_OK);
-
-		return false;
-	}
-
 	return true;
 }
 
@@ -216,5 +216,5 @@ bool ApplicationClass::Frame()
 	if (!result)
 		return false;
 
-	return result;
+	return true;
 }

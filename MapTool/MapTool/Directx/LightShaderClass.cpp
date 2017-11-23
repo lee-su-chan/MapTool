@@ -289,7 +289,7 @@ bool LightShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 	unsigned int vertexBufferNumber;
 	unsigned int pixelBufferNumber;
 
-	worldMatrix = XMMatrixTranspose(worldMatrix);
+	//worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 

@@ -9,9 +9,7 @@ ZoneClass::ZoneClass()
 	m_SkyDome = NULL;
 	m_Terrain = NULL;
 	m_Pick = NULL;
-	m_PosX = 0;
-	m_PosY = 0;
-	m_PosZ = 0;
+	m_Brush = NULL;
 }
 
 ZoneClass::ZoneClass(const ZoneClass &other)
@@ -37,11 +35,6 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	m_IsCellLines = true;
 	m_IsHeightLocked = false;
 
-	m_ScreenWidth = screenWidth;
-	m_ScreenHeight = screenHeight;
-
-	m_Hwnd = hwnd;
-
 	m_UserInterface = new UserInterfaceClass;
 	if (!m_UserInterface)
 		return false;
@@ -50,7 +43,6 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the user interface object.", L"Error", MB_OK);
-		
 		return false;
 	}
 
@@ -83,7 +75,6 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the sky dome object.", L"Error", MB_OK);
-
 		return false;
 	}
 
@@ -95,16 +86,26 @@ bool ZoneClass::Initialize(D3DClass *direct3D,
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
-
 		return false;
 	}
 
 	m_Pick = new PickingToolClass;
-	
-	m_Terrain->GetTerrainCellObj()->GetEdgePosition(m_PosX, m_PosY, m_PosZ);
+	if (!m_Pick)
+		return false;
 
-	m_Camera->SetPosition(m_PosX, m_PosY + 5.0f, m_PosZ);
-	m_Camera->SetRotation(36.0f, 136.0f, 0.0f);
+	m_Brush = new BrushClass;
+	if (!m_Brush)
+		return false;
+
+	result = m_Brush->Initialize(direct3D->GetDevice(), XMFLOAT4(255, 0, 0, 0));
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the brush object.", L"Error", MB_OK);
+		return false;
+	}
+	
+	m_Camera->SetPosition(0.0f, 5.0f, 0.0f);
+	m_Camera->SetRotation(36.0f, 44.0f, 0.0f);
 
 	return true;
 }
@@ -150,6 +151,12 @@ void ZoneClass::Shutdown()
 		delete m_Pick;
 		m_Pick = NULL;
 	}
+	if (m_Brush)
+	{
+		m_Brush->Shutdown();
+		delete m_Brush;
+		m_Brush = NULL;
+	}
 }
 
 bool ZoneClass::Frame(D3DClass *direct3D, 
@@ -164,13 +171,13 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
 	int mousePosX, mousePosY;
 
-	HandleMovementInput(direct3D, input, frameTime);
+	HandleMovementInput(direct3D, input, mousePosX, mousePosY);
 
+	m_Camera->SetFrameTime(frameTime);
+	m_Camera->Frame(input);
 	m_Camera->GetPosition(posX, posY, posZ);
 	m_Camera->GetRotation(rotX, rotY, rotZ);
-
-	input->GetMouseWindowPosition(mousePosX, mousePosY);
-
+	
 	if(m_IsPlay)
 		PushedF3Button(frameTime);
 	
@@ -186,19 +193,15 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 		m_SkyDome->GetCenterColor(),
 		mousePosX,
 		mousePosY);
-	
 	if (!result)
 		return false;
 
 	m_Terrain->Frame();
-	
 	if (m_IsHeightLocked)
 	{
 		foundHeight = m_Terrain->GetHeightAtPosition(posX, posZ, height);
 		if (foundHeight)
-		{
 			m_Camera->SetPosition(posX, height + 1.0f, posZ);
-		}
 	}
 
 	result = Render(direct3D, shaderManager, textureManager, terrainDesc);
@@ -208,76 +211,29 @@ bool ZoneClass::Frame(D3DClass *direct3D,
 	return true;
 }
 
-void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, float frameTime)
+void ZoneClass::HandleMovementInput(D3DClass *direct3D, InputClass *input, int &mousePosX, int &mousePosY)
 {
-	bool isKeyDown;
-	float posX, posY, posZ, rotX, rotY, rotZ;
-	int mouseAddX, mouseAddY;
+	bool result;
 
-	m_Camera->GetPosition()->SetFrameTime(frameTime);
-
-	if (input->IsMouseLightClick())
+	result = input->GetMouseWindowPosition(mousePosX, mousePosY);
+	if (result)
 	{
-		int cursorX, cursorY;
-		bool isPickSuccessed;
-
-		input->GetMouseWindowPosition(cursorX, cursorY);
-		isPickSuccessed = PickingToolSingletonClass::GetInstance()->InitPick(direct3D, 
-			m_Camera, 
-			m_Hwnd, 
-			m_ScreenWidth, 
-			m_ScreenHeight, 
-			cursorX, 
-			cursorY);
-		if (isPickSuccessed)
+		if (input->IsMouseLeftClick())
 		{
-			PickingToolSingletonClass::GetInstance()->Picking(direct3D, m_Terrain, m_PickPos);
+			m_Pick->InitPick(direct3D,
+				m_Camera,
+				DIRECT_WND_WIDTH,
+				DIRECT_WND_HEIGHT,
+				mousePosX,
+				mousePosY);
+
+			m_Pick->Picking(direct3D, m_Terrain, m_PickPos);
+			XMFLOAT4 pos;
+			XMStoreFloat4(&pos, m_PickPos);
+			cout << "X: " << pos.x << endl << "Y: " << pos.y << endl << "Z: " << pos.z << endl << endl;
 		}
 	}
-
-	if (input->IsMouseRightClick())
-	{
-		isKeyDown = input->IsMouseMoved();
-		input->GetMouseAddPos(mouseAddX, mouseAddY);
-		m_Camera->GetPosition()->TurnByMouse(mouseAddX, mouseAddY);
-	}
-
-	isKeyDown = input->IsWPressed();
-	m_Camera->GetPosition()->MoveForward(isKeyDown);
-
-	isKeyDown = input->IsSPressed();
-	m_Camera->GetPosition()->MoveBackward(isKeyDown);
-
-	isKeyDown = input->IsAPressed();
-	m_Camera->GetPosition()->MoveLeftward(isKeyDown);
-
-	isKeyDown = input->IsDPressed();
-	m_Camera->GetPosition()->MoveRightward(isKeyDown);
-
-	isKeyDown = input->IsQPressed();
-	m_Camera->GetPosition()->MoveUpward(isKeyDown);
-
-	isKeyDown = input->IsEPressed();
-	m_Camera->GetPosition()->MoveDownward(isKeyDown);
-
-	isKeyDown = input->IsUpPressed();
-	m_Camera->GetPosition()->LookUpward(isKeyDown);
-
-	isKeyDown = input->IsLeftPressed();
-	m_Camera->GetPosition()->TurnLeft(isKeyDown);
-
-	isKeyDown = input->IsDownPressed();
-	m_Camera->GetPosition()->LookDownward(isKeyDown);
-
-	isKeyDown = input->IsRightPressed();
-	m_Camera->GetPosition()->TurnRight(isKeyDown);
-
-	//m_Position->GetPosition(posX, posY, posZ);
-	//m_Position->GetRotation(rotX, rotY, rotZ);
-
-	//m_Camera->SetPosition(posX, posY, posZ);
-	//m_Camera->SetRotation(rotX, rotY, rotZ);
-
+		
 	if (input->IsF1Toggled())
 		m_IsDisplayUI = !m_IsDisplayUI;
 
@@ -306,7 +262,6 @@ bool ZoneClass::Render(D3DClass *direct3D,
 
 	m_Camera->Render();
 
-	direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	direct3D->GetProjectionMatrix(projectionMatrix);
 	m_Camera->GetBaseViewMatrix(baseViewMatrix);
@@ -373,6 +328,18 @@ bool ZoneClass::Render(D3DClass *direct3D,
 			}
 		}
 	}
+
+	result = m_Brush->Render(direct3D->GetDeviceContext());
+	if (!result)
+		return false;
+
+	result = shaderManager->RenderColorShader(direct3D->GetDeviceContext(),
+		m_Brush->GetIndexCount(),
+		worldMatrix,
+		viewMatrix,
+		projectionMatrix);
+	if (!result)
+		return false;
 
 	if (m_IsWireFrame)
 		direct3D->DisableWireframe();

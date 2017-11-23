@@ -1,25 +1,26 @@
 #pragma once
 
+#include "D3D_Core.h"
 #include "D3DClass.h"
 #include "CameraClass.h"
 
 class RayClass
 {
 public:
-	RayClass();
-	RayClass(const RayClass &other);
-	~RayClass();
+	RayClass() = default;
+	RayClass(const RayClass &other) = default;
+	~RayClass() = default;
 
 public:
-	XMVECTOR GetOriginal() { return m_vOriginal; };
-	XMVECTOR GetDirection() { return m_vDirection; };
+	inline XMVECTOR GetOriginal() { return m_vOriginal; };
+	inline XMVECTOR GetDirection() { return m_vDirection; };
 
 public:
-	void SetRay(D3DClass *direct3D, CameraClass *camera, HWND hwnd, int screenWidth, int screenHeight, int cursorX, int cursorY);
+	void SetRay(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int mousePosX, int mousePosY);
 
 private:
-	void RayAtViewSpace(D3DClass *direct3D, RayClass &ray, int screenWidth, int screenHeight, int cursorX, int cursorY);
-	void RayAtLocalSpace(D3DClass *direct3D, CameraClass *camera, int screenWidth, int screenHeight, int cursorX, int cursorY);
+	void SetRayAtViewSpace(CameraClass *camera, int screenWidth, int screenHeight, int cursorX, int cursorY);
+	void SetRayAtLocalSpace(D3DClass *direct3D, CameraClass *camera);
 
 private:
 	XMVECTOR m_vOriginal;
